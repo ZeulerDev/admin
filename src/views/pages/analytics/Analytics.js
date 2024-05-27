@@ -11,9 +11,7 @@ import {
 import React, { useState } from 'react'
 import { DateRangePicker } from 'rsuite'
 import 'rsuite/dist/rsuite.css'
-import WidgetsDropdown from '../../widgets/WidgetsDropdown'
-import CIcon from '@coreui/icons-react'
-import { cilArrowBottom, cilOptions } from '@coreui/icons'
+
 
 const Analytics = () => {
   const [selectedDates, setSelectedDates] = useState([])
