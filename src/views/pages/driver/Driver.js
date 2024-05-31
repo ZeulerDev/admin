@@ -43,6 +43,7 @@ const Drivers = () => {
   const [paramCity, setParamCityData] = useState('')
   const [paramGroup, setParamGroupData] = useState('')
   const [paramChainId, setParamChainData] = useState('')
+  const [paramCode, setParamCodeData] = useState('')
   const [isActivate, setActivate] = useState(false)
   const [driverId, setDriverId] = useState('')
   const navigate = useNavigate()
@@ -130,14 +131,18 @@ const Drivers = () => {
 
   useEffect(() => {
     loadDriversData()
-  }, [paramCity, paramGroup, paramChainId,alert])
+  }, [paramCity, paramGroup, paramChainId,paramCode, alert])
 
   const loadDriversData = () => {
     if (user && token) {
       setLoading(true)
+      let url = `http://localhost:8003/assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
+    
+      if (paramCode) {
+        url += `&code=${paramCode}`
+      }
       axios
-        .get(
-          `http://localhost:8003/assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
+        .get(url,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -378,12 +383,19 @@ const Drivers = () => {
   return (
     <CContainer>
       <CNavbar className="bg-body-tertiary">
+      <CFormInput  
+         type ="text" 
+         placeholder="Search by Rider ID" 
+         style={{ width : 200, marginLeft: '2%' }}
+         value={paramCode}
+         onChange={(e) => setParamCodeData(e.target.value)}
+        />
         <Link to={`/driver/adddriver`}>
           <CButton type="submit" color="success" variant="outline" style={{ marginLeft: '5px' }}>
             Add Driver
           </CButton>
         </Link>
-        <CDropdown style={{ marginLeft: '33%', width: '10%', backgroundColor: '#ff4d4d' }}>
+        <CDropdown style={{ marginLeft: '3%', width: '10%', backgroundColor: '#ff4d4d' }}>
           <CDropdownToggle>{selectedCity}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
@@ -423,6 +435,7 @@ const Drivers = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
+              <CTableHeaderCell scope="col">Id</CTableHeaderCell>
               <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Email</CTableHeaderCell>
@@ -438,6 +451,7 @@ const Drivers = () => {
           <CTableBody>
             {driverData.map((item, index) => (
               <CTableRow key={index}>
+                <CTableDataCell>{item.code}</CTableDataCell>
                 <CTableDataCell>{item.name}</CTableDataCell>
                 <CTableDataCell>{item.surname}</CTableDataCell>
                 <CTableDataCell>{item.email}</CTableDataCell>

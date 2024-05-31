@@ -1,5 +1,5 @@
 import { CButton, CCol, CContainer, CForm, CFormInput, CFormSelect } from '@coreui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -21,21 +21,28 @@ const CreatePicker = ()=>{
     const [gender, setGender] = useState()
     const [vat, setVat] = useState()
     const [address, setAddress] = useState()
+    const [code, setCode] = useState()
 
     const [{ user, token }, dispatch] = useAppContext()
     const navigate = useNavigate()
 
+    useEffect(() => {
+      const codePicker = crypto.randomUUID().slice(0,8)
+      setCode(codePicker)
+    },[])
+   
     
 
     const handleSubmit = () => {
 
-      if(name && surname && password && email && phone && iban && city && vat && employeeId && gender&& address){
+      if(name && surname && password && email && phone && iban && city && vat && employeeId && gender&& address && code){
         const formData = {
           name: name,
           surname: surname,
           password: password,
           email: email,
           contact: phone,
+          code : code,
           iban: iban,
           city: city,
           vat:vat,
@@ -192,6 +199,15 @@ const CreatePicker = ()=>{
               id="vat"
               label="Vat"
               defaultValue={vat}
+              onChange={(e) => setVat(e.target.value)}
+            />
+          </CCol>
+          <CCol md={6}>
+            <CFormInput
+              id="code"
+              label="Code"
+              defaultValue={code}
+              readOnly
               onChange={(e) => setVat(e.target.value)}
             />
           </CCol>

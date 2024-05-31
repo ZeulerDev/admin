@@ -33,6 +33,7 @@ import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
+import '../../../scss/styles.scss'
 
 
 const Pickers = () => {
@@ -44,6 +45,7 @@ const Pickers = () => {
   const [paramCity, setParamCityData] = useState('')
   const [paramGroup, setParamGroupData] = useState('')
   const [paramChainId, setParamChainData] = useState('')
+  const [paramCode, setParamCodeData] = useState('')
   const [isActivate, setActivate] = useState(false)
   const [pickerId, setPickerId] = useState('')
   const[alert, setAlert] = useState(false)
@@ -127,13 +129,20 @@ const Pickers = () => {
 
   useEffect(() => {
     loadPickersData()
-  },[paramCity, paramGroup, paramChainId,alert])
+  },[paramCity, paramGroup, paramChainId,paramCode,alert])
   
   const loadPickersData = () => {
     if(user && token){
       setLoading(true)
+
+      let url = `http://localhost:8003/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
+
+      if (paramCode) {
+        url += `&code=${paramCode}`
+      }
+
       axios
-        .get(`http://localhost:8003/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`, {
+        .get(url, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -369,53 +378,55 @@ const Pickers = () => {
 
   return (
     <CContainer>
-    <CNavbar className="bg-body-tertiary">
-
-        <Link to={`/picker/addpicker`}>
-          <CButton type="submit" color="success" variant="outline"  style={{ marginLeft: '5px' }}>
-            Add Picker
-          </CButton>
-        </Link>
-        <CDropdown style={{ marginLeft: '33%', width:'10%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle  >{selectedCity}</CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
-            <CDropdownItem onClick={() => city('Milan')}>Milan</CDropdownItem>
-            <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
-          </CDropdownMenu>
-        </CDropdown>
-
-        <CDropdown style={{ marginRight: '0%', width:'15%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle >{selectedChain}</CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
-            {chainData.map((item, index) => (
-              <CDropdownItem onClick={() => chain(item.id, item.name)} key={index}>
-                {item.name}
-              </CDropdownItem>
-            ))}
-          </CDropdownMenu>
-        </CDropdown>
-
-        <CDropdown style={{ marginRight: '1%', width:'30%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle  >{selectedMarketGroup}</CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
-            {mGroupData.map((item, index) => (
-              <CDropdownItem onClick={() => marketGroup(item._id, item.name)} key={index}>
-                {item.name}
-              </CDropdownItem>
-            ))}
-          </CDropdownMenu>
-        </CDropdown>
-
-      
-
+     <CNavbar className="bg-body-tertiary picker-navbar">
+      <CFormInput
+        type="text"
+        placeholder="Search by Picker ID"
+        className="picker-input"
+        value={paramCode}
+        onChange={(e) => setParamCodeData(e.target.value)}
+      />
+      <Link to={`/picker/addpicker`} className="picker-link">
+        <CButton type="submit" color="success" variant="outline" className="picker-button">
+          Add Picker
+        </CButton>
+      </Link>
+      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
+        <CDropdownToggle>{selectedCity}</CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
+          <CDropdownItem onClick={() => city('Milan')}>Milan</CDropdownItem>
+          <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
+        </CDropdownMenu>
+      </CDropdown>
+      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
+        <CDropdownToggle>{selectedChain}</CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
+          {chainData.map((item, index) => (
+            <CDropdownItem onClick={() => chain(item.id, item.name)} key={index}>
+              {item.name}
+            </CDropdownItem>
+          ))}
+        </CDropdownMenu>
+      </CDropdown>
+      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
+        <CDropdownToggle>{selectedMarketGroup}</CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
+          {mGroupData.map((item, index) => (
+            <CDropdownItem onClick={() => marketGroup(item._id, item.name)} key={index}>
+              {item.name}
+            </CDropdownItem>
+          ))}
+        </CDropdownMenu>
+      </CDropdown>
     </CNavbar>
 
     {loading ? <CSpinner/> : <CTable>
       <CTableHead>
         <CTableRow>
+          <CTableHeaderCell scope="col">Id</CTableHeaderCell>
           <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
           <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
           <CTableHeaderCell scope="col">Email</CTableHeaderCell>
@@ -431,6 +442,7 @@ const Pickers = () => {
       <CTableBody>
        { pickerData.map((item, index) =>(
       <CTableRow key={index}>
+              <CTableDataCell>{item.code}</CTableDataCell>
               <CTableDataCell>{item.name}</CTableDataCell>
               <CTableDataCell>{item.surname}</CTableDataCell>
               <CTableDataCell>{item.email}</CTableDataCell>
