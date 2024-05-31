@@ -289,10 +289,10 @@ const DriverPayout = ()=>{
         </CTable>}
        
   
-        <CPagination aria-label="Page navigation example">
+        {/* <CPagination aria-label="Page navigation example">
           <CPaginationItem>Previous</CPaginationItem>
           <CPaginationItem>Next</CPaginationItem>
-        </CPagination>
+        </CPagination> */}
 
 
         <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>

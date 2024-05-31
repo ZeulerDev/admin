@@ -92,10 +92,10 @@ const Orders = () => {
 
       }
 
-      <CPagination aria-label="Page navigation example">
+      {/* <CPagination aria-label="Page navigation example">
         <CPaginationItem>Previous</CPaginationItem>
         <CPaginationItem>Next</CPaginationItem>
-      </CPagination>
+      </CPagination> */}
     </CContainer>
   )
 }

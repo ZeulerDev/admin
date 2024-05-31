@@ -57,11 +57,11 @@ const ProductList = () => {
   return (
     <CContainer>
       <CNavbar className="bg-body-tertiary">
-        <CForm>
+        {/* <CForm>
           <CButton type="submit" color="success" variant="outline">
             Search
           </CButton>
-        </CForm>
+        </CForm> */}
       </CNavbar>
 
       { loading ? <CSpinner/> : <CTable>
@@ -97,13 +97,13 @@ const ProductList = () => {
 
       }
 
-      <CPagination aria-label="Page navigation example">
+      {/* <CPagination aria-label="Page navigation example">
         <CPaginationItem>Previous</CPaginationItem>
         <CPaginationItem>1</CPaginationItem>
         <CPaginationItem>2</CPaginationItem>
         <CPaginationItem>3</CPaginationItem>
         <CPaginationItem>Next</CPaginationItem>
-      </CPagination>
+      </CPagination> */}
     </CContainer>
   )
 }
