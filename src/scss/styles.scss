@@ -1,0 +1,43 @@
+.picker-navbar {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+  
+    .picker-input {
+      flex: 1;
+      min-width: 150px;
+      margin: 5px;
+    }
+  
+    .picker-link {
+      margin: 5px;
+    }
+  
+    .picker-button {
+      width: 100%;
+    }
+  
+    .picker-dropdown {
+      flex: 1;
+      min-width: 150px;
+      margin: 5px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .picker-navbar {
+      flex-wrap: wrap;
+  
+      .picker-input,
+      .picker-link,
+      .picker-dropdown {
+        flex: 1 1 100%;
+        min-width: auto;
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+  }
+  

@@ -52,6 +52,7 @@ const Customer = () => {
   const [email, setEmail] = useState()
   const [phone, setPhone] = useState()
   const [searchQuery, setSearchQuery] = useState('');
+  const [isDisable, setIsDisable] = useState(true)
 
   useEffect(() => {
     if(user && token){
@@ -70,16 +71,11 @@ const Customer = () => {
           if (res.status === 200) {
             setCustomerData(res.data)
             setLoading(false)
-            if(moveNext){
-              const nextCount = count + res.data.length
-              setItemsPerPage(nextCount)
-            } else {
-              const nextCount = count - res.data.length
-              if(count < 0){
-                setItemsPerPage(0)
-              } else {
-                setItemsPerPage(nextCount)
-              }
+            if (res.data.length < 50) {
+              setIsDisable(true)
+              console.log("ok")
+            } else if (res.data.length > 49) {
+              setIsDisable(false)
             }
             
           } else if (res.status === 500) {
@@ -99,11 +95,16 @@ const Customer = () => {
   }
 
   const nextPage = () => {
-    loadData(itemsPerPage, true)
+    const c = itemsPerPage + 50
+    setItemsPerPage(c)
+    loadData(c, true)
   }
 
   const previousPage = () => {
-    loadData(itemsPerPage, false)
+    const c = itemsPerPage - 50
+    console.log(c)
+    setItemsPerPage(c)
+    loadData(c, false)
   }
 
   const handleToggle = (id) => {
@@ -304,8 +305,8 @@ const Customer = () => {
       }
 
       <CPagination aria-label="Page navigation example">
-        <CPaginationItem disabled={itemsPerPage <= 50 ? true : false} onClick={previousPage}>Previous</CPaginationItem>
-        <CPaginationItem onClick={nextPage}>Next</CPaginationItem>
+        <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>Previous</CPaginationItem>
+        <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
       </CPagination>
 
       <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
@@ -344,10 +345,6 @@ const Customer = () => {
           
         </CModalBody>
         <CModalFooter>
-        <CPagination aria-label="Page navigation example">
-            <CPaginationItem>Previous</CPaginationItem>
-            <CPaginationItem>Next</CPaginationItem>
-          </CPagination>
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>

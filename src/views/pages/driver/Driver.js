@@ -34,6 +34,7 @@ import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
+import '../../../scss/styles.scss'
 
 const Drivers = () => {
   const [visible, setVisible] = useState(false)
@@ -382,7 +383,51 @@ const Drivers = () => {
 
   return (
     <CContainer>
-      <CNavbar className="bg-body-tertiary">
+       <CNavbar className="bg-body-tertiary picker-navbar">
+      <CFormInput
+        type="text"
+        placeholder="Search by Driver ID"
+        className="picker-input"
+        value={paramCode}
+        onChange={(e) => setParamCodeData(e.target.value)}
+      />
+      <Link to={`/picker/addpicker`} className="picker-link">
+        <CButton type="submit" color="success" variant="outline" className="picker-button">
+          Add Picker
+        </CButton>
+      </Link>
+      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
+        <CDropdownToggle>{selectedCity}</CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
+          <CDropdownItem onClick={() => city('Milan')}>Milan</CDropdownItem>
+          <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
+        </CDropdownMenu>
+      </CDropdown>
+      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
+        <CDropdownToggle>{selectedChain}</CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
+          {chainData.map((item, index) => (
+            <CDropdownItem onClick={() => chain(item.id, item.name)} key={index}>
+              {item.name}
+            </CDropdownItem>
+          ))}
+        </CDropdownMenu>
+      </CDropdown>
+      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
+        <CDropdownToggle>{selectedMarketGroup}</CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
+          {mGroupData.map((item, index) => (
+            <CDropdownItem onClick={() => marketGroup(item._id, item.name)} key={index}>
+              {item.name}
+            </CDropdownItem>
+          ))}
+        </CDropdownMenu>
+      </CDropdown>
+    </CNavbar>
+      {/* <CNavbar className="bg-body-tertiary">
       <CFormInput  
          type ="text" 
          placeholder="Search by Rider ID" 
@@ -427,7 +472,7 @@ const Drivers = () => {
             ))}
           </CDropdownMenu>
         </CDropdown>
-      </CNavbar>
+      </CNavbar> */}
 
       {loading ? (
         <CSpinner />

@@ -87,6 +87,7 @@ const Batch = () => {
       duration: ' ',
       distance: ' '
   })
+  const [isDisable, setIsDisable] = useState(true)
   
   const mapRef = useRef(null);
 
@@ -108,16 +109,11 @@ const Batch = () => {
         if (res.status === 200) {
           setBatchesData(res.data)
           setLoading(false)
-          if (moveNext) {
-            const nextCount = count + res.data.length
-            setItemsPerPage(nextCount)
-          } else {
-            const nextCount = count - res.data.length
-            if (count < 0) {
-              setItemsPerPage(0)
-            } else {
-              setItemsPerPage(nextCount)
-            }
+          if (res.data.length < 50) {
+            setIsDisable(true)
+            console.log("ok")
+          } else if (res.data.length > 49) {
+            setIsDisable(false)
           }
         } else if (res.status === 204) {
           dispatch({
@@ -145,11 +141,16 @@ const Batch = () => {
   }
 
   const nextPage = () => {
-    loadData(itemsPerPage, true)
+    const c = itemsPerPage + 50
+    setItemsPerPage(c)
+    loadData(c, true)
   }
 
   const previousPage = () => {
-    loadData(itemsPerPage, false)
+    const c = itemsPerPage - 50
+    console.log(c)
+    setItemsPerPage(c)
+    loadData(c, false)
   }
 
   const handleToggle = (id) => {
@@ -780,10 +781,10 @@ const Batch = () => {
       )}
 
       <CPagination aria-label="Page navigation example">
-        <CPaginationItem disabled={itemsPerPage <= 50 ? true : false} onClick={previousPage}>
+        <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
           Previous
         </CPaginationItem>
-        <CPaginationItem onClick={nextPage}>Next</CPaginationItem>
+        <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
       </CPagination>
 
       <CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>

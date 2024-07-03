@@ -45,6 +45,7 @@ const GroceryList = () => {
   const [customerData, setCustomerData] = useState([])
   const [itemsData, setItemsData] = useState([])
   const [itemsPerPage, setItemsPerPage] = useState(0)
+  const [isDisable, setIsDisable] = useState(true)
 
   useEffect(() => {
     if (user && token) {
@@ -63,17 +64,13 @@ const GroceryList = () => {
       .then((res) => {
         if (res.status === 200) {
           setGroceryListData(res.data)
+          console.log(res.data)
           setLoading(false)
-          if (moveNext) {
-            const nextCount = count + res.data.length
-            setItemsPerPage(nextCount)
-          } else {
-            const nextCount = count - res.data.length
-            if (count < 0) {
-              setItemsPerPage(0)
-            } else {
-              setItemsPerPage(nextCount)
-            }
+          if (res.data.length < 50) {
+            setIsDisable(true)
+            console.log("ok")
+          } else if (res.data.length > 49) {
+            setIsDisable(false)
           }
         } else if (res.status === 204) {
           dispatch({
@@ -101,11 +98,17 @@ const GroceryList = () => {
   }
 
   const nextPage = () => {
-    loadData(itemsPerPage, true)
+    console.log(itemsPerPage)
+    const c = itemsPerPage + 50
+    setItemsPerPage(c)
+    loadData(c, true)
   }
 
   const previousPage = () => {
-    loadData(itemsPerPage, false)
+    const c = itemsPerPage - 50
+    console.log(c)
+    setItemsPerPage(c)
+    loadData(c, false)
   }
 
   const handleToggle = (items) => {
@@ -147,7 +150,7 @@ const GroceryList = () => {
             {groceryListData.map((item) => (
               <CTableRow key={item.id}>
                 <CTableDataCell>#</CTableDataCell>
-                <CTableDataCell>{item.name}</CTableDataCell>
+                <CTableDataCell>{item.name? item.name : ""}</CTableDataCell>
                 <CTableDataCell>{item.data}</CTableDataCell>
                 <CTableDataCell>{item.type}</CTableDataCell>
                 <CTableDataCell>{item.address}</CTableDataCell>
@@ -186,10 +189,10 @@ const GroceryList = () => {
       )}
 
       <CPagination aria-label="Page navigation example">
-        <CPaginationItem disabled={itemsPerPage <= 50 ? true : false} onClick={previousPage}>
+        <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
           Previous
         </CPaginationItem>
-        <CPaginationItem onClick={nextPage}>Next</CPaginationItem>
+        <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
       </CPagination>
 
       <CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>

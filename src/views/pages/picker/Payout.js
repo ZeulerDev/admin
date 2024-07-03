@@ -208,7 +208,15 @@ const Payout = ()=>{
 
         <CContainer>
         <CNavbar className="bg-body-tertiary">
-        <CDropdown style={{ marginLeft: '63%', width:'10%',backgroundColor: '#ff4d4d'  }}>
+        <CFormInput  
+         type ="text" 
+         placeholder="Search By No" 
+         style={{ width : 200, marginLeft: '1%' }}
+         value={searchQuery}
+         onChange={(e) => setSearchQuery(e.target.value)}
+       
+         />
+        <CDropdown style={{ marginLeft: '65%', width:'10%',backgroundColor: '#ff4d4d'  }}>
           <CDropdownToggle  >{statusData}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => status('all')}>All</CDropdownItem>
@@ -219,14 +227,7 @@ const Payout = ()=>{
             <CDropdownItem onClick={() => status('done')}>Done</CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
-        <CFormInput  
-         type ="text" 
-         placeholder="Search By No" 
-         style={{ width : 250, marginRight: '2%' }}
-         value={searchQuery}
-         onChange={(e) => setSearchQuery(e.target.value)}
-       
-         />
+        <br></br>
         </CNavbar>
   
         {loading ? <CSpinner/> : <CTable>

@@ -71,7 +71,7 @@ const GroupOfOrders = () => {
   const [groceryIdData, setGroceryIdData] = useState('')
   const [visible, setVisible] = useState(false)
   const [selectedDates, setSelectedDates] = useState([])
- 
+  const [isDisable, setIsDisable] = useState(true)
 
   useEffect(() => {
     if (user && token) {
@@ -94,16 +94,11 @@ const GroupOfOrders = () => {
         if (res.status === 200) {
           setGroceryGroupsData(res.data)
           setLoading(false)
-          if (moveNext) {
-            const nextCount = count + res.data.length
-            setItemsPerPage(nextCount)
-          } else {
-            const nextCount = count - res.data.length
-            if (count < 0) {
-              setItemsPerPage(0)
-            } else {
-              setItemsPerPage(nextCount)
-            }
+          if (res.data.length < 50) {
+            setIsDisable(true)
+            console.log("ok")
+          } else if (res.data.length > 49) {
+            setIsDisable(false)
           }
         } else if (res.status === 204) {
           dispatch({
@@ -131,11 +126,18 @@ const GroupOfOrders = () => {
   }
 
   const nextPage = () => {
-    loadData(itemsPerPage, true)
+    console.log(itemsPerPage)
+    const c = itemsPerPage + 50
+    console.log(c)
+    setItemsPerPage(c)
+    loadData(c, true)
   }
 
   const previousPage = () => {
-    loadData(itemsPerPage, false)
+    const c = itemsPerPage - 50
+    console.log(c)
+    setItemsPerPage(c)
+    loadData(c, false)
   }
 
   const handleToggleBonus = (id, bonus = null) => {
@@ -666,7 +668,7 @@ const GroupOfOrders = () => {
         <CPaginationItem disabled={itemsPerPage <= 50 ? true : false} onClick={previousPage}>
           Previous
         </CPaginationItem>
-        <CPaginationItem onClick={nextPage}>Next</CPaginationItem>
+        <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
       </CPagination>
 
       <CModal

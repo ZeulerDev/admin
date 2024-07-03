@@ -33,6 +33,7 @@ import { PDFViewer } from '@react-pdf/renderer'
 import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrationPDF'
 import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
 import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
+import '../../../scss/styles.scss'
 
 const DriverPayout = ()=>{
 
@@ -206,6 +207,14 @@ const DriverPayout = ()=>{
 
         <CContainer>
         <CNavbar className="bg-body-tertiary">
+        <CFormInput  
+         type ="text" 
+         placeholder="Search by No" 
+         style={{ width : 200, marginLeft: '2%' }}
+         value={searchQuery}
+         onChange={(e) => setSearchQuery(e.target.value)}
+       
+         />
         <CDropdown style={{ marginLeft: '63%', width:'10%',backgroundColor: '#ff4d4d'  }}>
           <CDropdownToggle  >{statusData}</CDropdownToggle>
           <CDropdownMenu>
@@ -217,14 +226,7 @@ const DriverPayout = ()=>{
             <CDropdownItem onClick={() => status('done')}>Done</CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
-        <CFormInput  
-         type ="text" 
-         placeholder="Search" 
-         style={{ width : 250, marginRight: '2%' }}
-         value={searchQuery}
-         onChange={(e) => setSearchQuery(e.target.value)}
-       
-         />
+       <br></br>
         </CNavbar>
   
         {loading ? <CSpinner/> : <CTable>

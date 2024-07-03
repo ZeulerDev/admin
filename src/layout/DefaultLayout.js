@@ -16,7 +16,7 @@ const DefaultLayout = () => {
       // localStorage.removeItem('userData');
       console.log("called")
       const initialValue = JSON.parse(userDataString)
-      console.log(initialValue)
+      // console.log(initialValue)
       const BrowserToken = initialValue.code
       axios.post('http://localhost:8003/assistant/browsed/login', initialValue).then((res) => {
         if (res.status === 200) {

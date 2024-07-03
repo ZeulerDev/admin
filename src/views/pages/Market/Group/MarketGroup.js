@@ -70,18 +70,6 @@ const MarketGroup = () => {
           } else if (res.data.length > 19) {
             setIsDisable(false)
           }
-
-          if (moveNext) {
-            const nextCount = count + res.data.length
-            setItemsPerPage(nextCount)
-          } else {
-            const nextCount = count - res.data.length
-            if (count < 0) {
-              setItemsPerPage(0)
-            } else {
-              setItemsPerPage(nextCount)
-            }
-          }
         } else if (res.status === 500) {
           dispatch({
             type : SET_ALERT,
@@ -98,11 +86,16 @@ const MarketGroup = () => {
   }
 
   const nextPage = () => {
-    loadData(itemsPerPage, true)
+    const c = itemsPerPage + 20
+    setItemsPerPage(c)
+    loadData(c, true)
   }
 
   const previousPage = () => {
-    loadData(itemsPerPage, false)
+    const c = itemsPerPage - 20
+    console.log(c)
+    setItemsPerPage(c)
+    loadData(c, false)
   }
 
   const deleteMarketGroup =(id)=>{
@@ -227,7 +220,7 @@ const MarketGroup = () => {
      }
 
       <CPagination aria-label="Page navigation example">
-        <CPaginationItem disabled={itemsPerPage <= 20 ? true : false} onClick={previousPage}>
+        <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
           Previous
         </CPaginationItem>
         <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>
