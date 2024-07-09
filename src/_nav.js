@@ -13,6 +13,7 @@ import {
   cilGarage,
   cilHandPointDown,
   cilInbox,
+  cilList,
   cilNotes,
   cilPencil,
   cilPeople,
@@ -163,6 +164,25 @@ const _nav = [
       //   name: 'GroupManagement',
       //   to: '/driver/groupmanagement',
       // },
+    ],
+  }
+  ,
+  {
+    component: CNavGroup,
+    name: 'List',
+    to: '/order',
+    icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Create Pick Area',
+        to: '/list/pickerarea',
+      },
+      {
+        component: CNavItem,
+        name: 'View Pick Areas',
+        to: '/list/view',
+      },
     ],
   },
   // {

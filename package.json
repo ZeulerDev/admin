@@ -32,6 +32,7 @@
     "react-cookie": "^7.1.4",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
+    "react-leaflet-draw": "^0.20.4",
     "react-leaflet-routing-machine": "^0.0.5",
     "react-paginate": "^8.2.0",
     "react-pdf": "^7.7.1",
