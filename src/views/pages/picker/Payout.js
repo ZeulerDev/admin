@@ -50,13 +50,13 @@ const Payout = ()=>{
     const [payoutId, setPayoutId] = useState('')
 
 
-    // useEffect(() => {
-    //   console.log('Payout with')
-    //    if(user && token){
-    //     console.log('Payout with user')
-    //     loadData()
-    //    } 
-    // },[statusParam,searchQuery])
+    useEffect(() => {
+      console.log('Payout with')
+       if(user && token){
+        console.log('Payout with user')
+        loadData()
+       } 
+    },[statusParam,searchQuery])
 
     useEffect(() => {
       console.log('just call in effect')
