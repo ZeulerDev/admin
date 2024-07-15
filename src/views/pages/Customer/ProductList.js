@@ -17,6 +17,7 @@ import {
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
+import { BASE_URL } from '../../../context/config'
 
 const ProductList = () => {
   const { id } = useParams()
@@ -29,7 +30,7 @@ const ProductList = () => {
     if (token) {
       setLoading(true)
       axios
-        .get('http://localhost:8003/assistant/products/list/' + id, {
+        .get(BASE_URL+'assistant/products/list/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

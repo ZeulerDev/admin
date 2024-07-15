@@ -20,6 +20,7 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
 import { SET_ALERT, SET_CONTEXT_USER } from '../../../context/context_reducer'
+import { BASE_URL } from '../../../context/config'
 
 
 const Login = () => {
@@ -41,7 +42,7 @@ const Login = () => {
 
 
       axios
-        .post('http://localhost:8003/assistant/login', data)
+        .post(BASE_URL+'assistant/login', data)
         .then((res) => {
           if (res.status === 200) {
             const browserCookies = {
@@ -102,7 +103,7 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <div>
                     <h1>Login</h1>
                     <p className="text-body-secondary">Sign In to your account</p>
                     <CInputGroup className="mb-3">
@@ -140,7 +141,7 @@ const Login = () => {
                         </CButton>
                       </CCol> */}
                     </CRow>
-                  </CForm>
+                  </div>
                 </CCardBody>
               </CCard>
               {/* <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>

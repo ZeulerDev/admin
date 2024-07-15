@@ -9,6 +9,7 @@ import { useAppContext } from '../../../context/AppContext';
 import CIcon from '@coreui/icons-react';
 import { cilInfo } from '@coreui/icons';
 import { SET_ALERT } from '../../../context/context_reducer';
+import { BASE_URL } from '../../../context/config';
 
 function MapComponent() {
   const featureGroupRef = useRef(null);
@@ -43,7 +44,7 @@ function MapComponent() {
 
     if(user && token){
       axios
-        .post('http://localhost:8003/pickup/area/create', formData, {
+        .post(BASE_URL+'pickup/area/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -97,7 +98,7 @@ function MapComponent() {
   useEffect(() => {
     if (user && token) {
       axios
-        .get(`http://localhost:8003/assistant/markets/groups/locations/pickup/${paramMapCity}`, {
+        .get(BASE_URL+`assistant/markets/groups/locations/pickup/${paramMapCity}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

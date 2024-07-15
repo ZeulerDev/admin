@@ -35,6 +35,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
 import '../../../scss/styles.scss'
+import { BASE_URL } from '../../../context/config'
 
 const Drivers = () => {
   const [visible, setVisible] = useState(false)
@@ -76,7 +77,7 @@ const Drivers = () => {
   const loadMakerGroup = () => {
     if (token) {
       axios
-        .get('http://localhost:8003/market/groups/dropdown/fetch', {
+        .get(BASE_URL+'market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -104,7 +105,7 @@ const Drivers = () => {
   const loadChain = () => {
     if (token) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get(BASE_URL+'assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -137,7 +138,7 @@ const Drivers = () => {
   const loadDriversData = () => {
     if (user && token) {
       setLoading(true)
-      let url = `http://localhost:8003/assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
+      let url = BASE_URL+`assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
     
       if (paramCode) {
         url += `&code=${paramCode}`
@@ -219,7 +220,7 @@ const Drivers = () => {
 
     if (user && token) {
       axios
-        .patch('http://localhost:8003/assistant/rider/status/' + driverId, data, {
+        .patch(BASE_URL+'assistant/rider/status/' + driverId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -307,7 +308,7 @@ const Drivers = () => {
       if(user,token){
           if(user && token){
               axios
-                .patch('http://localhost:8003/assistant/rider/update/'+id, formData, {
+                .patch(BASE_URL+'assistant/rider/update/'+id, formData, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },

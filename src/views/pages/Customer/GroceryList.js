@@ -9,7 +9,6 @@ import {
   CTableDataCell,
   CButton,
   CNavbar,
-  CForm,
   CPagination,
   CPaginationItem,
   CSpinner,
@@ -17,6 +16,7 @@ import {
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
+import { BASE_URL } from '../../../context/config'
 
 const Orders = () => {
   const { id } = useParams()
@@ -29,7 +29,7 @@ const Orders = () => {
     if (token) {
       setLoading(true)
       axios
-        .get('http://localhost:8003/assistant/list/customer/' + id, {
+        .get(BASE_URL+'assistant/list/customer/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

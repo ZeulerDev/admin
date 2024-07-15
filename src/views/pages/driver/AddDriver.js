@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../../context/AppContext'
 import { cibDotNet } from '@coreui/icons'
 import { SET_ALERT } from '../../../context/context_reducer'
+import { BASE_URL } from '../../../context/config'
 
 
 const CreateDriver = ()=>{
@@ -54,7 +55,7 @@ const CreateDriver = ()=>{
         if(user,token){
             if(user && token){
                 axios
-                  .post('http://localhost:8003/rider/create', formData, {
+                  .post(BASE_URL+'rider/create', formData, {
                     headers: {
                       Authorization: `Bearer ${token}`,
                     },

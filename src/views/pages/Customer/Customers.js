@@ -14,7 +14,6 @@ import {
   CModalBody,
   CModalFooter,
   CNavbar,
-  CForm,
   CPagination,
   CPaginationItem,
   CCardImage,
@@ -34,6 +33,7 @@ import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
 import { SET_ALERT, SET_TOKEN } from '../../../context/context_reducer'
 import CIcon from '@coreui/icons-react'
+import { BASE_URL } from '../../../context/config'
 
 
 const Customer = () => {
@@ -62,7 +62,7 @@ const Customer = () => {
 
   const loadData = (count, moveNext) => {
     setLoading(true)
-    axios.get('http://localhost:8003/assistant/customers/' + count+'?email='+searchQuery, {
+    axios.get(BASE_URL+'assistant/customers/' + count+'?email='+searchQuery, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -113,7 +113,7 @@ const Customer = () => {
     if (token) {
       setLoading(true)
       axios
-        .get('http://localhost:8003/assistant/addresses/customer/' + id, {
+        .get(BASE_URL+'assistant/addresses/customer/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -163,7 +163,7 @@ const Customer = () => {
       if(user,token){
           if(user && token){
               axios
-                .patch('http://localhost:8003/assistant/customers/update/'+id, formData, {
+                .patch(BASE_URL+'assistant/customers/update/'+id, formData, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },
@@ -358,7 +358,7 @@ const Customer = () => {
           <CModalTitle>Edit Customer Information</CModalTitle>
         </CModalHeader>
         <CModalBody>
-        <CForm className="row g-3" onSubmit={handleSubmit} >
+        <div className="row g-3">
           <CCol md={6}>
             <CFormInput
               id="name"
@@ -393,11 +393,11 @@ const Customer = () => {
         </CCol>
   
         <CCol xs={12}>
-            <CButton color="warning" type="submit" style={{ marginBottom:'3%', width:'200px' }}>
+            <CButton color="warning" type="submit" style={{ marginBottom:'3%', width:'200px' }} onClick={()=>handleSubmit()}>
               Update Customer
             </CButton>
           </CCol>
-        </CForm>
+        </div>
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setVisibleCustomer(false)}>

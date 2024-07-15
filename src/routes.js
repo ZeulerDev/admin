@@ -1,5 +1,7 @@
 import React from 'react'
 
+const Products = React.lazy(()=>import('./views/pages/products/Products'))
+
 const PickerArea = React.lazy(()=>import('./views/pages/list/CreatePickArea'))
 const PickerAreas = React.lazy(()=>import('./views/pages/list/PickupAreas'))
 
@@ -93,6 +95,7 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
+  { path: '/products', name: 'Products ', element: Products },
   { path: '/list/view', name: 'Picker Areas ', element: PickerAreas },
   { path: '/list/pickerarea', name: 'Picker Area ', element: PickerArea },
   { path: '/list', name: 'List', element: PickerAreas,exact: true },

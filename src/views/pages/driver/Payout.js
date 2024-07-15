@@ -34,6 +34,7 @@ import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrat
 import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
 import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
 import '../../../scss/styles.scss'
+import { BASE_URL } from '../../../context/config'
 
 const DriverPayout = ()=>{
 
@@ -58,7 +59,7 @@ const DriverPayout = ()=>{
 
     const loadData  = () => {
       setLoading(true)
-      axios.get(`http://localhost:8003/assistant/drivers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
+      axios.get(BASE_URL+`assistant/drivers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
             headers:{
                 Authorization: `Bearer ${token}`,
             },
@@ -134,7 +135,7 @@ const DriverPayout = ()=>{
 
     if(user && token){
        axios
-        .patch('http://localhost:8003/assistant/payout/change/'+payoutId, data, {
+        .patch(BASE_URL+'assistant/payout/change/'+payoutId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

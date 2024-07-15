@@ -9,7 +9,6 @@ import {
   CTableDataCell,
   CButton,
   CNavbar,
-  CForm,
   CPagination,
   CPaginationItem,
   CSpinner,

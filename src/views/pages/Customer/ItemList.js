@@ -20,11 +20,9 @@ const ItemList = ()=>{
 
         <CContainer>
         <CNavbar className="bg-body-tertiary">
-          <CForm>
             <CButton type="submit" color="success" variant="outline">
               Search
             </CButton>
-          </CForm>
         </CNavbar>
   
         <CTable>

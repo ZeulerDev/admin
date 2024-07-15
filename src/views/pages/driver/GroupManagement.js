@@ -31,6 +31,7 @@ import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
+import { BASE_URL } from '../../../context/config'
 
 const GroupManagement = () => {
   const [visible, setVisible] = useState(false)
@@ -69,7 +70,7 @@ const GroupManagement = () => {
   const loadMakerGroup = () => {
     if (token) {
       axios
-        .get('http://localhost:8003/market/groups/dropdown/fetch', {
+        .get(BASE_URL+'market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -97,7 +98,7 @@ const GroupManagement = () => {
   const loadChain = () => {
     if (token) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get(BASE_URL+'assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -132,7 +133,7 @@ const GroupManagement = () => {
       setLoading(true)
       axios
         .get(
-          `http://localhost:8003/assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
+          BASE_URL+`assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -222,7 +223,7 @@ const GroupManagement = () => {
 
     if (user && token) {
       axios
-        .patch('http://localhost:8003/assistant/rider/status/' + driverId, data, {
+        .patch(BASE_URL+'assistant/rider/status/' + driverId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -289,7 +290,7 @@ const GroupManagement = () => {
   const loadModalMarketGroupData = (count, moveNext) => {
     setLoadingModal(true)
     axios
-      .get(`http://localhost:8003/market/groups/fetch/${count}?city=${paramCityModal}`, {
+      .get(BASE_URL+`market/groups/fetch/${count}?city=${paramCityModal}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -355,7 +356,7 @@ const GroupManagement = () => {
 
       if(user,token){
           if(user && token){
-            axios.put('http://localhost:8003/assistant/groups/rider/assign', formData, {
+            axios.put(BASE_URL+'assistant/groups/rider/assign', formData, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -366,6 +367,7 @@ const GroupManagement = () => {
                     setDriverIdModal('')
                     setDriverGroupData([])
                     console.log(res.data)
+                    loadMakerGroup()
                     // const updatedEntity = res.data
                     // const list = driverData.map((ob) => {
                     //  if(ob.id === updatedEntity.id){
@@ -429,7 +431,7 @@ const GroupManagement = () => {
 
       if(user,token){
           if(user && token){
-            axios.put('http://localhost:8003/assistant/groups/rider/remove', formData, {
+            axios.put(BASE_URL+'assistant/groups/rider/remove', formData, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -439,7 +441,7 @@ const GroupManagement = () => {
                     setVisible(false)
                     setDriverIdModal('')
                     setDriverGroupData([])
-
+                    loadMakerGroup()
                     // const updatedEntity = res.data
                     // const list = driverData.map((ob) => {
                     //  if(ob.id === updatedEntity.id){
