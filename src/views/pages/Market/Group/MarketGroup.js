@@ -202,7 +202,7 @@ const MarketGroup = () => {
               <CTableDataCell>{item.city}</CTableDataCell>
               <CTableDataCell>
                 <Link to={`/marketgroups/marketdistance/${item._id}`}>
-                <CButton size='sm' color="info" variant="outline" style={{ marginLeft: '5px' }}>
+                <CButton size='sm' style={{backgroundColor: '#ff4d4d',marginLeft: '5px'}}>
                    view
                 </CButton>
                 </Link>
