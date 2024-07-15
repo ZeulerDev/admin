@@ -62,11 +62,11 @@ const Payout = ()=>{
       console.log('just call in effect')
     }, [])
 
-    return (
-      <CContainer> 
-        <h1>Just Call</h1>
-      </CContainer>
-    )
+    // return (
+    //   <CContainer> 
+    //     <h1>Just Call</h1>
+    //   </CContainer>
+    // )
 
     const loadData =()=>{
       setLoading(true)
@@ -291,12 +291,12 @@ const Payout = ()=>{
                       <CTableDataCell>{item.tips}</CTableDataCell>
                       <CTableDataCell>{item.payable}</CTableDataCell>
                       {/* <CTableDataCell>{item.status === 'pending' ? <CBadge style={{ width:60, backgroundColor:'#ff4d4d' }}>Pending</CBadge> : item.status === 'sent' ? <CButton style={{ width:90, backgroundColor:'#ff4d4d' }}>Received</CButton>: item.status === 'ready ' ? <CButton  style={{ width:90, backgroundColor:'#ff4d4d' }}>To Pay</CButton>: item.status === 'waiting  ' ? <CButton  style={{ width:90, backgroundColor:'#ff4d4d' }}>Received</CButton>: <CBadge style={{ width:60, backgroundColor:'#ff4d4d' }} >Done</CBadge>}</CTableDataCell> */}
-                      <CTableDataCell>
+                      {/* <CTableDataCell>
                         {item?.status === 'waiting' && <CButton onClick={() => handleConfirmationToggle(item.id,item.status)} size='sm' color={color} style={{ width:90 }}>Received</CButton>}
                         {item?.status === 'sent' && <CButton size='sm' onClick={() => handleConfirmationToggle(item.id,item.status)} color={color} style={{ width:90 }}>Received</CButton>}
                         {item?.status === 'ready' && <CButton size='sm' onClick={() => handleConfirmationToggle(item.id,item.status)} color={color} style={{ width:90 }}>To Pay</CButton>}
                       </CTableDataCell>
-                      <CTableDataCell><CButton  size='sm' style={{ backgroundColor:'#ff4d4d', width:80 }} onClick={() => handleToggle(item.type, item)} >View</CButton> </CTableDataCell>
+                      <CTableDataCell><CButton  size='sm' style={{ backgroundColor:'#ff4d4d', width:80 }} onClick={() => handleToggle(item.type, item)} >View</CButton> </CTableDataCell> */}
                       {/* <CTableDataCell>{item.type === 'flat_rate' ? <CButton style={{ backgroundColor:'#ff4d4d' }} onClick={() => handleToggle(item.type, item)} >View</CButton> : item.type === 'occasional' ? <CButton style={{ backgroundColor:'#ff4d4d' }}>View</CButton> : <CButton disabled={true} style={{ backgroundColor:'#ff4d4d' }}>View</CButton>}</CTableDataCell> */}
                     </CTableRow>
                   )
@@ -311,7 +311,7 @@ const Payout = ()=>{
         </CPagination> */}
 
 
-        <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
+        {/* <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
           <CModalTitle>Information</CModalTitle>
         </CModalHeader>
@@ -340,7 +340,7 @@ const Payout = ()=>{
             Yes
           </CButton>
          </CModalBody>
-      </CModal>
+      </CModal> */}
 
 
 
