@@ -18,12 +18,17 @@ import {
   CDropdownItem,
   CFormCheck,
   CSpinner,
+  CBadge,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
 } from '@coreui/react'
 import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
-import { cilBasket, cilDelete } from '@coreui/icons'
+import { cilBasket, cilDelete, cilTrash } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
 import { BASE_URL } from '../../../context/config'
@@ -41,6 +46,8 @@ const Market = () => {
   const [loading, setLoading] = useState(false)
   const [isDisable, setIsDisable] = useState(true)
   const navigate = useNavigate()
+  const [visible, setVisible] = useState(false)
+  const [mId, setMId] = useState('')
 
   useEffect(() => {
     if (token) {
@@ -293,6 +300,11 @@ const Market = () => {
 
   }
 
+  const handleToggle = (id) => {
+    setVisible(!visible)
+    setMId(id)
+  }
+
   const deleteMarket =(id)=>{
     console.log(id)
     axios
@@ -315,6 +327,7 @@ const Market = () => {
               color : 'success'
             }
           })
+          setVisible(false)
           loadData(0, true)
          console.log('Remove Market')
 
@@ -346,24 +359,23 @@ const Market = () => {
 
   return (
     <CContainer>
-      <CNavbar className="bg-body-tertiary">
-        <Link to={`/markets/addmarket`}>
-          <CButton color="success" variant="outline" style={{ marginLeft: '3%',width:'200px' }}>
+      <Link to={`/markets/addmarket`}>
+          <CButton  style={{ marginLeft: '0%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
             Add New Market
           </CButton>
         </Link>
-
-        <CDropdown style={{ marginLeft: '55%', width:'10%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle >{selectedCity}</CDropdownToggle>
-          <CDropdownMenu>
+        <CBadge style={{ marginLeft: '39.5%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+          <CDropdownToggle style={{color:'white'}}>{selectedCity}</CDropdownToggle>
+          <CDropdownMenu >
             <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
             <CDropdownItem onClick={() => city('Milano')}>Milano</CDropdownItem>
             <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
 
-        <CDropdown style={{ marginRight: '1%', width:'15%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle >{selectedChain}</CDropdownToggle>
+        <CDropdown style={{ marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d' }}>
+          <CDropdownToggle style={{color:'white'}}>{selectedChain}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
             {chainData.map((item, index) => (
@@ -373,11 +385,13 @@ const Market = () => {
             ))}
           </CDropdownMenu>
         </CDropdown>
+        <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
       </CNavbar>
 
       { loading ? <CSpinner/> : <CTable>
         <CTableHead>
           <CTableRow>
+            <CTableHeaderCell scope="col">#</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Address</CTableHeaderCell>
             <CTableHeaderCell scope="col">City</CTableHeaderCell>
@@ -390,6 +404,7 @@ const Market = () => {
         <CTableBody>
           {chainMarket.map((item, index) => (
             <CTableRow key={index}>
+              <CTableDataCell>{index + 1}</CTableDataCell>
               <CTableDataCell>{item.chain.name}</CTableDataCell>
               <CTableDataCell>{item.address}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
@@ -427,8 +442,8 @@ const Market = () => {
               </CTableDataCell>
               <CTableDataCell>{item.scraped}</CTableDataCell>
               <CTableDataCell>
-              <CButton size='sm' style={{backgroundColor: '#ff4d4d'}} variant="outline" onClick={() => deleteMarket(item._id)}>
-                   Remove
+              <CButton size='sm' style={{backgroundColor: '#ff4d4d'}} variant="outline" onClick={() => handleToggle(item._id)}>
+              <CIcon icon={cilTrash} size='lg' style={{color:'white'}}/>
                 </CButton>
               </CTableDataCell>
             </CTableRow>
@@ -444,6 +459,21 @@ const Market = () => {
         </CPaginationItem>
         <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
       </CPagination>
+
+      
+      <CModal alignment="center" visible={visible} scrollable size='sm' onClose={() => setVisible(false)}>
+        <CModalHeader closeButton={false}>
+          <CModalTitle>Confirmation</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+        <a>Are you sure you want to delete this market?</a><br></br><br></br>
+        <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton onClick={() => deleteMarket(mId)} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setVisible(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
+     
+        </CModalBody>
+      </CModal>
     </CContainer>
   )
 }

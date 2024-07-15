@@ -224,6 +224,15 @@ const Batch = () => {
               }
 
               setBatchesData([...batchesData])
+              dispatch({
+                type : SET_ALERT,
+                payload : {
+                  status : true,
+                  title : 'Bonus Update',
+                  message : 'Bonus Update Success',
+                  color:'success'
+                }
+              })
               
             } else if (res.status === 203) {
                 console.log("203")
@@ -461,6 +470,15 @@ const Batch = () => {
             }
 
             setBatchesData([...batchesData])
+            loadData(0, true)
+            dispatch({
+              type : SET_ALERT,
+              payload : {
+                status : true,
+                title : 'Rider Assign',
+                message : 'Rider assign update success',
+              }
+            })
             
           } else if (res.status === 203) {
               console.log("203")
@@ -696,9 +714,9 @@ const Batch = () => {
   
   return (
     <CContainer>
-      <CNavbar className="bg-body-tertiary">
-      <CDropdown style={{ marginLeft: '89%', width:'10%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle  >{selectedStatus}</CDropdownToggle>
+       <CBadge style={{ marginLeft: '75.5%'}} color="secondary">Filter by</CBadge>
+      <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+          <CDropdownToggle style={{color:'white'}} >{selectedStatus}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => groceryStatus('all')}>All Status</CDropdownItem>
             <CDropdownItem onClick={() => groceryStatus('created')}>Created</CDropdownItem>
@@ -714,6 +732,8 @@ const Batch = () => {
             <CDropdownItem onClick={() => groceryStatus('delivery ')}>Delivery </CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
+      <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
+
       </CNavbar>
 
       {loading ? (
@@ -737,7 +757,7 @@ const Batch = () => {
               <CTableHeaderCell scope="col">Market</CTableHeaderCell>
               <CTableHeaderCell scope="col">Orders</CTableHeaderCell>
               <CTableHeaderCell scope="col">Map</CTableHeaderCell>
-              <CTableHeaderCell scope="col"></CTableHeaderCell>
+              <CTableHeaderCell scope="col">Batch</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
@@ -753,7 +773,7 @@ const Batch = () => {
                 <CTableDataCell>{item.fee}</CTableDataCell>
                 <CTableDataCell>{item.start}</CTableDataCell>
                 <CTableDataCell>{item.end}</CTableDataCell>
-                <CTableDataCell>{item.accepted ? <CButton onClick={() => handleRiderToggle(item.id,item.status)} size="sm" style={{ width:80 }} color="danger">View</CButton> : <CButton onClick={() => handleToggleRiders(item.accepted,item.status,item.id)} size="sm" style={{ width:80 }} color="danger">Add</CButton>}</CTableDataCell>
+                <CTableDataCell>{item.accepted ? <CButton onClick={() => handleRiderToggle(item.id,item.status)} size="sm" style={{ width:80,backgroundColor:'#ff4d4d',color:'white' }}>View</CButton> : <CButton onClick={() => handleToggleRiders(item.accepted,item.status,item.id)} size="sm" style={{ width:80,backgroundColor:'#ff4d4d',color:'white' }} >Add</CButton>}</CTableDataCell>
                 <CTableDataCell>
                   <Link>
                     <CIcon icon={cilInfo} size="xl" onClick={() => handleToggle(item.id)} />
@@ -774,7 +794,7 @@ const Batch = () => {
                     <CIcon icon={cilMap} size="xl" onClick={() => handleMap(item.id,item.duration,item.distance)}/>
                   </Link>
                 </CTableDataCell>
-                <CTableDataCell>{item.status === 'complete' ? <CButton  size="sm" disabled={true} style={{ width:80 }} color="danger">Cancel</CButton> : item.status === 'canceled' ? <CButton  size="sm" disabled={true} style={{ width:80 }} color="danger">Cancel</CButton> : <CButton onClick={() => handleToggleStatus(item.id)} size="sm" style={{ width:80 }} color="danger">Cancel</CButton>}</CTableDataCell>
+                <CTableDataCell>{item.status === 'complete' ? <CButton  size="sm" disabled={true} style={{ width:80 }}>Cancel</CButton> : item.status === 'canceled' ? <CButton  size="sm" disabled={true} style={{ width:80,backgroundColor:'#ff4d4d',color:'white' }} color="danger">Cancel</CButton> : <CButton onClick={() => handleToggleStatus(item.id)} size="sm" style={{ width:80,backgroundColor:'#ff4d4d',color:'white' }}>Cancel</CButton>}</CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>
@@ -834,9 +854,9 @@ const Batch = () => {
           )}
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
-          </CButton>
+          </CButton> */}
         </CModalFooter>
       </CModal>
 
@@ -853,10 +873,10 @@ const Batch = () => {
          onChange={(e) => setBonus(e.target.value)} />
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisibleBonus(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisibleBonus(false)}>
             Close
-          </CButton>
-          <CButton color="primary" onClick={() => handleUpdate()}>Save changes</CButton>
+          </CButton> */}
+          <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => handleUpdate()}>Save changes</CButton>
         </CModalFooter>
       </CModal>
 
@@ -912,21 +932,22 @@ const Batch = () => {
        
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisibleMap(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisibleMap(false)}>
             Close
-          </CButton>
+          </CButton> */}
         </CModalFooter>
       </CModal>
 
 
       <CModal alignment="center" visible={visibleAllRiders} scrollable size='xl' onClose={() => setVisibleAllRiders(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Confirmation</CModalTitle>
+          <CModalTitle>Rider Assign to the Batch</CModalTitle>
         </CModalHeader>
         <CModalBody>
-        <CNavbar className="bg-body-tertiary">
-        <CDropdown style={{ marginLeft: '43%', width: '10%', backgroundColor: '#ff4d4d' }}>
-          <CDropdownToggle>{selectedCity}</CDropdownToggle>
+
+        <CBadge style={{ marginLeft: '37%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+          <CDropdownToggle style={{color:'white'}}>{selectedCity}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
             <CDropdownItem onClick={() => city('Milan')}>Milan</CDropdownItem>
@@ -934,8 +955,8 @@ const Batch = () => {
           </CDropdownMenu>
         </CDropdown>
 
-        <CDropdown style={{ marginRight: '0%', width: '15%', backgroundColor: '#ff4d4d' }}>
-          <CDropdownToggle>{selectedChain}</CDropdownToggle>
+        <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+          <CDropdownToggle style={{color:'white'}}>{selectedChain}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
             {chainData.map((item, index) => (
@@ -946,8 +967,8 @@ const Batch = () => {
           </CDropdownMenu>
         </CDropdown>
 
-        <CDropdown style={{ marginRight: '1%', width: '30%', backgroundColor: '#ff4d4d' }}>
-          <CDropdownToggle>{selectedMarketGroup}</CDropdownToggle>
+        <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+          <CDropdownToggle style={{color:'white'}}>{selectedMarketGroup}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
             {mGroupData.map((item, index) => (
@@ -957,6 +978,9 @@ const Batch = () => {
             ))}
           </CDropdownMenu>
         </CDropdown>
+
+        <CNavbar style={{marginTop:'1%'}}  className="bg-body-tertiary">
+
         </CNavbar>
       
         {loadingRiders ? (
@@ -973,7 +997,7 @@ const Batch = () => {
               <CTableHeaderCell scope="col">Employee ID</CTableHeaderCell>
               <CTableHeaderCell scope="col">Language</CTableHeaderCell>
               <CTableHeaderCell scope="col">Group</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Add Rider</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
@@ -1008,7 +1032,7 @@ const Batch = () => {
                     <CButton
                       size="sm"
                       onClick={() => updateRiderAssign(batchRid,item.id, status)}
-                      style={{ backgroundColor: '#ff4d4d', width: 90 }}
+                      style={{ backgroundColor: '#ff4d4d', width: 90,color:'white' }}
                     >
                       Assigned
                     </CButton>
@@ -1016,7 +1040,7 @@ const Batch = () => {
                     <CButton
                       size="sm"
                       onClick={() => updateRiderAssign(batchRid,item.id, status)}
-                      style={{ backgroundColor: '#ff4d4d', width: 90 }}
+                      style={{ backgroundColor: '#ff4d4d', width: 90 ,color:'white'}}
                     >
                       Add
                     </CButton>
@@ -1031,9 +1055,9 @@ const Batch = () => {
   
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisibleAllRiders(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisibleAllRiders(false)}>
             Close
-          </CButton>
+          </CButton> */}
         </CModalFooter>
       </CModal>
 
@@ -1100,12 +1124,10 @@ const Batch = () => {
           )}
         </CModalBody>
         <CModalFooter>
-        <CButton color="warning" onClick={() => handleToggleRiders(orderRiderDetails.accepted?.id,status,orderRiderDetails.id)}>
+        <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => handleToggleRiders(orderRiderDetails.accepted?.id,status,orderRiderDetails.id)}>
             Change
           </CButton> 
-          <CButton color="secondary" onClick={() => setVisibleRider(false)}>
-            Close
-          </CButton>
+          
         </CModalFooter>
       </CModal>
 
@@ -1116,8 +1138,11 @@ const Batch = () => {
         </CModalHeader>
         <CModalBody>
         <a>Are you sure you want to cancel this batch order?</a><br></br>
-        <CButton onClick={() => handleStatus(batchIdData)}  style={{marginLeft:200 }} color="primary">Yes</CButton>
-          
+        {/* <CButton onClick={() => handleStatus(batchIdData)}  style={{marginLeft:200,backgroundColor:'#ff4d4d',color:'white' }}>Yes</CButton> */}
+        <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton  onClick={() => handleStatus(batchIdData)}  style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setVisibleStatusModel(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
         </CModalBody>
       </CModal>
      

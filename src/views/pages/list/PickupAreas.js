@@ -24,6 +24,7 @@ import {
   CModalFooter,
   CModalBody,
   CFormInput,
+  CBadge,
 } from '@coreui/react'
 import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
@@ -284,15 +285,17 @@ const PickupAreas = () => {
 
   return (
     <CContainer>
-      <CNavbar className="bg-body-tertiary">
-        <CDropdown style={{ marginLeft: '85%', width:'13%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle >{selectedCity}</CDropdownToggle>
+      <CBadge style={{ marginLeft: '75.5%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{ marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+          <CDropdownToggle style={{color:'white'}} >{selectedCity}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
             <CDropdownItem onClick={() => city('Milano')}>Milano</CDropdownItem>
             <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
+      <CNavbar  style={{marginTop:'1%'}}  className="bg-body-tertiary">
+
       </CNavbar>
 
       { loading ? <CSpinner/> : <CTable>
@@ -311,7 +314,7 @@ const PickupAreas = () => {
               <CTableDataCell>{item.geometry.type}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
               <CTableDataCell>
-              <CButton size='sm' style={{backgroundColor: '#ff4d4d'}} variant="outline" onClick={() => viewMapModal(item.geometry.coordinate, item._id)}>
+              <CButton size='sm' style={{backgroundColor: '#ff4d4d', color:'white'}} variant="outline" onClick={() => viewMapModal(item.geometry.coordinate, item._id)}>
                    View map
                 </CButton>
               </CTableDataCell>
@@ -333,17 +336,20 @@ const PickupAreas = () => {
         <CModalHeader closeButton>
           <CModalTitle>Map View</CModalTitle>
         </CModalHeader>
-        <CNavbar className="bg-body-tertiary">
-        <CDropdown style={{ marginLeft: '65%', width:'10%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle >{paramMapCity}</CDropdownToggle>
+        <CModalBody>
+
+        <CBadge style={{ marginLeft: '81.5%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{ marginLeft: '2%', width:'10%',backgroundColor: '#ff4d4d'  }}>
+          <CDropdownToggle style={{color:'white'}} >{paramMapCity}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => city('Milano')}>Milano</CDropdownItem>
             <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
+        <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
+
       </CNavbar>
 
-        <CModalBody>
         <MapContainer
       dragging={true}
       center={[40.85631, 14.24641]}
@@ -392,10 +398,8 @@ const PickupAreas = () => {
     </MapContainer>
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton>
-          <CButton color="primary" onClick={() => updateMap()} >Save updated area</CButton>
+         
+          <CButton style={{backgroundColor:'#ff4d4d',color:'white'}} onClick={() => updateMap()} >Save updated area</CButton>
         </CModalFooter>
       </CModal>
 
@@ -413,10 +417,8 @@ const PickupAreas = () => {
          onChange={(e) => setName(e.target.value)} />
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisibleName(false)}>
-            Close
-          </CButton>
-          <CButton color="primary" onClick={() => updateName()}>Save changes</CButton>
+          
+          <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => updateName()}>Save changes</CButton>
         </CModalFooter>
       </CModal>
     </CContainer>

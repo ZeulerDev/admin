@@ -24,6 +24,7 @@ import {
   CCol,
   CFormInput,
   CFormSelect,
+  CBadge,
 } from '@coreui/react'
 import { Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
@@ -230,6 +231,15 @@ const Pickers = () => {
             setActivate('')
             setPickerId('')
             setAlert(true)
+            dispatch({
+              type : SET_ALERT,
+              payload : {
+                status : true,
+                title : 'Picker status update',
+                message : "Picker status updated successfully",
+                color:'success'
+              }
+            })
             
           } else if (res.status === 203) {
             dispatch({
@@ -320,7 +330,15 @@ const Pickers = () => {
                       }
                     })
                     setPickerData([...list])
-
+                    dispatch({
+                      type : SET_ALERT,
+                      payload : {
+                        status : true,
+                        title : 'Picker update',
+                        message : 'Picker updated successfully',
+                        color:'success'
+                      }
+                    })
                   } else if (res.status === 203) {
                     dispatch({
                       type : SET_ALERT,
@@ -378,29 +396,23 @@ const Pickers = () => {
 
   return (
     <CContainer>
-     <CNavbar className="bg-body-tertiary picker-navbar">
-      <CFormInput
-        type="text"
-        placeholder="Search by Picker ID"
-        className="picker-input"
-        value={paramCode}
-        onChange={(e) => setParamCodeData(e.target.value)}
-      />
       <Link to={`/picker/addpicker`} className="picker-link">
-        <CButton type="submit" color="success" variant="outline" className="picker-button">
+        <CButton style={{ marginLeft: '0%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
           Add Picker
         </CButton>
       </Link>
-      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle>{selectedCity}</CDropdownToggle>
+      
+      <CBadge style={{ marginLeft: '20%'}} color="secondary">Filter by</CBadge>
+      <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
+        <CDropdownToggle style={{color:'white'}}>{selectedCity}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
           <CDropdownItem onClick={() => city('Milan')}>Milan</CDropdownItem>
           <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
         </CDropdownMenu>
       </CDropdown>
-      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle>{selectedChain}</CDropdownToggle>
+      <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
+        <CDropdownToggle style={{color:'white'}}>{selectedChain}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
           {chainData.map((item, index) => (
@@ -410,8 +422,8 @@ const Pickers = () => {
           ))}
         </CDropdownMenu>
       </CDropdown>
-      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle>{selectedMarketGroup}</CDropdownToggle>
+      <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
+        <CDropdownToggle style={{color:'white'}}>{selectedMarketGroup}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
           {mGroupData.map((item, index) => (
@@ -421,6 +433,17 @@ const Pickers = () => {
           ))}
         </CDropdownMenu>
       </CDropdown>
+
+     <CNavbar className="bg-body-tertiary">
+      <CFormInput
+        type="text"
+        placeholder="Search by Picker ID"
+        className="picker-input"
+        value={paramCode}
+        style={{ width : 450, marginLeft: '0%' }}
+        onChange={(e) => setParamCodeData(e.target.value)}
+      />
+      
     </CNavbar>
 
     {loading ? <CSpinner/> : <CTable>
@@ -436,7 +459,7 @@ const Pickers = () => {
           <CTableHeaderCell scope="col">Language</CTableHeaderCell>
           <CTableHeaderCell scope="col">Market</CTableHeaderCell>
           <CTableHeaderCell scope="col">Edit</CTableHeaderCell>
-          <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+          <CTableHeaderCell scope="col">Edit Status</CTableHeaderCell>
         </CTableRow>
       </CTableHead>
       <CTableBody>
@@ -457,7 +480,7 @@ const Pickers = () => {
                 </Link>
               </CTableDataCell>
               <CTableDataCell>
-                {item.activate ?  <CButton size='sm' onClick={() => handleToggle(item.id,false)} style={{ backgroundColor:'#ff4d4d',width: 90 }} >Deactivate</CButton> :  <CButton size='sm' onClick={() => handleToggle(item.id,true)} style={{ backgroundColor:'#ff4d4d',width: 90 }} >Activate</CButton>}
+                {item.activate ?  <CButton size='sm' onClick={() => handleToggle(item.id,false)} style={{ backgroundColor:'#ff4d4d',width: 90, color:'white' }} >Deactivate</CButton> :  <CButton size='sm' onClick={() => handleToggle(item.id,true)} style={{ backgroundColor:'#ff4d4d',width: 90,color:'white' }} >Activate</CButton>}
                 
               </CTableDataCell>
             </CTableRow>
@@ -468,13 +491,16 @@ const Pickers = () => {
 
 
       <CModal alignment="center" visible={visible} scrollable size='sm' onClose={() => setVisible(false)}>
-        <CModalHeader closeButton>
+        <CModalHeader closeButton={false}>
           <CModalTitle>Confirmation</CModalTitle>
         </CModalHeader>
         <CModalBody>
-        <a>Are you sure you want to {isActivate ? 'activate' : 'deactivate'} this user?</a><br></br>
-        <CButton onClick={() => handleActivate()}  style={{ display : "flex", justifyContent : 'center' }} color="primary">Yes</CButton>
-          
+        <a>Are you sure you want to {isActivate ? 'activate' : 'deactivate'} this picker?</a><br></br><br></br>
+        {/* <CButton onClick={() => handleActivate()}  style={{ display : "flex", justifyContent : 'center' }} color="primary">Yes</CButton> */}
+        <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton onClick={() => handleActivate()} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setVisible(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
         </CModalBody>
       </CModal>
 
@@ -583,17 +609,17 @@ const Pickers = () => {
         </CCol> */}
   
         <CCol xs={12}>
-            <CButton color="warning" type="submit" style={{ marginBottom:'3%', width:'200px' }} onClick={()=>handleSubmit()}>
+            <CButton  type="submit" style={{ marginBottom:'3%', width:'200px',backgroundColor:'#ff4d4d',color:'white' }} onClick={()=>handleSubmit()}>
               Update Picker
             </CButton>
           </CCol>
         </div>
         </CModalBody>
-        <CModalFooter>
+        {/* <CModalFooter>
           <CButton color="secondary" onClick={() => setVisiblePicker(false)}>
             Close
           </CButton>
-        </CModalFooter>
+        </CModalFooter> */}
       </CModal>
 
     

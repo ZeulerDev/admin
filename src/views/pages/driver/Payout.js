@@ -207,17 +207,9 @@ const DriverPayout = ()=>{
     return(
 
         <CContainer>
-        <CNavbar className="bg-body-tertiary">
-        <CFormInput  
-         type ="text" 
-         placeholder="Search by No" 
-         style={{ width : 200, marginLeft: '2%' }}
-         value={searchQuery}
-         onChange={(e) => setSearchQuery(e.target.value)}
-       
-         />
-        <CDropdown style={{ marginLeft: '63%', width:'10%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle  >{statusData}</CDropdownToggle>
+        <CBadge style={{ marginLeft: '75%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+          <CDropdownToggle style={{color:'white'}}  >{statusData}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => status('all')}>All</CDropdownItem>
             <CDropdownItem onClick={() => status('pending')}>Pending</CDropdownItem>
@@ -227,7 +219,15 @@ const DriverPayout = ()=>{
             <CDropdownItem onClick={() => status('done')}>Done</CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
-       <br></br>
+       <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
+       <CFormInput  
+         type ="text" 
+         placeholder="Search by No" 
+         style={{ width : 450, marginLeft: '0%' }}
+         value={searchQuery}
+         onChange={(e) => setSearchQuery(e.target.value)}
+       
+         />
         </CNavbar>
   
         {loading ? <CSpinner/> : <CTable>
@@ -242,7 +242,7 @@ const DriverPayout = ()=>{
               <CTableHeaderCell scope="col">Tips</CTableHeaderCell>
               <CTableHeaderCell scope="col">Payable</CTableHeaderCell>
               <CTableHeaderCell scope="col">Action</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+              <CTableHeaderCell scope="col">PDF</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
@@ -283,7 +283,7 @@ const DriverPayout = ()=>{
                         {item?.status === 'sent' && <CButton size='sm' onClick={() => handleConfirmationToggle(item.id,item.status)} color={color} style={{ width:90 }}>Received</CButton>}
                         {item?.status === 'ready' && <CButton size='sm' onClick={() => handleConfirmationToggle(item.id,item.status)} color={color} style={{ width:90 }}>To Pay</CButton>}
                       </CTableDataCell>
-                      <CTableDataCell><CButton  size='sm' style={{ backgroundColor:'#ff4d4d', width:80 }} onClick={() => handleToggle(item.type, item)} >View</CButton> </CTableDataCell>
+                      <CTableDataCell><CButton  size='sm' style={{ backgroundColor:'#ff4d4d', width:80 ,color:'white'}} onClick={() => handleToggle(item.type, item)} >View</CButton> </CTableDataCell>
                       {/* <CTableDataCell>{item.type === 'flat_rate' ? <CButton style={{ backgroundColor:'#ff4d4d' }} onClick={() => handleToggle(item.type, item)} >View</CButton> : item.type === 'occasional' ? <CButton style={{ backgroundColor:'#ff4d4d' }}>View</CButton> : <CButton disabled={true} style={{ backgroundColor:'#ff4d4d' }}>View</CButton>}</CTableDataCell> */}
                     </CTableRow>
                   )

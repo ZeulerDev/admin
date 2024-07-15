@@ -31,6 +31,7 @@ import { useAppContext } from '../../../../context/AppContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../../../../context/config'
+import { SET_ALERT } from '../../../../context/context_reducer'
 
 const MarketMap = () => {
   const [visible, setVisible] = useState(false)
@@ -124,6 +125,15 @@ const MarketMap = () => {
           .then((res) => {
             if (res.status === 200) {
                 setVisible(false)
+                dispatch({
+                  type : SET_ALERT,
+                  payload : {
+                    status : true,
+                    title : 'Market Assign',
+                    message : 'New Market Assign Successfully',
+                    color : 'success'
+                  }
+                })
             } else if (res.status === 204) {
               dispatch({
                 type : SET_ALERT,
@@ -165,6 +175,15 @@ const MarketMap = () => {
           .then((res) => {
             if (res.status === 200) {
               setVisible(false)
+              dispatch({
+                type : SET_ALERT,
+                payload : {
+                  status : true,
+                  title : 'Market Remove',
+                  message : 'Market removed Successfully',
+                  color : 'success'
+                }
+              })
             } else if (res.status === 204) {
               dispatch({
                 type : SET_ALERT,
@@ -195,8 +214,8 @@ const MarketMap = () => {
   return (
     <CContainer>
       <CNavbar className="bg-body-tertiary">
-        <CDropdown style={{ marginLeft: '90%', width: '10%', marginRight: '5px',backgroundColor: '#ff4d4d' }}>
-          <CDropdownToggle >{selectedCity}</CDropdownToggle>
+        <CDropdown style={{ marginLeft: '90%', width: '17%', marginRight: '5px',backgroundColor: '#ff4d4d' }}>
+          <CDropdownToggle style={{color:'white'}}>{selectedCity}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
             <CDropdownItem onClick={() => city('Milano')}>Milano</CDropdownItem>
@@ -242,6 +261,7 @@ const MarketMap = () => {
           <CTable>
             <CTableHead>
               <CTableRow>
+                <CTableHeaderCell scope="col">#</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Market</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Action</CTableHeaderCell>
@@ -250,6 +270,7 @@ const MarketMap = () => {
             <CTableBody>
               {marketGroupData.map((item, index) => (
                 <CTableRow key={index}>
+                  <CTableDataCell>{index + 1}</CTableDataCell>
                   <CTableDataCell>{item.name}</CTableDataCell>
                   <CTableDataCell>
                     {item.markets.map((mar, index) => (
@@ -261,9 +282,9 @@ const MarketMap = () => {
                   </CTableDataCell>
                   <CTableDataCell>
                     {item.markets.some((mar) => mar.id === marketsId) ? (
-                      <CButton style={{ backgroundColor: '#ff4d4d', width:'90px' }} onClick={() => removeMarket(marketsId,item._id)}>Remove</CButton>
+                      <CButton style={{ backgroundColor: '#ff4d4d', width:'90px', color:'white' }} onClick={() => removeMarket(marketsId,item._id)}>Remove</CButton>
                     ) : (
-                      <CButton style={{ backgroundColor: '#ff4d4d', width:'90px' }} onClick={() => addMarket(marketsId,item._id)}>Assign</CButton>
+                      <CButton style={{ backgroundColor: '#ff4d4d', width:'90px', color:'white' }} onClick={() => addMarket(marketsId,item._id)}>Assign</CButton>
                     )}
                   </CTableDataCell>
                 </CTableRow>
@@ -272,9 +293,9 @@ const MarketMap = () => {
           </CTable>
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
-          </CButton>
+          </CButton> */}
           {/* <CButton color="primary">Save changes</CButton> */}
         </CModalFooter>
       </CModal>

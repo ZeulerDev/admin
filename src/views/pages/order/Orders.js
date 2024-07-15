@@ -192,7 +192,7 @@ const Orders = () => {
   return (
     <CContainer>
       <CNavbar className="bg-body-tertiary">
-      <DateRangePicker style={{ marginLeft:15 }} format="yyyy/MM/dd"  onChange={handleDateRangeChange} />
+      <DateRangePicker style={{ marginLeft:0 }} format="yyyy/MM/dd"  onChange={handleDateRangeChange} />
       </CNavbar>
 
       {loading ? (
@@ -210,7 +210,7 @@ const Orders = () => {
               <CTableHeaderCell scope="col">Date</CTableHeaderCell>
               <CTableHeaderCell scope="col">Total</CTableHeaderCell>
               <CTableHeaderCell scope="col">Markup</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Orders</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Order Details</CTableHeaderCell>
               <CTableHeaderCell scope="col">Info</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
@@ -257,7 +257,7 @@ const Orders = () => {
 
       <CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Customer Information</CModalTitle>
+          <CModalTitle>Customer Order Information</CModalTitle>
         </CModalHeader>
         <CModalBody
           style={{
@@ -306,9 +306,9 @@ const Orders = () => {
           )}
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
-          </CButton>
+          </CButton> */}
         </CModalFooter>
       </CModal>
 
@@ -429,9 +429,6 @@ const Orders = () => {
           )}
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisibleCustomer(false)}>
-            Close
-          </CButton>
         </CModalFooter>
       </CModal>
     </CContainer>

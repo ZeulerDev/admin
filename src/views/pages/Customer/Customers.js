@@ -244,7 +244,7 @@ const Customer = () => {
       <CFormInput  
          type ="text" 
          placeholder="Search by customer email" 
-         style={{ width : 450, marginLeft: '2%' }}
+         style={{ width : 450, marginLeft: '0%' }}
          value={searchQuery}
          onChange={(e) => setSearchQuery(e.target.value)}
        
@@ -332,7 +332,7 @@ const Customer = () => {
             <CTableBody>
               {customerAddressData.map((items, index) => (
                 <CTableRow key={index}>
-                  <CTableHeaderCell scope="row"></CTableHeaderCell>
+                  <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                   <CTableDataCell>{items.name}</CTableDataCell>
                   <CTableDataCell>{items.intercom}</CTableDataCell>
                   <CTableDataCell>{items.flat}</CTableDataCell>
@@ -347,10 +347,10 @@ const Customer = () => {
           
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-          <CButton color="primary">Save changes</CButton>
+          <CButton color="primary">Save changes</CButton> */}
         </CModalFooter>
       </CModal>
 
@@ -395,17 +395,17 @@ const Customer = () => {
         </CCol>
   
         <CCol xs={12}>
-            <CButton color="warning" type="submit" style={{ marginBottom:'3%', width:'200px' }} onClick={()=>handleSubmit()}>
+            <CButton type="submit" style={{ marginBottom:'3%', width:'200px', backgroundColor:'#ff4d4d',color:'white'}} onClick={()=>handleSubmit()}>
               Update Customer
             </CButton>
           </CCol>
         </div>
         </CModalBody>
-        <CModalFooter>
+        {/* <CModalFooter>
           <CButton color="secondary" onClick={() => setVisibleCustomer(false)}>
             Close
           </CButton>
-        </CModalFooter>
+        </CModalFooter> */}
       </CModal>
       
     </CContainer>

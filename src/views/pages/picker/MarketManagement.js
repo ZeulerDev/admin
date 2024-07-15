@@ -22,6 +22,7 @@ import {
   CModalTitle,
   CModalBody,
   CModalFooter,
+  CBadge,
 } from '@coreui/react'
 import { Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
@@ -380,6 +381,16 @@ const MarketManagement = () => {
                        })
                          setPickerData([...list])
 
+                         dispatch({
+                          type : SET_ALERT,
+                          payload : {
+                            status : true,
+                            title : 'Market Assign',
+                            message : 'successfully Market assigned to the picker ',
+                            color:'success'
+                          }
+                        })
+
                   } else if (res.status === 204) {
                     dispatch({
                       type : SET_ALERT,
@@ -453,7 +464,15 @@ const MarketManagement = () => {
                        }
                        })
                          setPickerData([...list])
-                  
+                         dispatch({
+                          type : SET_ALERT,
+                          payload : {
+                            status : true,
+                            title : 'Market Assign',
+                            message : 'successfully Market removed from the picker ',
+                            color:'success'
+                          }
+                        })
 
 
                   } else if (res.status === 204) {
@@ -502,9 +521,9 @@ const MarketManagement = () => {
 
   return (
     <CContainer>
-    <CNavbar className="bg-body-tertiary">
-        <CDropdown style={{ marginLeft: '43%', width:'10%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle  >{selectedCity}</CDropdownToggle>
+      <CBadge style={{ marginLeft: '34%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
+          <CDropdownToggle style={{color:'white'}} >{selectedCity}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => city('all','view')}>All</CDropdownItem>
             <CDropdownItem onClick={() => city('Milan','view')}>Milan</CDropdownItem>
@@ -512,8 +531,8 @@ const MarketManagement = () => {
           </CDropdownMenu>
         </CDropdown>
 
-        <CDropdown style={{ marginRight: '0%', width:'15%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle >{selectedChain}</CDropdownToggle>
+        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
+          <CDropdownToggle style={{color:'white'}}>{selectedChain}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => chain('all',null,'view')}>All</CDropdownItem>
             {chainData.map((item, index) => (
@@ -524,8 +543,8 @@ const MarketManagement = () => {
           </CDropdownMenu>
         </CDropdown>
 
-        <CDropdown style={{ marginRight: '1%', width:'30%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle  >{selectedMarketGroup}</CDropdownToggle>
+        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
+          <CDropdownToggle style={{color:'white'}} >{selectedMarketGroup}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
             {mGroupData.map((item, index) => (
@@ -536,7 +555,7 @@ const MarketManagement = () => {
           </CDropdownMenu>
         </CDropdown>
 
-      
+     <CNavbar style={{marginTop:'1%'}}  className="bg-body-tertiary">
 
     </CNavbar>
 
@@ -551,7 +570,7 @@ const MarketManagement = () => {
           <CTableHeaderCell scope="col">City</CTableHeaderCell>
           <CTableHeaderCell scope="col">Language</CTableHeaderCell>
           <CTableHeaderCell scope="col">Market</CTableHeaderCell>
-          <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+          <CTableHeaderCell scope="col">Add Market</CTableHeaderCell>
         </CTableRow>
       </CTableHead>
       <CTableBody>
@@ -567,9 +586,9 @@ const MarketManagement = () => {
               <CTableDataCell>{item.market?.chain?.name} - {item.market.address}</CTableDataCell>
               <CTableDataCell>
                  {item.market?.id ? (
-                     <CButton size='sm' onClick={() => handleToggle(item.id,item.market?.id)} style={{ backgroundColor:'#ff4d4d',width: 90 }} >Assign</CButton>
+                     <CButton size='sm' onClick={() => handleToggle(item.id,item.market?.id)} style={{ backgroundColor:'#ff4d4d',width: 90,color:'white' }} >Assign</CButton>
                  ) : (
-                     <CButton size='sm' onClick={() => handleToggle(item.id,item.market?.id)} style={{ backgroundColor:'#ff4d4d',width: 90 }} >Add</CButton>
+                     <CButton size='sm' onClick={() => handleToggle(item.id,item.market?.id)} style={{ backgroundColor:'#ff4d4d',width: 90,color:'white' }} >Add</CButton>
                  )}
              </CTableDataCell>
             </CTableRow>
@@ -582,9 +601,15 @@ const MarketManagement = () => {
 
       <CModal  visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Market</CModalTitle>
-          <CDropdown style={{ marginLeft: 0, width:'10%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle  >{selectedCityModal}</CDropdownToggle>
+          <CModalTitle>Market assign view</CModalTitle>
+          
+        </CModalHeader>
+        
+        
+        <CModalBody>
+        <CBadge style={{ marginLeft: '54%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
+          <CDropdownToggle style={{color:'white'}} >{selectedCityModal}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => city('all','modal')}>All</CDropdownItem>
             <CDropdownItem onClick={() => city('Milano','modal')}>Milano</CDropdownItem>
@@ -592,8 +617,8 @@ const MarketManagement = () => {
           </CDropdownMenu>
         </CDropdown>
 
-        <CDropdown style={{ marginLeft: '20%', width:'15%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle >{selectedChainModal}</CDropdownToggle>
+        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
+          <CDropdownToggle style={{color:'white'}}>{selectedChainModal}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => chain('all',null,'modal')}>All</CDropdownItem>
             {chainDataModal.map((item, index) => (
@@ -603,9 +628,9 @@ const MarketManagement = () => {
             ))}
           </CDropdownMenu>
         </CDropdown>
-        </CModalHeader>
-        <CModalBody>
-         
+        <CNavbar style={{marginTop:'1%'}}  className="bg-body-tertiary">
+
+        </CNavbar>
         { loadingModal ? <CSpinner/> : <CTable>
         <CTableHead>
           <CTableRow>
@@ -626,9 +651,9 @@ const MarketManagement = () => {
               <CTableDataCell>{
               marketIdModal === item._id ? 
               (
-                <CButton size='sm' onClick={() => removeMarket(pickerIdModal, item._id)} style={{ backgroundColor:'#ff4d4d',width: 90 }} >Remove</CButton>
+                <CButton size='sm' onClick={() => removeMarket(pickerIdModal, item._id)} style={{ backgroundColor:'#ff4d4d',width: 90,color:'white' }} >Remove</CButton>
               ):(
-                <CButton size='sm' onClick={() => addMarket(pickerIdModal, item._id)} style={{ backgroundColor:'#ff4d4d',width: 90 }} >Add</CButton>
+                <CButton size='sm' onClick={() => addMarket(pickerIdModal, item._id)} style={{ backgroundColor:'#ff4d4d',width: 90,color:'white' }} >Add</CButton>
               )
             }</CTableDataCell>
               
@@ -641,12 +666,12 @@ const MarketManagement = () => {
             
 
         <CModalFooter>
-        <CPagination aria-label="Page navigation example">
+        {/* <CPagination aria-label="Page navigation example">
         <CPaginationItem disabled={itemsPerPage <= 20 ? true : false} onClick={previousPage}>
           Previous
         </CPaginationItem>
         <CPaginationItem onClick={nextPage}>Next</CPaginationItem>
-      </CPagination>
+      </CPagination> */}
         </CModalFooter>
 
         </CModalBody>

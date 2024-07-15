@@ -46,7 +46,7 @@ const VatManagement = () => {
         if(user && token){
             setLoading(true)
             axios
-              .get(BASE_URL+`assistant/vat/shoppers/00?search=`+searchQuery, {
+              .get(BASE_URL+`assistant/vat/shoppers/0?search=`+searchQuery, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
@@ -124,6 +124,14 @@ const VatManagement = () => {
                   }
 
                   setPickersVatData([...pickersVatData])
+                  dispatch({
+                    type : SET_ALERT,
+                    payload : {
+                      status : true,
+                      title : 'Picker VAT Id ',
+                      message : 'VAT Id updated successfully',
+                    }
+                  })
 
                   // const list=  pickersVatData.map((item) => {
                   //   if(item.id === updatedEntity.id){
@@ -140,7 +148,7 @@ const VatManagement = () => {
                     type : SET_ALERT,
                     payload : {
                       status : true,
-                      title : 'Picker Disabled status error',
+                      title : 'Picker VAT Id update error',
                       message : res.data.message
                     }
                   })
@@ -151,7 +159,7 @@ const VatManagement = () => {
                     type : SET_ALERT,
                     payload : {
                       status : true,
-                      title : 'Picker Disabled status error',
+                      title : 'Picker VAT Id update error',
                       message : res.data.message
                     }
                   })
@@ -161,7 +169,7 @@ const VatManagement = () => {
                     type : SET_ALERT,
                     payload : {
                       status : true,
-                      title : 'Picker Disabled status update error',
+                      title : 'Picker VAT Id update error',
                       message : res.data.message
                     }
                   })
@@ -180,7 +188,7 @@ const VatManagement = () => {
          <CFormInput  
          type ="text" 
          placeholder="Search" 
-         style={{ width : 450, marginLeft: '2%' }}
+         style={{ width : 450, marginLeft: '0%' }}
          value={searchQuery}
          onChange={(e) => setSearchQuery(e.target.value)}
        
@@ -204,11 +212,11 @@ const VatManagement = () => {
               <CTableRow key={index}>
                 <CTableDataCell>{item.name}</CTableDataCell>
                 <CTableDataCell>{item.city}</CTableDataCell>
-                <CTableDataCell>{item.vat ? item.vat : <CBadge color="warning">Null</CBadge>}</CTableDataCell>
+                <CTableDataCell>{item.vat ? item.vat : <CBadge color="warning">Empty</CBadge>}</CTableDataCell>
                 <CTableDataCell>{item.activate ? <CBadge color="success">Yes</CBadge> : <CBadge color="warning">No</CBadge>}</CTableDataCell>
                 <CTableDataCell>{item.disabled ? <CBadge color="success">No</CBadge> : <CBadge color="warning">Yes</CBadge>}</CTableDataCell>
                 <CTableDataCell>{item.market?.chain?.name} - {item.market?.address}</CTableDataCell>
-                <CTableDataCell>{item.vat === "" ? <CButton size='sm' style={{ backgroundColor:"#ff4d4d", width: 70 }} onClick={() => handleToggle(item.id, item.vat)}>Insert </CButton> : <CButton size='sm' style={{ backgroundColor:"#ff4d4d", width: 70 }} onClick={() => handleToggle(item.id, item.vat)}>Edit </CButton>}</CTableDataCell>
+                <CTableDataCell>{item.vat === "" ? <CButton size='sm' style={{ backgroundColor:"#ff4d4d", width: 70,color:'white' }} onClick={() => handleToggle(item.id, item.vat)}>Insert </CButton> : <CButton size='sm' style={{ backgroundColor:"#ff4d4d", width: 70,color:'white' }} onClick={() => handleToggle(item.id, item.vat)}>Edit </CButton>}</CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>
@@ -238,10 +246,10 @@ const VatManagement = () => {
          onChange={(e) => setVatId(e.target.value)} />
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
-          </CButton>
-          <CButton color="primary" onClick={() => handleUpdate()}>Save changes</CButton>
+          </CButton> */}
+          <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => handleUpdate()}>Save changes</CButton>
         </CModalFooter>
       </CModal>
 

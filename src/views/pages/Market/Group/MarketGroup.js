@@ -18,12 +18,17 @@ import {
   CDropdownToggle,
   CNavGroup,
   CSpinner,
+  CBadge,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
 } from '@coreui/react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useAppContext } from '../../../../context/AppContext'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilInfo, cilLocationPin } from '@coreui/icons'
+import { cilDelete, cilInfo, cilLocationPin, cilTrash } from '@coreui/icons'
 import { SET_ALERT } from '../../../../context/context_reducer'
 import { BASE_URL } from '../../../../context/config'
 
@@ -35,6 +40,8 @@ const MarketGroup = () => {
   const [itemsPerPage, setItemsPerPage] = useState(0)
   const [isDisable, setIsDisable] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [marketGroupId, setMarketGroupId] = useState('')
 
   const city = (city) => {
     if (city === 'all') {
@@ -99,6 +106,11 @@ const MarketGroup = () => {
     loadData(c, false)
   }
 
+  const handleToggle = (id) => {
+    setVisible(!visible)
+    setMarketGroupId(id)
+  }
+
   const deleteMarketGroup =(id)=>{
     console.log(id)
     axios
@@ -121,6 +133,7 @@ const MarketGroup = () => {
               color : 'success'
             }
           })
+          setVisible(false)
           loadData(0, true)
          console.log('Remove Market Group')
 
@@ -163,32 +176,33 @@ const MarketGroup = () => {
 
   return (
     <CContainer>
-      <CNavbar className="bg-body-tertiary">
-        <CForm>
           <Link to={`/marketgroups/marketmap`}>
-            <CButton type="submit" color="success" variant="outline"  style={{ marginLeft: '5px' }}>
+            <CButton style={{ marginLeft: '0%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
               Add Market
             </CButton>
           </Link>
           <Link to={`/marketgroups/createmarketgroup`}>
-            <CButton type="submit" color="warning" variant="outline" style={{ marginLeft: '5px' }}>
+            <CButton  style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
               Create Market Group
             </CButton>
           </Link>
-        </CForm>
-        <CDropdown style={{ marginLeft: '40%', width: '10%', marginRight: '5px',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle>{selectedCity}</CDropdownToggle>
+          <CBadge style={{ marginLeft: '39%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{marginLeft: '2%', width: '17%', marginRight: '5px',backgroundColor: '#ff4d4d'  }}>
+          <CDropdownToggle style={{color:'white'}}>{selectedCity}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
             <CDropdownItem onClick={() => city('Milano')}>Milano</CDropdownItem>
             <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
+      <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
+
       </CNavbar>
 
      {loading ? <CSpinner/> :  <CTable>
         <CTableHead>
           <CTableRow>
+            <CTableHeaderCell scope="col">#</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">City</CTableHeaderCell>
             <CTableHeaderCell scope="col">Location</CTableHeaderCell>
@@ -198,18 +212,19 @@ const MarketGroup = () => {
         <CTableBody>
           {marketGroupData.map((item, index) => (
             <CTableRow key={index}>
-              <CTableHeaderCell scope="row">{item.name}</CTableHeaderCell>
+              <CTableDataCell >{index + 1}</CTableDataCell>
+              <CTableDataCell >{item.name}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
               <CTableDataCell>
                 <Link to={`/marketgroups/marketdistance/${item._id}`}>
-                <CButton size='sm' style={{backgroundColor: '#ff4d4d',marginLeft: '5px'}}>
+                <CButton size='sm' style={{backgroundColor: '#ff4d4d',marginLeft: '5px', color:'white'}}>
                    view
                 </CButton>
                 </Link>
               </CTableDataCell>
               <CTableDataCell>
-              <CButton size='sm' style={{backgroundColor: '#ff4d4d'}} variant="outline" onClick={() => deleteMarketGroup(item._id)}>
-                   Remove
+              <CButton size='sm' style={{backgroundColor: '#ff4d4d'}} variant="outline" onClick={() => handleToggle(item._id)}>
+              <CIcon icon={cilTrash} size='lg' style={{color:'white'}}/>
                 </CButton>
            
               </CTableDataCell>
@@ -228,6 +243,20 @@ const MarketGroup = () => {
           Next
         </CPaginationItem>
       </CPagination>
+
+      <CModal alignment="center" visible={visible} scrollable size='sm' onClose={() => setVisible(false)}>
+        <CModalHeader closeButton={false}>
+          <CModalTitle>Confirmation</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+        <a>Are you sure you want to delete this market group?</a><br></br><br></br>
+        <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton onClick={() => deleteMarketGroup(marketGroupId)} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setVisible(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
+     
+        </CModalBody>
+      </CModal>
     </CContainer>
   )
 }

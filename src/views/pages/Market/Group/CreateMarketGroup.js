@@ -108,7 +108,7 @@ const CreateMarketGroup = ()=>{
         </CCol>
   
         <CCol xs={12}>
-            <CButton color="warning" type="submit" style={{ marginBottom:'3%', width:'200px' }} onClick={()=>insertMarketGroup()}>
+            <CButton color="warning" type="submit" style={{ marginBottom:'3%', width:'17%', backgroundColor:'#ff4d4d', color:'white' }} onClick={()=>insertMarketGroup()}>
               Add Market Group
             </CButton>
           </CCol>

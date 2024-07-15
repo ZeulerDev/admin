@@ -405,6 +405,15 @@ const GroupOfOrders = () => {
             })
             console.log('update obj', updatedEntity)
             setGroceryGroupsData([...list])
+            dispatch({
+              type: SET_ALERT,
+              payload: {
+                status: true,
+                title: 'Picker Assign ',
+                message: "Successfully picker assigned to the grocery group",
+                color: 'success',
+              },
+            })
 
             // setGroceryGroupsData([...groceryGroupsData])
           } else if (res.status === 203) {
@@ -526,22 +535,13 @@ const GroupOfOrders = () => {
 
   return (
     <CContainer>
-      <CNavbar className="bg-body-tertiary">
         
-      <DateRangePicker style={{ marginLeft:3 }} format="MM/dd/yyyy HH:mm"  onChange={handleDateRangeChange} />
+      
+        
 
-        <CForm>
-          <CFormInput
-            type="text"
-            placeholder="Search By Rider No"
-            style={{ width: 300, marginLeft: '50%' }}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </CForm>
-
-        <CDropdown style={{ marginRight: '2%', width: '10%', backgroundColor: '#ff4d4d' }}>
-          <CDropdownToggle>{selectedStatus}</CDropdownToggle>
+        <CBadge style={{ marginLeft: '76%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+          <CDropdownToggle style={{color:'white'}}>{selectedStatus}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => groceryStatus('all')}>All Status</CDropdownItem>
             <CDropdownItem onClick={() => groceryStatus('created')}>Created</CDropdownItem>
@@ -555,6 +555,17 @@ const GroupOfOrders = () => {
             <CDropdownItem onClick={() => groceryStatus('paid ')}>Paid </CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
+
+      <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
+      <DateRangePicker style={{ marginLeft:1 }} format="MM/dd/yyyy HH:mm"  onChange={handleDateRangeChange} />
+
+<CFormInput
+  type="text"
+  placeholder="Search By Rider No"
+  style={{ width: 300, marginLeft: '5%' }}
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+/>
       </CNavbar>
 
       {loading ? (
@@ -576,7 +587,7 @@ const GroupOfOrders = () => {
               <CTableHeaderCell scope="col">Start</CTableHeaderCell>
               <CTableHeaderCell scope="col">End</CTableHeaderCell>
               <CTableHeaderCell scope="col">Picker</CTableHeaderCell>
-              <CTableHeaderCell scope="col"></CTableHeaderCell>
+              <CTableHeaderCell scope="col">Order</CTableHeaderCell>
               <CTableHeaderCell scope="col"></CTableHeaderCell>
             </CTableRow>
           </CTableHead>
@@ -618,8 +629,8 @@ const GroupOfOrders = () => {
                       <CButton
                         onClick={() => handlePickerToggle(item.id, item.status, item)}
                         size="sm"
-                        style={{ width: 80 }}
-                        color="danger"
+                        style={{ width: 80, backgroundColor: '#ff4d4d' , color: 'white' }}
+                        
                       >
                         View
                       </CButton>
@@ -627,8 +638,8 @@ const GroupOfOrders = () => {
                       <CButton
                         onClick={() => handleTogglePickers(item.accepted, item.status, item.id)}
                         size="sm"
-                        style={{ width: 80 }}
-                        color="danger"
+                        style={{ width: 80, backgroundColor: '#ff4d4d' , color: 'white'}}
+                        
                       >
                         Add
                       </CButton>
@@ -636,19 +647,18 @@ const GroupOfOrders = () => {
                   </CTableDataCell>
                   <CTableDataCell>
                     {item.status === 'complete' ? (
-                      <CButton size="sm" disabled={true} style={{ width: 80 }} color="danger">
+                      <CButton size="sm" disabled={true} style={{ width: 80 , backgroundColor: '#ff4d4d' , color: 'white'}} >
                         Cancel
                       </CButton>
                     ) : item.status === 'canceled' ? (
-                      <CButton size="sm" disabled={true} style={{ width: 80 }} color="danger">
+                      <CButton size="sm" disabled={true} style={{ width: 80 , backgroundColor: '#ff4d4d' , color: 'white'}}>
                         Cancel
                       </CButton>
                     ) : (
                       <CButton
                         onClick={() => handleToggle(item.id)}
                         size="sm"
-                        style={{ width: 80 }}
-                        color="danger"
+                        style={{ width: 80,backgroundColor: '#ff4d4d' , color: 'white' }}
                       >
                         Cancel
                       </CButton>
@@ -694,9 +704,7 @@ const GroupOfOrders = () => {
           />
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisibleBonus(false)}>
-            Close
-          </CButton>
+         
           <CButton color="primary" onClick={() => handleUpdateBonus()}>
             Save changes
           </CButton>
@@ -751,9 +759,9 @@ const GroupOfOrders = () => {
           >
             Change
           </CButton>
-          <CButton color="secondary" onClick={() => setVisiblePicker(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisiblePicker(false)}>
             Close
-          </CButton>
+          </CButton> */}
         </CModalFooter>
       </CModal>
 
@@ -765,12 +773,12 @@ const GroupOfOrders = () => {
         onClose={() => setVisibleAllPickers(false)}
       >
         <CModalHeader closeButton>
-          <CModalTitle>Confirmation</CModalTitle>
+          <CModalTitle>Picker Assing to the Grocery Batch</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CNavbar className="bg-body-tertiary">
-            <CDropdown style={{ marginLeft: '43%', width: '10%', backgroundColor: '#ff4d4d' }}>
-              <CDropdownToggle>{selectedCity}</CDropdownToggle>
+        <CBadge style={{ marginLeft: '37%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+              <CDropdownToggle style={{color:'white'}}>{selectedCity}</CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
                 <CDropdownItem onClick={() => city('Milan')}>Milan</CDropdownItem>
@@ -778,8 +786,8 @@ const GroupOfOrders = () => {
               </CDropdownMenu>
             </CDropdown>
 
-            <CDropdown style={{ marginRight: '0%', width: '15%', backgroundColor: '#ff4d4d' }}>
-              <CDropdownToggle>{selectedChain}</CDropdownToggle>
+            <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+              <CDropdownToggle style={{color:'white'}}>{selectedChain}</CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
                 {chainData.map((item, index) => (
@@ -790,8 +798,8 @@ const GroupOfOrders = () => {
               </CDropdownMenu>
             </CDropdown>
 
-            <CDropdown style={{ marginRight: '1%', width: '30%', backgroundColor: '#ff4d4d' }}>
-              <CDropdownToggle>{selectedMarketGroup}</CDropdownToggle>
+            <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
+              <CDropdownToggle style={{color:'white'}}>{selectedMarketGroup}</CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
                 {mGroupData.map((item, index) => (
@@ -801,6 +809,8 @@ const GroupOfOrders = () => {
                 ))}
               </CDropdownMenu>
             </CDropdown>
+          <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
+
           </CNavbar>
 
           {loadingPickers ? (
@@ -848,7 +858,7 @@ const GroupOfOrders = () => {
                         <CButton
                           size="sm"
                           onClick={() => updatePickerAssign(groceryId, item.id, status)}
-                          style={{ backgroundColor: '#ff4d4d', width: 90 }}
+                          style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }}
                         >
                           Assigned
                         </CButton>
@@ -856,7 +866,7 @@ const GroupOfOrders = () => {
                         <CButton
                           size="sm"
                           onClick={() => updatePickerAssign(groceryId, item.id, status)}
-                          style={{ backgroundColor: '#ff4d4d', width: 90 }}
+                          style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }}
                         >
                           Add
                         </CButton>
@@ -869,9 +879,9 @@ const GroupOfOrders = () => {
           )}
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisibleAllPickers(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisibleAllPickers(false)}>
             Close
-          </CButton>
+          </CButton> */}
         </CModalFooter>
       </CModal>
 
@@ -887,14 +897,18 @@ const GroupOfOrders = () => {
         </CModalHeader>
         <CModalBody>
           <a>Are you sure you want to cancel this grocery group order?</a>
-          <br></br>
-          <CButton
+          <br></br><br></br>
+          {/* <CButton
             onClick={() => handleStatus(groceryIdData)}
-            style={{ marginLeft: 200 }}
+            style={{ marginLeft: 200,backgroundColor: '#ff4d4d', color: 'white' }}
             color="primary"
           >
             Yes
-          </CButton>
+          </CButton> */}
+          <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton  onClick={() => handleStatus(groceryIdData)} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setVisible(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
         </CModalBody>
       </CModal>
     </CContainer>

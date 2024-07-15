@@ -155,7 +155,7 @@ const BatchMarketOrders = () => {
 
       <CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Customer Information</CModalTitle>
+          <CModalTitle>Customer Order List Information</CModalTitle>
         </CModalHeader>
         <CModalBody
           style={{
@@ -208,9 +208,9 @@ const BatchMarketOrders = () => {
           )}
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
-          </CButton>
+          </CButton> */}
         </CModalFooter>
       </CModal>
     </CContainer>

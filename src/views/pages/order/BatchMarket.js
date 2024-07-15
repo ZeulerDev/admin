@@ -102,11 +102,11 @@ const BatchMarkets = () => {
   return (
     <CContainer>
       <CNavbar className="bg-body-tertiary">
-        <CForm>
-          {/* <CButton type="submit" color="success" variant="outline">
+        {/* <CForm>
+          <CButton type="submit" color="success" variant="outline">
             Search
-          </CButton> */}
-        </CForm>
+          </CButton>
+        </CForm> */}
       </CNavbar>
 
       {loading ? (

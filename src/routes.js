@@ -130,7 +130,7 @@ const routes = [
   { path: '/markets', name: 'Markets', element: Markets },
   { path: '/customers/items', name: 'ItemsList', element: ItemList },
   { path: '/customers/orders/products/:id', name: 'Products', element: ProductList },
-  { path: '/customers/orders/:id', name: 'Orders', element: OrderList },
+  { path: '/customers/orders/:id', name: 'Lists', element: OrderList },
   { path: '/customers', name: 'Customer', element: Customer },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   // { path: '/theme', name: 'Theme', element: Colors, exact: true },

@@ -240,6 +240,15 @@ const Drivers = () => {
                }
                })
                  setDriverData([...list])
+                 dispatch({
+                  type : SET_ALERT,
+                  payload : {
+                    status : true,
+                    title : 'Driver status update',
+                    message : "Driver status updated successfully",
+                    color:'success'
+                  }
+                })
 
           } else if (res.status === 203) {
             dispatch({
@@ -325,13 +334,22 @@ const Drivers = () => {
                       }
                     })
                     setDriverData([...list])
+                    dispatch({
+                      type : SET_ALERT,
+                      payload : {
+                        status : true,
+                        title : 'Driver update',
+                        message : 'Driver updated successfully',
+                        color:'success'
+                      }
+                    })
 
                   } else if (res.status === 203) {
                     dispatch({
                       type : SET_ALERT,
                       payload : {
                         status : true,
-                        title : 'Picker update error',
+                        title : 'Driver update error',
                         message : res.data.message,
                         color:'warning'
                       }
@@ -342,7 +360,7 @@ const Drivers = () => {
                       type : SET_ALERT,
                       payload : {
                         status : true,
-                        title : 'Picker update error',
+                        title : 'Driver update error',
                         message : "Email Already include",
                         color:'warning'
                       }
@@ -352,7 +370,7 @@ const Drivers = () => {
                       type : SET_ALERT,
                       payload : {
                         status : true,
-                        title : 'Picker update error',
+                        title : 'Driver update error',
                         message : res.data.message,
                         color:'warning'
                       }
@@ -384,29 +402,23 @@ const Drivers = () => {
 
   return (
     <CContainer>
-       <CNavbar className="bg-body-tertiary picker-navbar">
-      <CFormInput
-        type="text"
-        placeholder="Search by Driver ID"
-        className="picker-input"
-        value={paramCode}
-        onChange={(e) => setParamCodeData(e.target.value)}
-      />
-      <Link to={`/picker/addpicker`} className="picker-link">
-        <CButton type="submit" color="success" variant="outline" className="picker-button">
-          Add Picker
+      
+      <Link to={`/driver/adddriver`} className="picker-link">
+        <CButton style={{ marginLeft: '0%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
+          Add Driver
         </CButton>
       </Link>
-      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle>{selectedCity}</CDropdownToggle>
+      <CBadge style={{ marginLeft: '20%'}} color="secondary">Filter by</CBadge>
+      <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
+        <CDropdownToggle style={{color:'white'}}>{selectedCity}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
           <CDropdownItem onClick={() => city('Milan')}>Milan</CDropdownItem>
           <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
         </CDropdownMenu>
       </CDropdown>
-      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle>{selectedChain}</CDropdownToggle>
+      <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
+        <CDropdownToggle style={{color:'white'}}>{selectedChain}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
           {chainData.map((item, index) => (
@@ -416,8 +428,8 @@ const Drivers = () => {
           ))}
         </CDropdownMenu>
       </CDropdown>
-      <CDropdown className="picker-dropdown" style={{ backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle>{selectedMarketGroup}</CDropdownToggle>
+      <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
+        <CDropdownToggle style={{color:'white'}}>{selectedMarketGroup}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
           {mGroupData.map((item, index) => (
@@ -427,6 +439,14 @@ const Drivers = () => {
           ))}
         </CDropdownMenu>
       </CDropdown>
+      <CNavbar className="bg-body-tertiary">
+      <CFormInput
+        type="text"
+        placeholder="Search by Driver ID"
+        style={{ width : 450, marginLeft: '0%' }}
+        value={paramCode}
+        onChange={(e) => setParamCodeData(e.target.value)}
+      />
     </CNavbar>
       {/* <CNavbar className="bg-body-tertiary">
       <CFormInput  
@@ -491,7 +511,7 @@ const Drivers = () => {
               <CTableHeaderCell scope="col">Language</CTableHeaderCell>
               <CTableHeaderCell scope="col">Group</CTableHeaderCell>
               <CTableHeaderCell scope="col">Edit</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Edit Status</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
@@ -532,7 +552,7 @@ const Drivers = () => {
                     <CButton
                       size="sm"
                       onClick={() => handleToggle(item.id, false)}
-                      style={{ backgroundColor: '#ff4d4d', width: 90 }}
+                      style={{ backgroundColor: '#ff4d4d', width: 90 ,color:'white'}}
                     >
                       Deactivate
                     </CButton>
@@ -540,7 +560,7 @@ const Drivers = () => {
                     <CButton
                       size="sm"
                       onClick={() => handleToggle(item.id, true)}
-                      style={{ backgroundColor: '#ff4d4d', width: 90 }}
+                      style={{ backgroundColor: '#ff4d4d', width: 90 ,color:'white'}}
                     >
                       Activate
                     </CButton>
@@ -553,25 +573,29 @@ const Drivers = () => {
       )}
 
       <CModal alignment="center" visible={visible} scrollable size="sm" onClose={() => setVisible(false)}>
-        <CModalHeader closeButton>
+        <CModalHeader closeButton={false}>
           <CModalTitle>Confirmation</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <a>Are you sure you want to {isActivate ? 'activate' : 'deactivate'} this user?</a>
-          <br></br>
-          <CButton
+          <a>Are you sure you want to {isActivate ? 'activate' : 'deactivate'} this driver?</a>
+          <br></br><br></br>
+          {/* <CButton
             onClick={() => handleActivate()}
             style={{ display: 'flex', justifyContent: 'center' }}
             color="primary"
           >
             Yes
-          </CButton>
+          </CButton> */}
+          <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton onClick={() => handleActivate()} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setVisible(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
         </CModalBody>
-        <CModalFooter>
+        {/* <CModalFooter>
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-        </CModalFooter>
+        </CModalFooter> */}
       </CModal>
 
       <CModal visible={visibleRider} scrollable size="lg" onClose={() => setVisibleRider(false)}>
@@ -679,17 +703,17 @@ const Drivers = () => {
         </CCol> */}
   
         <CCol xs={12}>
-            <CButton color="warning" type="submit" style={{ marginBottom:'3%', width:'200px' }} onClick={()=>handleSubmit()}>
+            <CButton style={{ marginBottom:'3%', width:'200px',backgroundColor:'#ff4d4d',color:'white' }} onClick={()=>handleSubmit()}>
               Update Rider
             </CButton>
           </CCol>
         </div>
         </CModalBody>
-        <CModalFooter>
+        {/* <CModalFooter>
           <CButton color="secondary" onClick={() => setVisibleRider(false)}>
             Close
           </CButton>
-        </CModalFooter>
+        </CModalFooter> */}
       </CModal>
 
     </CContainer>

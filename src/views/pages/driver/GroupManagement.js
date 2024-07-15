@@ -368,15 +368,24 @@ const GroupManagement = () => {
                     setDriverGroupData([])
                     console.log(res.data)
                     loadMakerGroup()
-                    // const updatedEntity = res.data
-                    // const list = driverData.map((ob) => {
-                    //  if(ob.id === updatedEntity.id){
-                    //     return updatedEntity
-                    //    } else {
-                    //   return ob
-                    //    }
-                    //    })
-                    //      setDriverData([...list])
+                    const updatedEntity = res.data
+                    const list = driverData.map((ob) => {
+                     if(ob.id === updatedEntity._id){
+                        return updatedEntity
+                       } else {
+                      return ob
+                       }
+                       })
+                         setDriverData([...list])
+                    dispatch({
+                      type : SET_ALERT,
+                      payload : {
+                        status : true,
+                        title : 'Market Group Assign',
+                        message : 'successfully Market Group assigned to the picker ',
+                        color:'success'
+                      }
+                    })
 
                   } else if (res.status === 204) {
                     dispatch({
@@ -451,6 +460,15 @@ const GroupManagement = () => {
                     //    }
                     //    })
                     //      setDriverData([...list])
+                    dispatch({
+                      type : SET_ALERT,
+                      payload : {
+                        status : true,
+                        title : 'Market Group Remove',
+                        message : 'successfully Market Group removed from the picker ',
+                        color:'success'
+                      }
+                    })
 
                   } else if (res.status === 204) {
                     dispatch({
@@ -498,10 +516,9 @@ const GroupManagement = () => {
 
   return (
     <CContainer>
-      <CNavbar className="bg-body-tertiary">
-      
-        <CDropdown style={{ marginLeft: '43%', width: '10%', backgroundColor: '#ff4d4d' }}>
-          <CDropdownToggle>{selectedCity}</CDropdownToggle>
+       <CBadge style={{ marginLeft: '34%'}} color="secondary">Filter by</CBadge>
+        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
+          <CDropdownToggle style={{color:'white'}} >{selectedCity}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => city('all','view')}>All</CDropdownItem>
             <CDropdownItem onClick={() => city('Milan','view')}>Milan</CDropdownItem>
@@ -509,8 +526,8 @@ const GroupManagement = () => {
           </CDropdownMenu>
         </CDropdown>
 
-        <CDropdown style={{ marginRight: '0%', width: '15%', backgroundColor: '#ff4d4d' }}>
-          <CDropdownToggle>{selectedChain}</CDropdownToggle>
+        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
+          <CDropdownToggle style={{color:'white'}} >{selectedChain}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
             {chainData.map((item, index) => (
@@ -521,8 +538,8 @@ const GroupManagement = () => {
           </CDropdownMenu>
         </CDropdown>
 
-        <CDropdown style={{ marginRight: '1%', width: '30%', backgroundColor: '#ff4d4d' }}>
-          <CDropdownToggle>{selectedMarketGroup}</CDropdownToggle>
+        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
+          <CDropdownToggle style={{color:'white'}} >{selectedMarketGroup}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
             {mGroupData.map((item, index) => (
@@ -532,6 +549,8 @@ const GroupManagement = () => {
             ))}
           </CDropdownMenu>
         </CDropdown>
+        <CNavbar style={{marginTop:'1%'}}  className="bg-body-tertiary">
+
       </CNavbar>
 
       {loading ? (
@@ -583,7 +602,7 @@ const GroupManagement = () => {
                     <CButton
                       size="sm"
                       onClick={() => handleToggle(item.groups, item.id)}
-                      style={{ backgroundColor: '#ff4d4d', width: 90 }}
+                      style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }}
                     >
                       Assign
                     </CButton>
@@ -591,7 +610,7 @@ const GroupManagement = () => {
                     <CButton
                       size="sm"
                       onClick={() => handleToggle(item.groups, item.id)}
-                      style={{ backgroundColor: '#ff4d4d', width: 90 }}
+                      style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }}
                     >
                       Add
                     </CButton>
@@ -605,18 +624,22 @@ const GroupManagement = () => {
 
       <CModal alignment="center" visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Confirmation</CModalTitle>
-          <CDropdown style={{ marginLeft: 0, width:'10%',backgroundColor: '#ff4d4d'  }}>
-          <CDropdownToggle  >{selectedCityModal}</CDropdownToggle>
+          <CModalTitle>Market Group Assign</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+
+        <CBadge style={{ marginLeft: '74%'}} color="secondary">Filter by</CBadge>
+          <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
+          <CDropdownToggle  style={{color:'white'}}>{selectedCityModal}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => city('all','modal')}>All</CDropdownItem>
             <CDropdownItem onClick={() => city('Milano','modal')}>Milano</CDropdownItem>
             <CDropdownItem onClick={() => city('Napoli','modal')}>Napoli</CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
-        </CModalHeader>
-        <CModalBody>
-         
+        <CNavbar style={{marginTop:'1%'}}  className="bg-body-tertiary">
+
+        </CNavbar>
 
         {loadingModal ? <CSpinner/> :  <CTable>
         <CTableHead>
@@ -639,7 +662,7 @@ const GroupManagement = () => {
                    <CButton 
                      size='sm' 
                      onClick={() => removeMarketGroup(driverIdmodal, item._id)} 
-                     style={{ backgroundColor:'#ff4d4d', width: 90 }} 
+                     style={{ backgroundColor:'#ff4d4d', width: 90,color:'white' }} 
                    >
                      Remove
                    </CButton>
@@ -647,7 +670,7 @@ const GroupManagement = () => {
                    <CButton 
                      size='sm' 
                      onClick={() => addMarketGroup(driverIdmodal, item._id)}  
-                     style={{ backgroundColor:'#ff4d4d', width: 90 }} 
+                     style={{ backgroundColor:'#ff4d4d', width: 90 ,color:'white'}} 
                    >
                      Add
                    </CButton>
@@ -665,22 +688,22 @@ const GroupManagement = () => {
 
      }
 
-      <CPagination aria-label="Page navigation example">
+      {/* <CPagination aria-label="Page navigation example">
         <CPaginationItem disabled={itemsPerPage <= 20 ? true : false} onClick={previousPage}>
           Previous
         </CPaginationItem>
         <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>
           Next
         </CPaginationItem>
-      </CPagination>
+      </CPagination> */}
 
 
         </CModalBody>
-        <CModalFooter>
+        {/* <CModalFooter>
           <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton>
-        </CModalFooter>
+        </CModalFooter> */}
       </CModal>
     </CContainer>
   )

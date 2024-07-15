@@ -17,6 +17,7 @@ import {
   CTableHeaderCell,
   CTableDataCell,
   CTableBody,
+  CNavbar,
 } from '@coreui/react'
 import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
@@ -261,7 +262,8 @@ const AddMarket = () => {
             ))}
           </CFormSelect>
         </CCol>
-
+      <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
+        
         <CCol md={2}>
         <CFormSelect
           id="inputState"
@@ -299,9 +301,9 @@ const AddMarket = () => {
         />
       </CCol>
       <CCol md={2}>
-        <CButton style={{ marginTop:31 }} color="primary" onClick={manageSchedule}>Add</CButton>
+        <CButton style={{ marginTop:31,backgroundColor: '#ff4d4d', color:'white',marginLeft:'5%' }} onClick={manageSchedule}>Add</CButton>
       </CCol>
-      
+      </CNavbar>
       <CTable>
         <CTableHead>
           <CTableRow>
@@ -311,6 +313,7 @@ const AddMarket = () => {
             <CTableHeaderCell scope="col">Action</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
+       
         <CTableBody>
           {scheduleList.map((schedule, index) => (
             <CTableRow key={index}>
@@ -319,7 +322,7 @@ const AddMarket = () => {
               <CTableDataCell>{schedule.info.closeTime}</CTableDataCell>
               <CTableDataCell>
               <CButton
-                 color="danger"
+                 style={{backgroundColor: '#ff4d4d', color:'white' }}
                  onClick={() => removeScheduleDay(index)}
               >
               Remove
@@ -332,7 +335,7 @@ const AddMarket = () => {
       
 
       <CCol xs={12}>
-          <CButton color="warning" type="submit" style={{ marginBottom:'3%', width:'200px' }} onClick={()=>handleSubmit()}>
+          <CButton  type="submit" style={{ marginBottom:'3%', width:'200px',backgroundColor: '#ff4d4d', color:'white'  }} onClick={()=>handleSubmit()}>
             Add Market
           </CButton>
         </CCol>

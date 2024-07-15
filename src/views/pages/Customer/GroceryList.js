@@ -67,7 +67,7 @@ const Orders = () => {
             <CTableHeaderCell scope="col">Date</CTableHeaderCell>
             <CTableHeaderCell scope="col">Saving</CTableHeaderCell>
             <CTableHeaderCell scope="col">Address</CTableHeaderCell>
-            <CTableHeaderCell scope="col"></CTableHeaderCell>
+            <CTableHeaderCell scope="col">Products</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -80,8 +80,8 @@ const Orders = () => {
               <CTableDataCell>{item.address.address}</CTableDataCell>
               <CTableDataCell>
                 <Link to={`/customers/orders/products/${item.id}`}>
-                  <CButton color="primary" style={{ marginLeft: '5px' }}>
-                    View Products
+                  <CButton size='sm' style={{ backgroundColor:'#ff4d4d',color:'white'}}>
+                    View
                   </CButton>
                 </Link>
               </CTableDataCell>

@@ -176,7 +176,7 @@ const _nav = [
   ,
   {
     component: CNavGroup,
-    name: 'List',
+    name: 'Pickup',
     to: '/order',
     icon: <CIcon icon={cilList} customClassName="nav-icon" />,
     items: [
