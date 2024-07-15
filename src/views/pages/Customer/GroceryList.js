@@ -29,7 +29,7 @@ const Orders = () => {
     if (token) {
       setLoading(true)
       axios
-        .get('http://localhost:8003/assistant/list/customer/' + id, {
+        .get('http://15.160.211.157/assistant/list/customer/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

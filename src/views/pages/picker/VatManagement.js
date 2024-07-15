@@ -45,7 +45,7 @@ const VatManagement = () => {
         if(user && token){
             setLoading(true)
             axios
-              .get(`http://localhost:8003/assistant/vat/shoppers/00?search=`+searchQuery, {
+              .get(`http://15.160.211.157/assistant/vat/shoppers/00?search=`+searchQuery, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
@@ -107,7 +107,7 @@ const VatManagement = () => {
       
           if(user && token){
              axios
-              .patch('http://localhost:8003/assistant/shopper/vat/'+pickerId, data, {
+              .patch('http://15.160.211.157/assistant/shopper/vat/'+pickerId, data, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },

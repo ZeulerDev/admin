@@ -20,7 +20,7 @@ console.log(data)
   //   console.log('data')
   //   if (user && token) {
   //     axios
-  //     .get('http://localhost:8003/assistant/batch/markets/' + id, {
+  //     .get('http://15.160.211.157/assistant/batch/markets/' + id, {
   //       headers: {
   //         Authorization: `Bearer ${token}`,
   //       },

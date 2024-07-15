@@ -76,7 +76,7 @@ const Pickers = () => {
   const loadMakerGroup = () =>{
     if (token) {
       axios
-        .get('http://localhost:8003/market/groups/dropdown/fetch', {
+        .get('http://15.160.211.157/market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -103,7 +103,7 @@ const Pickers = () => {
   const loadChain = ()=>{
     if (token) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get('http://15.160.211.157/assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -135,7 +135,7 @@ const Pickers = () => {
     if(user && token){
       setLoading(true)
 
-      let url = `http://localhost:8003/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
+      let url = `http://15.160.211.157/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
 
       if (paramCode) {
         url += `&code=${paramCode}`
@@ -218,7 +218,7 @@ const Pickers = () => {
 
     if(user && token){
        axios
-        .patch('http://localhost:8003/assistant/shopper/status/'+pickerId,data, {
+        .patch('http://15.160.211.157/assistant/shopper/status/'+pickerId,data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -301,7 +301,7 @@ const Pickers = () => {
       if(user,token){
           if(user && token){
               axios
-                .patch('http://localhost:8003/assistant/shopper/update/'+id, formData, {
+                .patch('http://15.160.211.157/assistant/shopper/update/'+id, formData, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },

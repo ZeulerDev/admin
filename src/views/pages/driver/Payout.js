@@ -58,7 +58,7 @@ const DriverPayout = ()=>{
 
     const loadData  = () => {
       setLoading(true)
-      axios.get(`http://localhost:8003/assistant/drivers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
+      axios.get(`http://15.160.211.157/assistant/drivers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
             headers:{
                 Authorization: `Bearer ${token}`,
             },
@@ -134,7 +134,7 @@ const DriverPayout = ()=>{
 
     if(user && token){
        axios
-        .patch('http://localhost:8003/assistant/payout/change/'+payoutId, data, {
+        .patch('http://15.160.211.157/assistant/payout/change/'+payoutId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -54,7 +54,7 @@ const MarketGroup = () => {
   const loadData = (count, moveNext) => {
     setLoading(true)
     axios
-      .get(`http://localhost:8003/market/groups/fetch/${count}?city=${paramCity}`, {
+      .get(`http://15.160.211.157/market/groups/fetch/${count}?city=${paramCity}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -102,7 +102,7 @@ const MarketGroup = () => {
     console.log(id)
     axios
       .delete(
-        `http://localhost:8003/marketgroup/`+id,
+        `http://15.160.211.157/marketgroup/`+id,
         {
           headers: {
             Authorization: `Bearer ${token}`,

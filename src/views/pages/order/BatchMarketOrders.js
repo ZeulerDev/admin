@@ -53,7 +53,7 @@ const BatchMarketOrders = () => {
   const loadData = (id, market) => {
     setLoading(true)
     axios
-      .get('http://localhost:8003/assistant/batch/market/orders/' + id + '/' + market, {
+      .get('http://15.160.211.157/assistant/batch/market/orders/' + id + '/' + market, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

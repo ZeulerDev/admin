@@ -118,7 +118,7 @@ const AddMarket = () => {
 
     if(user && token){
       axios
-        .post('http://localhost:8003/assistant/market/create', formData, {
+        .post('http://15.160.211.157/assistant/market/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -169,7 +169,7 @@ const AddMarket = () => {
   useEffect(() => {
     if (token && user) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get('http://15.160.211.157/assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../../context/AppContext'
 import { cibDotNet } from '@coreui/icons'
 import { SET_ALERT } from '../../../context/context_reducer'
+import { makeid } from '../../../context/helpers'
 
 
 const CreateDriver = ()=>{
@@ -28,7 +29,7 @@ const CreateDriver = ()=>{
     const navigate = useNavigate()
 
     useEffect(() => {
-      const codeDriver = crypto.randomUUID().slice(0,8)
+      const codeDriver = makeid(8)
       setCode(codeDriver)
     },[])
     
@@ -54,7 +55,7 @@ const CreateDriver = ()=>{
         if(user,token){
             if(user && token){
                 axios
-                  .post('http://localhost:8003/rider/create', formData, {
+                  .post('http://15.160.211.157/rider/create', formData, {
                     headers: {
                       Authorization: `Bearer ${token}`,
                     },

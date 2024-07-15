@@ -100,7 +100,7 @@ const Batch = () => {
   const loadData = (count, moveNext) => {
     setLoading(true)
     axios
-      .get('http://localhost:8003/assistant/batches/' + count + '?status='+paramStatus, {
+      .get('http://15.160.211.157/assistant/batches/' + count + '?status='+paramStatus, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -164,7 +164,7 @@ const Batch = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://localhost:8003/assistant/batch/customers/' + id, {
+        .get('http://15.160.211.157/assistant/batch/customers/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -207,7 +207,7 @@ const Batch = () => {
       }
       if(user && token){
          axios
-          .put('http://localhost:8003/assistant/batch/bonus/'+batchId, data, {
+          .put('http://15.160.211.157/assistant/batch/bonus/'+batchId, data, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -271,7 +271,7 @@ const Batch = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://localhost:8003/assistant/batch/'+id, {
+        .get('http://15.160.211.157/assistant/batch/'+id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -312,7 +312,7 @@ const Batch = () => {
   const loadMakerGroup = () =>{
     if (token) {
       axios
-        .get('http://localhost:8003/market/groups/dropdown/fetch', {
+        .get('http://15.160.211.157/market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -339,7 +339,7 @@ const Batch = () => {
   const loadChain = ()=>{
     if (token) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get('http://15.160.211.157/assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -372,7 +372,7 @@ const Batch = () => {
       setLoadingRiders(true)
       axios
         .get(
-          `http://localhost:8003/assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
+          `http://15.160.211.157/assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -441,7 +441,7 @@ const Batch = () => {
     }
     if(user && token){
        axios
-        .put('http://localhost:8003/assistant/batch/assign/rider/'+bId, data, {
+        .put('http://15.160.211.157/assistant/batch/assign/rider/'+bId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -521,7 +521,7 @@ const Batch = () => {
 
     if(user && token){
        axios
-        .put('http://localhost:8003/assistant/batch/assign/status/'+id, {}, {
+        .put('http://15.160.211.157/assistant/batch/assign/status/'+id, {}, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -584,7 +584,7 @@ const Batch = () => {
   let market = [];
   const loadMarketsById = (id) => {
     axios
-      .get('http://localhost:8003/assistant/batch/markets/' + id, {
+      .get('http://15.160.211.157/assistant/batch/markets/' + id, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -43,7 +43,7 @@ function MapComponent() {
 
     if(user && token){
       axios
-        .post('http://localhost:8003/pickup/area/create', formData, {
+        .post('http://15.160.211.157/pickup/area/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -97,7 +97,7 @@ function MapComponent() {
   useEffect(() => {
     if (user && token) {
       axios
-        .get(`http://localhost:8003/assistant/markets/groups/locations/pickup/${paramMapCity}`, {
+        .get(`http://15.160.211.157/assistant/markets/groups/locations/pickup/${paramMapCity}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

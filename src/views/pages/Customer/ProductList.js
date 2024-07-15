@@ -29,7 +29,7 @@ const ProductList = () => {
     if (token) {
       setLoading(true)
       axios
-        .get('http://localhost:8003/assistant/products/list/' + id, {
+        .get('http://15.160.211.157/assistant/products/list/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

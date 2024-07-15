@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../../context/AppContext'
 import { cibDotNet } from '@coreui/icons'
 import { SET_ALERT } from '../../../context/context_reducer'
+import { makeid } from '../../../context/helpers'
 
 
 const CreatePicker = ()=>{
@@ -27,7 +28,7 @@ const CreatePicker = ()=>{
     const navigate = useNavigate()
 
     useEffect(() => {
-      const codePicker = crypto.randomUUID().slice(0,8)
+      const codePicker = makeid(8)
       setCode(codePicker)
     },[])
    
@@ -54,7 +55,7 @@ const CreatePicker = ()=>{
         if(user,token){
             if(user && token){
                 axios
-                  .post('http://localhost:8003/shopper/create', formData, {
+                  .post('http://15.160.211.157/shopper/create', formData, {
                     headers: {
                       Authorization: `Bearer ${token}`,
                     },

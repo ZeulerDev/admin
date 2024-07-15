@@ -69,7 +69,7 @@ const GroupManagement = () => {
   const loadMakerGroup = () => {
     if (token) {
       axios
-        .get('http://localhost:8003/market/groups/dropdown/fetch', {
+        .get('http://15.160.211.157/market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -97,7 +97,7 @@ const GroupManagement = () => {
   const loadChain = () => {
     if (token) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get('http://15.160.211.157/assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -132,7 +132,7 @@ const GroupManagement = () => {
       setLoading(true)
       axios
         .get(
-          `http://localhost:8003/assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
+          `http://15.160.211.157/assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -222,7 +222,7 @@ const GroupManagement = () => {
 
     if (user && token) {
       axios
-        .patch('http://localhost:8003/assistant/rider/status/' + driverId, data, {
+        .patch('http://15.160.211.157/assistant/rider/status/' + driverId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -289,7 +289,7 @@ const GroupManagement = () => {
   const loadModalMarketGroupData = (count, moveNext) => {
     setLoadingModal(true)
     axios
-      .get(`http://localhost:8003/market/groups/fetch/${count}?city=${paramCityModal}`, {
+      .get(`http://15.160.211.157/market/groups/fetch/${count}?city=${paramCityModal}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -355,7 +355,7 @@ const GroupManagement = () => {
 
       if(user,token){
           if(user && token){
-            axios.put('http://localhost:8003/assistant/groups/rider/assign', formData, {
+            axios.put('http://15.160.211.157/assistant/groups/rider/assign', formData, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -429,7 +429,7 @@ const GroupManagement = () => {
 
       if(user,token){
           if(user && token){
-            axios.put('http://localhost:8003/assistant/groups/rider/remove', formData, {
+            axios.put('http://15.160.211.157/assistant/groups/rider/remove', formData, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },

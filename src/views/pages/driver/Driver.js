@@ -76,7 +76,7 @@ const Drivers = () => {
   const loadMakerGroup = () => {
     if (token) {
       axios
-        .get('http://localhost:8003/market/groups/dropdown/fetch', {
+        .get('http://15.160.211.157/market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -104,7 +104,7 @@ const Drivers = () => {
   const loadChain = () => {
     if (token) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get('http://15.160.211.157/assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -137,7 +137,7 @@ const Drivers = () => {
   const loadDriversData = () => {
     if (user && token) {
       setLoading(true)
-      let url = `http://localhost:8003/assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
+      let url = `http://15.160.211.157/assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
     
       if (paramCode) {
         url += `&code=${paramCode}`
@@ -219,7 +219,7 @@ const Drivers = () => {
 
     if (user && token) {
       axios
-        .patch('http://localhost:8003/assistant/rider/status/' + driverId, data, {
+        .patch('http://15.160.211.157/assistant/rider/status/' + driverId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -307,7 +307,7 @@ const Drivers = () => {
       if(user,token){
           if(user && token){
               axios
-                .patch('http://localhost:8003/assistant/rider/update/'+id, formData, {
+                .patch('http://15.160.211.157/assistant/rider/update/'+id, formData, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },
