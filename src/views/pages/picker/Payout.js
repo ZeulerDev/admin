@@ -1,3 +1,4 @@
+import { CContainer } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 // import {
 //     CContainer,
@@ -62,7 +63,11 @@ const Payout = ()=>{
       console.log('just call in effect')
     }, [])
 
-    return <View><span>hello payout</span></View>
+    return (
+      <CContainer> 
+        <h1>Just Call</h1>
+      </CContainer>
+    )
 
     const loadData =()=>{
       setLoading(true)
