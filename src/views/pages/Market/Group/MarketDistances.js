@@ -21,6 +21,7 @@ import {
   import { Link,useParams } from 'react-router-dom'
   import { useAppContext } from '../../../../context/AppContext'
   import axios from 'axios'
+import { BASE_URL } from '../../../../context/config'
 
 const MarketDistance = ()=>{
 
@@ -34,7 +35,7 @@ const MarketDistance = ()=>{
       if (user && token) {
         setLoading(true)
         axios
-          .get(`http://localhost:8003/market/group/distance/${id}`, {
+          .get(BASE_URL+`market/group/distance/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

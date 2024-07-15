@@ -26,6 +26,7 @@ import CIcon from '@coreui/icons-react'
 import { cilBasket, cilDelete } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
+import { BASE_URL } from '../../../context/config'
 
 const Market = () => {
   const [{ user, token }, dispatch] = useAppContext()
@@ -44,7 +45,7 @@ const Market = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get(BASE_URL+'assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -80,7 +81,7 @@ const Market = () => {
     setLoading(true)
     axios
       .get(
-        `http://localhost:8003/assistant/market/locations/${count}?brand=${paramChainId}&city=${paramCity}`,
+        BASE_URL+`assistant/market/locations/${count}?brand=${paramChainId}&city=${paramCity}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -200,7 +201,7 @@ const Market = () => {
     
     axios
       .post(
-        `http://localhost:8003/assistant/markets/add/services`,serviceData,
+        BASE_URL+`assistant/markets/add/services`,serviceData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -248,7 +249,7 @@ const Market = () => {
 
     axios
       .post(
-        `http://localhost:8003/assistant/markets/remove/services`,serviceReData,
+        BASE_URL+`assistant/markets/remove/services`,serviceReData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -296,7 +297,7 @@ const Market = () => {
     console.log(id)
     axios
       .delete(
-        `http://localhost:8003/market/`+id,
+        BASE_URL+`market/`+id,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -33,6 +33,7 @@ import { PDFViewer } from '@react-pdf/renderer'
 import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrationPDF'
 import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
 import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
+import { BASE_URL } from '../../../context/config'
 
 const Payout = ()=>{
 
@@ -57,7 +58,7 @@ const Payout = ()=>{
 
     const loadData =()=>{
       setLoading(true)
-      axios.get(`http://localhost:8003/assistant/pickers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
+      axios.get(BASE_URL+`assistant/pickers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
           headers:{
               Authorization: `Bearer ${token}`,
           },
@@ -132,7 +133,7 @@ const Payout = ()=>{
 
     if(user && token){
        axios
-        .patch('http://localhost:8003/assistant/payout/change/'+payoutId, data, {
+        .patch(BASE_URL+'assistant/payout/change/'+payoutId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

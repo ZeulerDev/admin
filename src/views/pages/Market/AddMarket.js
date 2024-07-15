@@ -22,6 +22,7 @@ import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
+import { BASE_URL } from '../../../context/config'
 
 
 const AddMarket = () => {
@@ -118,7 +119,7 @@ const AddMarket = () => {
 
     if(user && token){
       axios
-        .post('http://localhost:8003/assistant/market/create', formData, {
+        .post(BASE_URL+'assistant/market/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -169,7 +170,7 @@ const AddMarket = () => {
   useEffect(() => {
     if (token && user) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get('https://15.160.211.157/assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

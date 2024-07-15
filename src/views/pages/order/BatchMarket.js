@@ -32,6 +32,7 @@ import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
 import { SET_ALERT, SET_TOKEN } from '../../../context/context_reducer'
 import CIcon from '@coreui/icons-react'
+import { BASE_URL } from '../../../context/config'
 
 const BatchMarkets = () => {
  
@@ -50,7 +51,7 @@ const BatchMarkets = () => {
   const loadData = (id) => {
     setLoading(true)
     axios
-      .get('http://localhost:8003/assistant/batch/markets/' + id, {
+      .get(BASE_URL+'assistant/batch/markets/' + id, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

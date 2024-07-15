@@ -39,6 +39,7 @@ import CIcon from '@coreui/icons-react'
 import { DateRangePicker } from 'rsuite';
 import "rsuite/dist/rsuite.css";
 import { format } from 'date-fns';
+import { BASE_URL } from '../../../context/config'
 
 const GroupOfOrders = () => {
   const [{ user, token }, dispatch] = useAppContext()
@@ -81,9 +82,8 @@ const GroupOfOrders = () => {
 
   const loadData = (count, moveNext) => {
     setLoading(true)
-    axios
-      .get(
-        'http://localhost:8003/assistant/grocery/group/' + count +'?rider=' +searchQuery + '&status=' + paramStatus+ '&date=' + selectedDates,
+    axios.get(
+        BASE_URL+'assistant/grocery/group/' + count +'?rider=' +searchQuery + '&status=' + paramStatus+ '&date=' + selectedDates,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -91,8 +91,10 @@ const GroupOfOrders = () => {
         },
       )
       .then((res) => {
+        console.log('data')
         if (res.status === 200) {
           setGroceryGroupsData(res.data)
+          console.log('dataaaaaaa')
           setLoading(false)
           if (res.data.length < 50) {
             setIsDisable(true)
@@ -158,7 +160,7 @@ const GroupOfOrders = () => {
     console.log(data)
     if (user && token) {
       axios
-        .put('http://localhost:8003/assistant/grocery/group/bonus/' + groceryGroupId, data, {
+        .put(BASE_URL+'assistant/grocery/group/bonus/' + groceryGroupId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -219,7 +221,7 @@ const GroupOfOrders = () => {
   const loadMakerGroup = () => {
     if (token) {
       axios
-        .get('http://localhost:8003/market/groups/dropdown/fetch', {
+        .get(BASE_URL+'market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -247,7 +249,7 @@ const GroupOfOrders = () => {
   const loadChain = () => {
     if (token) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get(BASE_URL+'assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -320,7 +322,7 @@ const GroupOfOrders = () => {
       setLoadingPickers(true)
       axios
         .get(
-          `http://localhost:8003/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
+          BASE_URL+`assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -374,7 +376,7 @@ const GroupOfOrders = () => {
     console.log(data)
     if (user && token) {
       axios
-        .put('http://localhost:8003/assistant/grocery/group/picker/' + grocery, data, {
+        .put(BASE_URL+'assistant/grocery/group/picker/' + grocery, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -453,7 +455,7 @@ const GroupOfOrders = () => {
     if (user && token) {
       axios
         .put(
-          'http://localhost:8003/assistant/grocery/group/status/' + id,
+          BASE_URL+'assistant/grocery/group/status/' + id,
           {},
           {
             headers: {

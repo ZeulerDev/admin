@@ -67,12 +67,12 @@ const _nav = [
     to: '/marketgroups',
     icon: <CIcon icon={cilFactory} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Products',
-    to: '/products',
-    icon: <CIcon icon={cilStorage} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Products',
+  //   to: '/products',
+  //   icon: <CIcon icon={cilStorage} customClassName="nav-icon" />,
+  // },
   {
     component: CNavGroup,
     name: 'Pickers',

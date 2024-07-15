@@ -30,6 +30,7 @@ import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
+import { BASE_URL } from '../../../context/config'
 
 
 
@@ -73,7 +74,7 @@ const MarketManagement = () => {
   const loadMakerGroup = () =>{
     if (token) {
       axios
-        .get('http://localhost:8003/market/groups/dropdown/fetch', {
+        .get(BASE_URL+'market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -100,7 +101,7 @@ const MarketManagement = () => {
   const loadChain = ()=>{
     if (token) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get(BASE_URL+'assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -133,7 +134,7 @@ const MarketManagement = () => {
     if(user && token){
       setLoading(true)
       axios
-        .get(`http://localhost:8003/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`, {
+        .get(BASE_URL+`assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -240,7 +241,7 @@ const MarketManagement = () => {
 
     if(user && token){
        axios
-        .patch('http://localhost:8003/assistant/shopper/status/'+pickerId,data, {
+        .patch(BASE_URL+'assistant/shopper/status/'+pickerId,data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -303,7 +304,7 @@ const MarketManagement = () => {
     setLoadingModal(true)
     axios
       .get(
-        `http://localhost:8003/assistant/market/locations/${count}?brand=${paramChainIdModal}&city=${paramCityModal}`,
+        BASE_URL+`assistant/market/locations/${count}?brand=${paramChainIdModal}&city=${paramCityModal}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -358,7 +359,7 @@ const MarketManagement = () => {
       if(user,token){
           if(user && token){
               axios
-                .post('http://localhost:8003/assistant/picker/assign/market', formData, {
+                .post(BASE_URL+'assistant/picker/assign/market', formData, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },
@@ -432,7 +433,7 @@ const MarketManagement = () => {
       if(user,token){
           if(user && token){
               axios
-                .post('http://localhost:8003/assistant/picker/remove/market', formData, {
+                .post(BASE_URL+'assistant/picker/remove/market', formData, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },

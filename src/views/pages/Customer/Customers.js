@@ -68,9 +68,11 @@ const Customer = () => {
           },
         })
         .then((res) => {
+          console.log(res.status)
           if (res.status === 200) {
             setCustomerData(res.data)
             setLoading(false)
+            console.log(BASE_URL)
             if (res.data.length < 50) {
               setIsDisable(true)
               console.log("ok")

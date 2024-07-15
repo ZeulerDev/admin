@@ -32,6 +32,7 @@ import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
 import { SET_ALERT, SET_TOKEN } from '../../../context/context_reducer'
 import CIcon from '@coreui/icons-react'
+import { BASE_URL } from '../../../context/config'
 
 const GroceryList = () => {
   const [visible, setVisible] = useState(false)
@@ -56,7 +57,7 @@ const GroceryList = () => {
   const loadData = (count, moveNext) => {
     setLoading(true)
     axios
-      .get('http://localhost:8003/assistant/grocery/list/' + count, {
+      .get(BASE_URL+'assistant/grocery/list/' + count, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -124,11 +125,7 @@ const GroceryList = () => {
   return (
     <CContainer>
       <CNavbar className="bg-body-tertiary">
-        <CForm>
-          {/* <CButton type="submit" color="success" variant="outline">
-            Search
-          </CButton> */}
-        </CForm>
+     
       </CNavbar>
 
       {loading ? (

@@ -35,6 +35,7 @@ import CIcon from '@coreui/icons-react'
 import { DateRangePicker } from 'rsuite';
 import "rsuite/dist/rsuite.css";
 import { format } from 'date-fns';
+import { BASE_URL } from '../../../context/config'
 
 const Orders = () => {
   const [visible, setVisible] = useState(false)
@@ -59,7 +60,7 @@ const Orders = () => {
   const loadData = (count, moveNext) => {
     setLoading(true)
     axios
-      .get('http://localhost:8003/assistant/grocery/orders/' + count + '?date=' + selectedDates, {
+      .get(BASE_URL+'assistant/grocery/orders/' + count + '?date=' + selectedDates, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -118,7 +119,7 @@ const Orders = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://localhost:8003/assistant/grocery/order/' + id, {
+        .get(BASE_URL+'assistant/grocery/order/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -150,7 +151,7 @@ const Orders = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://localhost:8003/assistant/grocery/customer/' + id, {
+        .get(BASE_URL+'assistant/grocery/customer/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

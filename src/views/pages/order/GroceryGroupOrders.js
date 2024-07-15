@@ -32,6 +32,7 @@ import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
 import { SET_ALERT, SET_TOKEN } from '../../../context/context_reducer'
 import CIcon from '@coreui/icons-react'
+import { BASE_URL } from '../../../context/config'
 
 const GroceryGroupOrders = () => {
   const [{ user, token }, dispatch] = useAppContext()
@@ -48,7 +49,7 @@ const GroceryGroupOrders = () => {
   const loadData = (id) => {
     setLoading(true)
     axios
-      .get('http://localhost:8003/assistant/grocery/group/orders/' + id, {
+      .get(BASE_URL+'assistant/grocery/group/orders/' + id, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

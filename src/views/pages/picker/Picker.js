@@ -33,6 +33,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
 import '../../../scss/styles.scss'
+import { BASE_URL } from '../../../context/config'
 
 
 const Pickers = () => {
@@ -75,7 +76,7 @@ const Pickers = () => {
   const loadMakerGroup = () =>{
     if (token) {
       axios
-        .get('http://localhost:8003/market/groups/dropdown/fetch', {
+        .get(BASE_URL+'market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -102,7 +103,7 @@ const Pickers = () => {
   const loadChain = ()=>{
     if (token) {
       axios
-        .get('http://localhost:8003/assistant/market/chains/all', {
+        .get(BASE_URL+'assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -134,7 +135,7 @@ const Pickers = () => {
     if(user && token){
       setLoading(true)
 
-      let url = `http://localhost:8003/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
+      let url = BASE_URL+`assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
 
       if (paramCode) {
         url += `&code=${paramCode}`
@@ -217,7 +218,7 @@ const Pickers = () => {
 
     if(user && token){
        axios
-        .patch('http://localhost:8003/assistant/shopper/status/'+pickerId,data, {
+        .patch(BASE_URL+'assistant/shopper/status/'+pickerId,data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -300,7 +301,7 @@ const Pickers = () => {
       if(user,token){
           if(user && token){
               axios
-                .patch('http://localhost:8003/assistant/shopper/update/'+id, formData, {
+                .patch(BASE_URL+'assistant/shopper/update/'+id, formData, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },

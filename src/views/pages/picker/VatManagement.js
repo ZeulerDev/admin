@@ -25,6 +25,7 @@ import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
+import { BASE_URL } from '../../../context/config'
 
 
 
@@ -45,7 +46,7 @@ const VatManagement = () => {
         if(user && token){
             setLoading(true)
             axios
-              .get(`http://localhost:8003/assistant/vat/shoppers/00?search=`+searchQuery, {
+              .get(BASE_URL+`assistant/vat/shoppers/00?search=`+searchQuery, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
@@ -107,7 +108,7 @@ const VatManagement = () => {
       
           if(user && token){
              axios
-              .patch('http://localhost:8003/assistant/shopper/vat/'+pickerId, data, {
+              .patch(BASE_URL+'assistant/shopper/vat/'+pickerId, data, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },

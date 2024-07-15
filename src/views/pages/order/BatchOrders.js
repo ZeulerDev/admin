@@ -32,6 +32,7 @@ import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
 import { SET_ALERT, SET_TOKEN } from '../../../context/context_reducer'
 import CIcon from '@coreui/icons-react'
+import { BASE_URL } from '../../../context/config'
 
 const BatchOrders = () => {
   const [visible, setVisible] = useState(false)
@@ -53,7 +54,7 @@ const BatchOrders = () => {
   const loadData = (id) => {
     setLoading(true)
     axios
-      .get('http://localhost:8003/assistant/batch/orders/' + id, {
+      .get(BASE_URL+'assistant/batch/orders/' + id, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -103,7 +104,7 @@ const BatchOrders = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://localhost:8003/assistant/grocery/order/' + id, {
+        .get(BASE_URL+'assistant/grocery/order/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -135,7 +136,7 @@ const BatchOrders = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://localhost:8003/assistant/grocery/customer/' + id, {
+        .get(BASE_URL+'assistant/grocery/customer/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -167,11 +168,7 @@ const BatchOrders = () => {
   return (
     <CContainer>
       <CNavbar className="bg-body-tertiary">
-        <CForm>
-          {/* <CButton type="submit" color="success" variant="outline">
-            Search
-          </CButton> */}
-        </CForm>
+       
       </CNavbar>
 
       {loading ? (

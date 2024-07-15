@@ -18,7 +18,7 @@ const DefaultLayout = () => {
       const initialValue = JSON.parse(userDataString)
       // console.log(initialValue)
       const BrowserToken = initialValue.code
-      axios.post('http://localhost:8003/assistant/browsed/login', initialValue).then((res) => {
+      axios.post('https://15.160.211.157/assistant/browsed/login', initialValue).then((res) => {
         if (res.status === 200) {
           
           dispatch({

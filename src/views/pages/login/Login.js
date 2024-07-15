@@ -19,7 +19,8 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 
 import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
-import { SET_ALERT, SET_CONTEXT_USER } from '../../../context/context_reducer'
+import { SET_ALERT, SET_CONTEXT_USER, SET_TOKEN } from '../../../context/context_reducer'
+import { makeid } from '../../../context/helpers'
 import { BASE_URL } from '../../../context/config'
 
 
@@ -33,7 +34,7 @@ const Login = () => {
 
   const onSubmit = () => {
     if (email && password) {
-      const bId = crypto.randomUUID()
+      const bId = makeid(32)
       const data = {
         browserId: bId,
         email: email,
@@ -56,7 +57,11 @@ const Login = () => {
               type: SET_CONTEXT_USER,
               payload: res.data.user,
             })
-            console.log('clicked')
+
+            dispatch({
+              type: SET_TOKEN,
+              payload: res.data.token,
+            })
             navigate('/')
           } else if (res.status === 203) {
             dispatch({

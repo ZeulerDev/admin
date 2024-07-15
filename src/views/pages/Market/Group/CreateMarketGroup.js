@@ -4,6 +4,7 @@ import { useAppContext } from '../../../../context/AppContext'
 import axios from 'axios'
 import { Router, useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../../context/context_reducer'
+import { BASE_URL } from '../../../../context/config'
 
 
 const CreateMarketGroup = ()=>{
@@ -26,7 +27,7 @@ const CreateMarketGroup = ()=>{
     
         if(user && token){
           axios
-            .post('http://localhost:8003/market/groups/create', formData, {
+            .post(BASE_URL+'market/groups/create', formData, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },

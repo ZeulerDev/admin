@@ -25,6 +25,7 @@ import { useAppContext } from '../../../../context/AppContext'
 import CIcon from '@coreui/icons-react'
 import { cilDelete, cilInfo, cilLocationPin } from '@coreui/icons'
 import { SET_ALERT } from '../../../../context/context_reducer'
+import { BASE_URL } from '../../../../context/config'
 
 const MarketGroup = () => {
   const [{ user, token }, dispatch] = useAppContext()
@@ -54,7 +55,7 @@ const MarketGroup = () => {
   const loadData = (count, moveNext) => {
     setLoading(true)
     axios
-      .get(`http://localhost:8003/market/groups/fetch/${count}?city=${paramCity}`, {
+      .get(BASE_URL+`market/groups/fetch/${count}?city=${paramCity}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -102,7 +103,7 @@ const MarketGroup = () => {
     console.log(id)
     axios
       .delete(
-        `http://localhost:8003/marketgroup/`+id,
+        BASE_URL+`marketgroup/`+id,
         {
           headers: {
             Authorization: `Bearer ${token}`,

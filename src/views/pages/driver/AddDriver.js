@@ -7,6 +7,7 @@ import { useAppContext } from '../../../context/AppContext'
 import { cibDotNet } from '@coreui/icons'
 import { SET_ALERT } from '../../../context/context_reducer'
 import { BASE_URL } from '../../../context/config'
+import { makeid } from '../../../context/helpers'
 
 
 const CreateDriver = ()=>{
@@ -29,7 +30,7 @@ const CreateDriver = ()=>{
     const navigate = useNavigate()
 
     useEffect(() => {
-      const codeDriver = crypto.randomUUID().slice(0,8)
+      const codeDriver = makeid(8)
       setCode(codeDriver)
     },[])
     

@@ -29,6 +29,7 @@ import { SET_ALERT } from '../../../context/context_reducer'
 import { Link } from 'react-router-dom'
 import { cilPencil } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+import { BASE_URL } from '../../../context/config'
 
 const Products = () => {
 
@@ -119,7 +120,7 @@ const Products = () => {
   const loadData = (count, moveNext) => {
     setLoading(true)
     axios
-      .get( `http://localhost:8003/product/all/${count}?marketId=${paramMId}&name=${searchQuery}`, {
+      .get( BASE_URL+`product/all/${count}?marketId=${paramMId}&name=${searchQuery}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -237,7 +238,7 @@ const Products = () => {
 
     if(user && token){
       axios
-        .put('http://localhost:8003/product/update/price/'+id, formData, {
+        .put(BASE_URL+'product/update/price/'+id, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

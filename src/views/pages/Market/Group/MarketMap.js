@@ -30,6 +30,7 @@ import { cilDelete, cilDrop, cilInfo, cilNotes } from '@coreui/icons'
 import { useAppContext } from '../../../../context/AppContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../../../../context/config'
 
 const MarketMap = () => {
   const [visible, setVisible] = useState(false)
@@ -45,7 +46,7 @@ const MarketMap = () => {
     setVisible(!visible)
     setMarketsId(mId)
     axios
-      .get(`http://localhost:8003/market/groups/fetch/0?city=${paramCity}`, {
+      .get(BASE_URL+`market/groups/fetch/0?city=${paramCity}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,7 +83,7 @@ const MarketMap = () => {
   useEffect(() => {
     if (user && token) {
       axios
-        .get(`http://localhost:8003/assistant/markets/groups/locations/delivery/${paramMapCity}`, {
+        .get(BASE_URL+`assistant/markets/groups/locations/delivery/${paramMapCity}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -112,7 +113,7 @@ const MarketMap = () => {
       if (user && token) {
         console.log('one')
         axios
-          .put(`http://localhost:8003/market/groups/assign/${gId}/${mId}`, {},
+          .put(BASE_URL+`market/groups/assign/${gId}/${mId}`, {},
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -155,7 +156,7 @@ const MarketMap = () => {
 
       if (user && token) {
         axios
-          .put(`http://localhost:8003/market/groups/remove/${gId}/${mId}`,{},
+          .put(BASE_URL+`market/groups/remove/${gId}/${mId}`,{},
            {
             headers: {
               Authorization: `Bearer ${token}`,
