@@ -286,7 +286,7 @@ const Payout = ()=>{
                         {item?.status === 'sent' && <CButton size='sm' onClick={() => handleConfirmationToggle(item.id,item.status)} color={color} style={{ width:90 }}>Received</CButton>}
                         {item?.status === 'ready' && <CButton size='sm' onClick={() => handleConfirmationToggle(item.id,item.status)} color={color} style={{ width:90 }}>To Pay</CButton>}
                       </CTableDataCell>
-                      {/* <CTableDataCell><CButton  size='sm' style={{ backgroundColor:'#ff4d4d', width:80 }} onClick={() => handleToggle(item.type, item)} >View</CButton> </CTableDataCell> */}
+                      <CTableDataCell><CButton  size='sm' style={{ backgroundColor:'#ff4d4d', width:80 }} onClick={() => handleToggle(item.type, item)} >View</CButton> </CTableDataCell>
                       {/* <CTableDataCell>{item.type === 'flat_rate' ? <CButton style={{ backgroundColor:'#ff4d4d' }} onClick={() => handleToggle(item.type, item)} >View</CButton> : item.type === 'occasional' ? <CButton style={{ backgroundColor:'#ff4d4d' }}>View</CButton> : <CButton disabled={true} style={{ backgroundColor:'#ff4d4d' }}>View</CButton>}</CTableDataCell> */}
                     </CTableRow>
                   )
