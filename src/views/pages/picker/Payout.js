@@ -51,10 +51,18 @@ const Payout = ()=>{
 
 
     useEffect(() => {
+      console.log('Payout with')
        if(user && token){
-       loadData()
+        console.log('Payout with user')
+        loadData()
        } 
     },[statusParam,searchQuery])
+
+    useEffect(() => {
+      console.log('just call in effect')
+    }, [])
+
+    // return <View><span>hello payout</span></View>
 
     const loadData =()=>{
       setLoading(true)
