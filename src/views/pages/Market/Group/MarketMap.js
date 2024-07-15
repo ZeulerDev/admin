@@ -45,7 +45,7 @@ const MarketMap = () => {
     setVisible(!visible)
     setMarketsId(mId)
     axios
-      .get(`http://15.160.211.157/market/groups/fetch/0?city=${paramCity}`, {
+      .get(`https://15.160.211.157/market/groups/fetch/0?city=${paramCity}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,7 +82,7 @@ const MarketMap = () => {
   useEffect(() => {
     if (user && token) {
       axios
-        .get(`http://15.160.211.157/assistant/markets/groups/locations/delivery/${paramMapCity}`, {
+        .get(`https://15.160.211.157/assistant/markets/groups/locations/delivery/${paramMapCity}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -112,7 +112,7 @@ const MarketMap = () => {
       if (user && token) {
         console.log('one')
         axios
-          .put(`http://15.160.211.157/market/groups/assign/${gId}/${mId}`, {},
+          .put(`https://15.160.211.157/market/groups/assign/${gId}/${mId}`, {},
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -155,7 +155,7 @@ const MarketMap = () => {
 
       if (user && token) {
         axios
-          .put(`http://15.160.211.157/market/groups/remove/${gId}/${mId}`,{},
+          .put(`https://15.160.211.157/market/groups/remove/${gId}/${mId}`,{},
            {
             headers: {
               Authorization: `Bearer ${token}`,

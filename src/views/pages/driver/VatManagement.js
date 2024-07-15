@@ -45,7 +45,7 @@ const VatManagement = () => {
         if(user && token){
             setLoading(true)
             axios
-              .get(`http://15.160.211.157/assistant/vat/riders/00?search=`+searchQuery, {
+              .get(`https://15.160.211.157/assistant/vat/riders/00?search=`+searchQuery, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },
@@ -107,7 +107,7 @@ const VatManagement = () => {
       
           if(user && token){
              axios
-              .patch('http://15.160.211.157/assistant/rider/vat/'+driverId, data, {
+              .patch('https://15.160.211.157/assistant/rider/vat/'+driverId, data, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },

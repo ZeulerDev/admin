@@ -66,7 +66,7 @@ const PickupAreas = () => {
     setLoading(true)
     axios
       .get(
-        `http://15.160.211.157/pickups/areas/${count}?city=${paramCity}`,
+        `https://15.160.211.157/pickups/areas/${count}?city=${paramCity}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -142,7 +142,7 @@ const PickupAreas = () => {
   useEffect(() => {
     if (user && token) {
       axios
-        .get(`http://15.160.211.157/assistant/markets/groups/locations/pickup/${paramMapCity}`, {
+        .get(`https://15.160.211.157/assistant/markets/groups/locations/pickup/${paramMapCity}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -194,7 +194,7 @@ const PickupAreas = () => {
 
     if(user && token){
       axios
-        .put('http://15.160.211.157/pickup/area/update/'+id, formData, {
+        .put('https://15.160.211.157/pickup/area/update/'+id, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

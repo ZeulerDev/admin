@@ -59,7 +59,7 @@ const Orders = () => {
   const loadData = (count, moveNext) => {
     setLoading(true)
     axios
-      .get('http://15.160.211.157/assistant/grocery/orders/' + count + '?date=' + selectedDates, {
+      .get('https://15.160.211.157/assistant/grocery/orders/' + count + '?date=' + selectedDates, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -118,7 +118,7 @@ const Orders = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://15.160.211.157/assistant/grocery/order/' + id, {
+        .get('https://15.160.211.157/assistant/grocery/order/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -150,7 +150,7 @@ const Orders = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://15.160.211.157/assistant/grocery/customer/' + id, {
+        .get('https://15.160.211.157/assistant/grocery/customer/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

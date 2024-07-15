@@ -34,7 +34,7 @@ const MarketDistance = ()=>{
       if (user && token) {
         setLoading(true)
         axios
-          .get(`http://15.160.211.157/market/group/distance/${id}`, {
+          .get(`https://15.160.211.157/market/group/distance/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

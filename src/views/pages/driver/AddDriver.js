@@ -55,7 +55,7 @@ const CreateDriver = ()=>{
         if(user,token){
             if(user && token){
                 axios
-                  .post('http://15.160.211.157/rider/create', formData, {
+                  .post('https://15.160.211.157/rider/create', formData, {
                     headers: {
                       Authorization: `Bearer ${token}`,
                     },

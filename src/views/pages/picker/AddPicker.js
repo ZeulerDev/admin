@@ -55,7 +55,7 @@ const CreatePicker = ()=>{
         if(user,token){
             if(user && token){
                 axios
-                  .post('http://15.160.211.157/shopper/create', formData, {
+                  .post('https://15.160.211.157/shopper/create', formData, {
                     headers: {
                       Authorization: `Bearer ${token}`,
                     },

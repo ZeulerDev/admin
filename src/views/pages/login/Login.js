@@ -42,7 +42,7 @@ const Login = () => {
 
 
       axios
-        .post('http://15.160.211.157/assistant/login', data)
+        .post('https://15.160.211.157/assistant/login', data)
         .then((res) => {
           if (res.status === 200) {
             const browserCookies = {

@@ -56,7 +56,7 @@ const GroceryList = () => {
   const loadData = (count, moveNext) => {
     setLoading(true)
     axios
-      .get('http://15.160.211.157/assistant/grocery/list/' + count, {
+      .get('https://15.160.211.157/assistant/grocery/list/' + count, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

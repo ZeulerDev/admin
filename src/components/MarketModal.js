@@ -38,7 +38,7 @@ const MarketModal = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get('http://15.160.211.157/assistant/market/chains/all', {
+        .get('https://15.160.211.157/assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -74,7 +74,7 @@ const MarketModal = () => {
     setLoading(true)
     axios
       .get(
-        `http://15.160.211.157/assistant/market/locations/${count}?brand=${paramChainId}&city=${paramCity}`,
+        `https://15.160.211.157/assistant/market/locations/${count}?brand=${paramChainId}&city=${paramCity}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -194,7 +194,7 @@ const MarketModal = () => {
     
     axios
       .post(
-        `http://15.160.211.157/assistant/markets/add/services`,serviceData,
+        `https://15.160.211.157/assistant/markets/add/services`,serviceData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -242,7 +242,7 @@ const MarketModal = () => {
 
     axios
       .post(
-        `http://15.160.211.157/assistant/markets/remove/services`,serviceReData,
+        `https://15.160.211.157/assistant/markets/remove/services`,serviceReData,
         {
           headers: {
             Authorization: `Bearer ${token}`,

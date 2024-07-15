@@ -83,7 +83,7 @@ const GroupOfOrders = () => {
     setLoading(true)
     axios
       .get(
-        'http://15.160.211.157/assistant/grocery/group/' + count +'?rider=' +searchQuery + '&status=' + paramStatus+ '&date=' + selectedDates,
+        'https://15.160.211.157/assistant/grocery/group/' + count +'?rider=' +searchQuery + '&status=' + paramStatus+ '&date=' + selectedDates,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -158,7 +158,7 @@ const GroupOfOrders = () => {
     console.log(data)
     if (user && token) {
       axios
-        .put('http://15.160.211.157/assistant/grocery/group/bonus/' + groceryGroupId, data, {
+        .put('https://15.160.211.157/assistant/grocery/group/bonus/' + groceryGroupId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -219,7 +219,7 @@ const GroupOfOrders = () => {
   const loadMakerGroup = () => {
     if (token) {
       axios
-        .get('http://15.160.211.157/market/groups/dropdown/fetch', {
+        .get('https://15.160.211.157/market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -247,7 +247,7 @@ const GroupOfOrders = () => {
   const loadChain = () => {
     if (token) {
       axios
-        .get('http://15.160.211.157/assistant/market/chains/all', {
+        .get('https://15.160.211.157/assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -320,7 +320,7 @@ const GroupOfOrders = () => {
       setLoadingPickers(true)
       axios
         .get(
-          `http://15.160.211.157/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
+          `https://15.160.211.157/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -374,7 +374,7 @@ const GroupOfOrders = () => {
     console.log(data)
     if (user && token) {
       axios
-        .put('http://15.160.211.157/assistant/grocery/group/picker/' + grocery, data, {
+        .put('https://15.160.211.157/assistant/grocery/group/picker/' + grocery, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -453,7 +453,7 @@ const GroupOfOrders = () => {
     if (user && token) {
       axios
         .put(
-          'http://15.160.211.157/assistant/grocery/group/status/' + id,
+          'https://15.160.211.157/assistant/grocery/group/status/' + id,
           {},
           {
             headers: {

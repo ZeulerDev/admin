@@ -26,7 +26,7 @@ const CreateMarketGroup = ()=>{
     
         if(user && token){
           axios
-            .post('http://15.160.211.157/market/groups/create', formData, {
+            .post('https://15.160.211.157/market/groups/create', formData, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },

@@ -50,7 +50,7 @@ const BatchMarkets = () => {
   const loadData = (id) => {
     setLoading(true)
     axios
-      .get('http://15.160.211.157/assistant/batch/markets/' + id, {
+      .get('https://15.160.211.157/assistant/batch/markets/' + id, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

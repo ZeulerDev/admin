@@ -53,7 +53,7 @@ const BatchOrders = () => {
   const loadData = (id) => {
     setLoading(true)
     axios
-      .get('http://15.160.211.157/assistant/batch/orders/' + id, {
+      .get('https://15.160.211.157/assistant/batch/orders/' + id, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -103,7 +103,7 @@ const BatchOrders = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://15.160.211.157/assistant/grocery/order/' + id, {
+        .get('https://15.160.211.157/assistant/grocery/order/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -135,7 +135,7 @@ const BatchOrders = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://15.160.211.157/assistant/grocery/customer/' + id, {
+        .get('https://15.160.211.157/assistant/grocery/customer/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

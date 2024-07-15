@@ -57,7 +57,7 @@ const Payout = ()=>{
 
     const loadData =()=>{
       setLoading(true)
-      axios.get(`http://15.160.211.157/assistant/pickers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
+      axios.get(`https://15.160.211.157/assistant/pickers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
           headers:{
               Authorization: `Bearer ${token}`,
           },
@@ -132,7 +132,7 @@ const Payout = ()=>{
 
     if(user && token){
        axios
-        .patch('http://15.160.211.157/assistant/payout/change/'+payoutId, data, {
+        .patch('https://15.160.211.157/assistant/payout/change/'+payoutId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -48,7 +48,7 @@ const GroceryGroupOrders = () => {
   const loadData = (id) => {
     setLoading(true)
     axios
-      .get('http://15.160.211.157/assistant/grocery/group/orders/' + id, {
+      .get('https://15.160.211.157/assistant/grocery/group/orders/' + id, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

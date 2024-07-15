@@ -73,7 +73,7 @@ const MarketManagement = () => {
   const loadMakerGroup = () =>{
     if (token) {
       axios
-        .get('http://15.160.211.157/market/groups/dropdown/fetch', {
+        .get('https://15.160.211.157/market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -100,7 +100,7 @@ const MarketManagement = () => {
   const loadChain = ()=>{
     if (token) {
       axios
-        .get('http://15.160.211.157/assistant/market/chains/all', {
+        .get('https://15.160.211.157/assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -133,7 +133,7 @@ const MarketManagement = () => {
     if(user && token){
       setLoading(true)
       axios
-        .get(`http://15.160.211.157/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`, {
+        .get(`https://15.160.211.157/assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -240,7 +240,7 @@ const MarketManagement = () => {
 
     if(user && token){
        axios
-        .patch('http://15.160.211.157/assistant/shopper/status/'+pickerId,data, {
+        .patch('https://15.160.211.157/assistant/shopper/status/'+pickerId,data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -303,7 +303,7 @@ const MarketManagement = () => {
     setLoadingModal(true)
     axios
       .get(
-        `http://15.160.211.157/assistant/market/locations/${count}?brand=${paramChainIdModal}&city=${paramCityModal}`,
+        `https://15.160.211.157/assistant/market/locations/${count}?brand=${paramChainIdModal}&city=${paramCityModal}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -358,7 +358,7 @@ const MarketManagement = () => {
       if(user,token){
           if(user && token){
               axios
-                .post('http://15.160.211.157/assistant/picker/assign/market', formData, {
+                .post('https://15.160.211.157/assistant/picker/assign/market', formData, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },
@@ -432,7 +432,7 @@ const MarketManagement = () => {
       if(user,token){
           if(user && token){
               axios
-                .post('http://15.160.211.157/assistant/picker/remove/market', formData, {
+                .post('https://15.160.211.157/assistant/picker/remove/market', formData, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },

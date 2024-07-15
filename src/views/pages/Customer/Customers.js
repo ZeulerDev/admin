@@ -62,7 +62,7 @@ const Customer = () => {
 
   const loadData = (count, moveNext) => {
     setLoading(true)
-    axios.get('http://15.160.211.157/assistant/customers/' + count+'?email='+searchQuery, {
+    axios.get('https://15.160.211.157/assistant/customers/' + count+'?email='+searchQuery, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -114,7 +114,7 @@ const Customer = () => {
     if (token) {
       setLoading(true)
       axios
-        .get('http://15.160.211.157/assistant/addresses/customer/' + id, {
+        .get('https://15.160.211.157/assistant/addresses/customer/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -164,7 +164,7 @@ const Customer = () => {
       if(user,token){
           if(user && token){
               axios
-                .patch('http://15.160.211.157/assistant/customers/update/'+id, formData, {
+                .patch('https://15.160.211.157/assistant/customers/update/'+id, formData, {
                   headers: {
                     Authorization: `Bearer ${token}`,
                   },
