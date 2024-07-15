@@ -1,1 +1,0 @@
-import{r,j as t}from"./index-B_IxP1Ll.js";import{b as s}from"./CContainer-CDAlY_dy.js";const a=()=>(r.useEffect(()=>{console.log("just call in effect")},[]),t.jsx(s,{children:t.jsx("h1",{children:"Just Call"})}));export{a as default};
