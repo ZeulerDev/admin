@@ -28,11 +28,11 @@ import {
   import axios from 'axios'
   import { useAppContext } from '../../../context/AppContext'
   import { SET_ALERT } from '../../../context/context_reducer'
-  import { useNavigate } from 'react-router-dom'
-import { PDFViewer } from '@react-pdf/renderer'
-import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrationPDF'
-import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
-import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
+//   import { useNavigate } from 'react-router-dom'
+// import { PDFViewer } from '@react-pdf/renderer'
+// import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrationPDF'
+// import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
+// import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
 import { BASE_URL } from '../../../context/config'
 
 const Payout = ()=>{
@@ -50,13 +50,13 @@ const Payout = ()=>{
     const [payoutId, setPayoutId] = useState('')
 
 
-    useEffect(() => {
-      console.log('Payout with')
-       if(user && token){
-        console.log('Payout with user')
-        loadData()
-       } 
-    },[statusParam,searchQuery])
+    // useEffect(() => {
+    //   console.log('Payout with')
+    //    if(user && token){
+    //     console.log('Payout with user')
+    //     loadData()
+    //    } 
+    // },[statusParam,searchQuery])
 
     useEffect(() => {
       console.log('just call in effect')
