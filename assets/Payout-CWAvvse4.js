@@ -1,1 +1,0 @@
-import{r as t,j as e}from"./index-BEL8iiBe.js";const o=()=>(t.useEffect(()=>{console.log("just call in effect")},[]),e.jsx(View,{children:e.jsx("span",{children:"hello payout"})}));export{o as default};
