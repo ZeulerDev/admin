@@ -29,7 +29,7 @@ import {
   import { useAppContext } from '../../../context/AppContext'
   import { SET_ALERT } from '../../../context/context_reducer'
   import { useNavigate } from 'react-router-dom'
-  // import { PDFViewer } from '@react-pdf/renderer'
+  import { PDFViewer } from '@react-pdf/renderer'
 // import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrationPDF'
 // import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
 // import {OccasionalEmployeePDF} from '../../../components/OccasionalEmployeePDF'
