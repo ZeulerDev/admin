@@ -31,7 +31,7 @@ import {
   import { useNavigate } from 'react-router-dom'
   import { PDFViewer } from '@react-pdf/renderer'
 // import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrationPDF'
-// import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
+import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
 // import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
 import { BASE_URL } from '../../../context/config'
 
