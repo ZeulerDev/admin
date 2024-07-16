@@ -35,6 +35,7 @@ import {
 // import {OccasionalEmployeePDF} from '../../../components/OccasionalEmployeePDF'
 const FlatRateVatRegistrationPDF = React.lazy(()=>import('../../../components/FlatRateVatRegistrationPDF'))
 // const OccasionalEmployeePDF = React.lazy(()=>import('../../../components/OccasionalEmployeePDF'))
+const PDFViewer = React.lazy(() => import('@react-pdf/renderer').then(module => ({ default: module.PDFViewer })));
 
 import { BASE_URL } from '../../../context/config'
 
