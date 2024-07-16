@@ -34,6 +34,7 @@ import {
 // import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
 // import {OccasionalEmployeePDF} from '../../../components/OccasionalEmployeePDF'
 const FlatRateVatRegistrationPDF = React.lazy(()=>import('../../../components/FlatRateVatRegistrationPDF'))
+const OccasionalEmployeePDF = React.lazy(()=>import('../../../components/OccasionalEmployeePDF'))
 
 import { BASE_URL } from '../../../context/config'
 
