@@ -28,7 +28,7 @@ import {
 } from '@coreui/react'
 import { Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
-import { cilAirplay, cilLeaf, cilPenAlt, cilPencil } from '@coreui/icons'
+import { cilAirplay, cilLeaf, cilPenAlt, cilPencil, cilTrash } from '@coreui/icons'
 import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -40,6 +40,7 @@ import { BASE_URL } from '../../../context/config'
 const Pickers = () => {
 
   const [visible, setVisible] = useState(false)
+  const [visibleDelete, setVisibleDelete] = useState(false)
   const [{ user, token }, dispatch] = useAppContext()
   const [pickerData, setPickerData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -68,6 +69,7 @@ const Pickers = () => {
   const [cityEdit, setCityEdit] = useState()
   const [vat, setVat] = useState()
   const [address, setAddress] = useState()
+  const [pId, setPId] = useState()
   
   useEffect(() => {
     loadMakerGroup()
@@ -393,6 +395,60 @@ const Pickers = () => {
     
       
   }
+  const handleToggleDelete = (id) => {
+    setVisibleDelete(!visibleDelete)
+    setPId(id)
+  }
+
+
+  const deletePicker =(id)=>{
+    axios
+      .delete(
+        BASE_URL+`assistant/shopper/delete/`+id,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch({
+            type : SET_ALERT,
+            payload : {
+              status : true,
+              title : 'Picker Delete',
+              message : 'Picker deleted successfully',
+              color : 'success'
+            }
+          })
+          setVisibleDelete(false)
+          loadPickersData()
+
+        } else if (res.status === 404) {
+          dispatch({
+            type : SET_ALERT,
+            payload : {
+              status : true,
+              title : 'Picker remove error',
+              message : res.data.message
+            }
+          })
+        } else if (res.status === 500) {
+          dispatch({
+            type : SET_ALERT,
+            payload : {
+              status : true,
+              title : 'Picker remove error',
+              message : res.data.message
+            }
+          })
+        }
+      }).catch((err) => {
+        console.error('Error:', err)
+      })
+
+  }
 
   return (
     <CContainer>
@@ -460,6 +516,7 @@ const Pickers = () => {
           <CTableHeaderCell scope="col">Market</CTableHeaderCell>
           <CTableHeaderCell scope="col">Edit</CTableHeaderCell>
           <CTableHeaderCell scope="col">Edit Status</CTableHeaderCell>
+          <CTableHeaderCell scope="col">Action</CTableHeaderCell>
         </CTableRow>
       </CTableHead>
       <CTableBody>
@@ -483,11 +540,30 @@ const Pickers = () => {
                 {item.activate ?  <CButton size='sm' onClick={() => handleToggle(item.id,false)} style={{ backgroundColor:'#ff4d4d',width: 90, color:'white' }} >Deactivate</CButton> :  <CButton size='sm' onClick={() => handleToggle(item.id,true)} style={{ backgroundColor:'#ff4d4d',width: 90,color:'white' }} >Activate</CButton>}
                 
               </CTableDataCell>
+              <CTableDataCell>
+              <CButton size='sm' style={{backgroundColor: '#ff4d4d'}} variant="outline" onClick={() => handleToggleDelete(item.id)}>
+              <CIcon icon={cilTrash} size='lg' style={{color:'white'}}/>
+                </CButton>
+              </CTableDataCell>
             </CTableRow>
 ))}
       </CTableBody>
     </CTable>
     }
+
+      <CModal alignment="center" visible={visibleDelete} scrollable size='sm' onClose={() => setVisibleDelete(false)}>
+        <CModalHeader closeButton={false}>
+          <CModalTitle>Confirmation</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+        <a>Are you sure you want to delete this picker?</a><br></br><br></br>
+        <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton onClick={() => deletePicker(pId)} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setVisibleDelete(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
+     
+        </CModalBody>
+      </CModal>
 
 
       <CModal alignment="center" visible={visible} scrollable size='sm' onClose={() => setVisible(false)}>

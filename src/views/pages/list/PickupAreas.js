@@ -310,7 +310,18 @@ const PickupAreas = () => {
         <CTableBody>
           {pickupAreasData.map((item, index) => (
             <CTableRow key={index}>
-              <CTableDataCell>{item.name} <Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item._id, item.name)}  /></Link> </CTableDataCell>
+              {/* <CTableDataCell>{item.name} <Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item._id, item.name)}  /></Link> </CTableDataCell> */}
+              <CTableDataCell>
+                  <span>{item.name}</span>
+  <Link to={``}>
+    <CIcon
+      style={{ marginLeft: 20, float: 'right' }}
+      icon={cilPencil}
+      size="sm"
+      onClick={() => handleToggleName(item._id, item.name)}
+    />
+  </Link>
+</CTableDataCell>
               <CTableDataCell>{item.geometry.type}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
               <CTableDataCell>

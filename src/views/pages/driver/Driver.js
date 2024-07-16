@@ -29,7 +29,7 @@ import {
 } from '@coreui/react'
 import { Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
-import { cilAirplay, cilLeaf, cilPencil } from '@coreui/icons'
+import { cilAirplay, cilLeaf, cilPencil, cilTrash } from '@coreui/icons'
 import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -39,6 +39,7 @@ import { BASE_URL } from '../../../context/config'
 
 const Drivers = () => {
   const [visible, setVisible] = useState(false)
+  const [visibleDelete, setVisibleDelete] = useState(false)
   const [{ user, token }, dispatch] = useAppContext()
   const [driverData, setDriverData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -68,6 +69,7 @@ const Drivers = () => {
   const [cityEdit, setCityEdit] = useState()
   const [vat, setVat] = useState()
   const [address, setAddress] = useState()
+  const [dId, setDId] = useState()
 
   useEffect(() => {
     loadMakerGroup()
@@ -400,6 +402,60 @@ const Drivers = () => {
       
   }
 
+  const handleToggleDelete = (id) => {
+    setVisibleDelete(!visibleDelete)
+    setDId(id)
+  }
+
+  const deleteDriver =(id)=>{
+    axios
+      .delete(
+        BASE_URL+`assistant/rider/delete/`+id,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch({
+            type : SET_ALERT,
+            payload : {
+              status : true,
+              title : 'Driver Delete',
+              message : 'Driver deleted successfully',
+              color : 'success'
+            }
+          })
+          setVisibleDelete(false)
+          loadDriversData()
+
+        } else if (res.status === 404) {
+          dispatch({
+            type : SET_ALERT,
+            payload : {
+              status : true,
+              title : 'Driver remove error',
+              message : res.data.message
+            }
+          })
+        } else if (res.status === 500) {
+          dispatch({
+            type : SET_ALERT,
+            payload : {
+              status : true,
+              title : 'Driver remove error',
+              message : res.data.message
+            }
+          })
+        }
+      }).catch((err) => {
+        console.error('Error:', err)
+      })
+
+  }
+
   return (
     <CContainer>
       
@@ -512,6 +568,7 @@ const Drivers = () => {
               <CTableHeaderCell scope="col">Group</CTableHeaderCell>
               <CTableHeaderCell scope="col">Edit</CTableHeaderCell>
               <CTableHeaderCell scope="col">Edit Status</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Action</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
@@ -566,11 +623,30 @@ const Drivers = () => {
                     </CButton>
                   )}
                 </CTableDataCell>
+                <CTableDataCell>
+              <CButton size='sm' style={{backgroundColor: '#ff4d4d'}} variant="outline" onClick={() => handleToggleDelete(item.id)}>
+              <CIcon icon={cilTrash} size='lg' style={{color:'white'}}/>
+                </CButton>
+              </CTableDataCell>
               </CTableRow>
             ))}
           </CTableBody>
         </CTable>
       )}
+
+      <CModal alignment="center" visible={visibleDelete} scrollable size='sm' onClose={() => setVisibleDelete(false)}>
+        <CModalHeader closeButton={false}>
+          <CModalTitle>Confirmation</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+        <a>Are you sure you want to delete this driver?</a><br></br><br></br>
+        <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton onClick={() => deleteDriver(dId)} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setVisibleDelete(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
+     
+        </CModalBody>
+      </CModal>
 
       <CModal alignment="center" visible={visible} scrollable size="sm" onClose={() => setVisible(false)}>
         <CModalHeader closeButton={false}>
