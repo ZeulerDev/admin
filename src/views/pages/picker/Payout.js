@@ -306,7 +306,7 @@ const Payout = ()=>{
         </CPagination> */}
 
 
-        {/* <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
+        <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
           <CModalTitle>Information</CModalTitle>
         </CModalHeader>
@@ -315,11 +315,11 @@ const Payout = ()=>{
            pdf.type === 'flat_rate' ? (
              <PDFViewer style={{ width: "100%", height: "100vh" }}><FlatRateVatRegistrationPDF data={pdf.item} /></PDFViewer> 
           ) : pdf.type === 'occasional' ? (
-            <PDFViewer style={{ width: "100%", height: "100vh" }}><OccasionalEmployeePDF data={pdf.item} /></PDFViewer>
+            <PDFViewer style={{ width: "100%", height: "100vh" }}><FlatRateVatRegistrationPDF data={pdf.item} /></PDFViewer>
           ) : null
           }
          </CModalBody>
-      </CModal> */}
+      </CModal>
 
       <CModal  transition={false} alignment="center" visible={payOutConfirmation} scrollable size='lg' onClose={() => setPayOutConfirmation(false)}>
         <CModalHeader closeButton>
