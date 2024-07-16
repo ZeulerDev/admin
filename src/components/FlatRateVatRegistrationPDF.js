@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const FlatRateVatRegistrationPDF = ({data}) => {
+export const FlatRateVatRegistrationPDF = ({data}) => {
 
 
   return (
@@ -150,4 +150,4 @@ const FlatRateVatRegistrationPDF = ({data}) => {
   )
 }
 
-export default FlatRateVatRegistrationPDF
+// export default FlatRateVatRegistrationPDF
