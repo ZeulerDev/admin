@@ -30,9 +30,9 @@ import {
   import { SET_ALERT } from '../../../context/context_reducer'
   import { useNavigate } from 'react-router-dom'
 import { PDFViewer } from '@react-pdf/renderer'
-import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrationPDF'
-import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
-import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
+// import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrationPDF'
+// import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
+// import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
 import '../../../scss/styles.scss'
 import { BASE_URL } from '../../../context/config'
 
@@ -298,7 +298,7 @@ const DriverPayout = ()=>{
         </CPagination> */}
 
 
-        <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
+        {/* <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
           <CModalTitle>Information</CModalTitle>
         </CModalHeader>
@@ -311,7 +311,7 @@ const DriverPayout = ()=>{
           ) : null
           }
          </CModalBody>
-      </CModal>
+      </CModal> */}
 
       <CModal 
       alignment="center" 
