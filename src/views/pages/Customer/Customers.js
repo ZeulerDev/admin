@@ -290,7 +290,7 @@ const Customer = () => {
                
               </CTableDataCell>
               <CTableDataCell>
-              <Link to={`/customers/orders/${item.id}`}>
+              <Link to={`/customers/list/${item.id}`}>
                 <CIcon  icon={cilNotes} size='xl' />
                 </Link>
               </CTableDataCell>
