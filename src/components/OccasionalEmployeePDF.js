@@ -7,9 +7,6 @@ import {
   StyleSheet,
   Svg,
   Line,
-  G,
-  Polygon,
-  Path,
   Image,
 } from '@react-pdf/renderer'
 
@@ -35,9 +32,9 @@ const styles = StyleSheet.create({
     height: '10%',
   }, 
    bullet: {
-    width: 8, // Adjust the width of the bullet point
-    height: 8, // Adjust the height of the bullet point
-    marginRight: 5, // Adjust the space between the bullet point and text
+    width: 8, 
+    height: 8, 
+    marginRight: 5, 
   },
 })
 
