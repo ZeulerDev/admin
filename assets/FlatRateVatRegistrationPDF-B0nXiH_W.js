@@ -1,1 +1,0 @@
-import"./index-B0LDsaUc.js";import{S as e}from"./react-pdf.browser-ChzlIrVt.js";e.create({page:{flexDirection:"row",backgroundColor:"#ffffff"},section:{margin:0,padding:20,flexGrow:1},font:{textAlign:"right"},image:{width:"10%",height:"10%"}});
