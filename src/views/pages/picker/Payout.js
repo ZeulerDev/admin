@@ -310,13 +310,13 @@ const Payout = ()=>{
           <CModalTitle>Information</CModalTitle>
         </CModalHeader>
         <CModalBody style={{ overflowY: 'auto', maxHeight: '70vh', display : "flex", justifyContent : 'center'}}>
-          {
+          {/* {
            pdf.type === 'flat_rate' ? (
              <PDFViewer style={{ width: "100%", height: "100vh" }}><FlatRateVatRegistrationPDF data={pdf.item} /></PDFViewer> 
           ) : pdf.type === 'occasional' ? (
-            <PDFViewer style={{ width: "100%", height: "100vh" }}><FlatRateVatRegistrationPDF data={pdf.item} /></PDFViewer>
+            <PDFViewer style={{ width: "100%", height: "100vh" }}><OccasionalEmployeePDF data={pdf.item} /></PDFViewer>
           ) : null
-          }
+          } */}
          </CModalBody>
       </CModal>
 
