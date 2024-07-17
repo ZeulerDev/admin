@@ -18,13 +18,18 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import React, { useEffect,useState } from 'react'
-// import { Marker, Popup } from 'react-leaflet'
+import React, { useEffect,useState,Suspense  } from 'react'
+import { Popup } from 'react-leaflet'
 const Marker = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Marker })));
-const Popup = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Popup })))
+// const Popup = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Popup })))
 import { MapContainer } from 'react-leaflet/MapContainer'
 import { TileLayer } from 'react-leaflet/TileLayer'
 import { useMap } from 'react-leaflet/hooks'
+
+import L from 'leaflet';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import 'leaflet/dist/leaflet.css'
 import CIcon from '@coreui/icons-react'
@@ -34,6 +39,14 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { BASE_URL } from '../../../../context/config'
 import { SET_ALERT } from '../../../../context/context_reducer'
+
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 const MarketMap = () => {
   const [visible, setVisible] = useState(false)
@@ -237,22 +250,18 @@ const MarketMap = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
+<Suspense fallback={<div>Loading...</div>}>
         {marketGroupLocation.map((item, index) => (
-          <Marker key={index} position={[item.lat, item.lng]} onClick={handleToggle}>
+          <Marker key={index} position={[item.lat, item.lng]} onClick={() => handleToggle(item.city, item._id)}>
             <Popup>
-              <div  onClick={() => handleToggle(item.city, item._id)}>
-              <CIcon
-                icon={cilInfo}
-                size="lg"
-                style={{ marginLeft: '10px' }}
-              />{' '}
-              <span>{item.address}</span>
-
+              <div onClick={() => handleToggle(item.city, item._id)}>
+                <CIcon icon={cilInfo} size="lg" style={{ marginLeft: '10px' }} />{' '}
+                <span>{item.address}</span>
               </div>
-             
             </Popup>
           </Marker>
         ))}
+      </Suspense>
       </MapContainer>
 
       <CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>
