@@ -177,6 +177,7 @@ const BatchOrders = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
+            <CTableHeaderCell scope="col">#</CTableHeaderCell>
             <CTableHeaderCell scope="col">No</CTableHeaderCell>
               <CTableHeaderCell scope="col">Status</CTableHeaderCell>
               <CTableHeaderCell scope="col">Address</CTableHeaderCell>
@@ -192,6 +193,7 @@ const BatchOrders = () => {
           <CTableBody>
             {batchOrdersData.orders?.map((item, index) => (
               <CTableRow key={index}>
+                <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{item.no}</CTableDataCell>
                 <CTableDataCell><CBadge style={{ width:80 }} color="info">{item.status}</CBadge></CTableDataCell>
                 <CTableDataCell>{item.address}</CTableDataCell>
@@ -235,6 +237,7 @@ const BatchOrders = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Price</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Qty</CTableHeaderCell>
@@ -246,12 +249,13 @@ const BatchOrders = () => {
               <CTableBody>
                 {orderDataDetails.items?.map((items, index) => (
                   <CTableRow key={index}>
-                    <CTableHeaderCell scope="row">
+                    <CTableDataCell>{index + 1}</CTableDataCell>
+                    <CTableDataCell>
                       <CCardImage
                         style={{ width: 50, height: 50, borderRadius: 10 }}
                         src={`https://api.zeuler.com/image/` + items.photo}
                       />
-                    </CTableHeaderCell>
+                    </CTableDataCell>
                     <CTableDataCell>{items.name}</CTableDataCell>
                     <CTableDataCell>{items.price}</CTableDataCell>
                     <CTableDataCell>{items.qty}</CTableDataCell>

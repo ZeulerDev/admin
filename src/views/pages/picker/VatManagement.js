@@ -198,18 +198,20 @@ const VatManagement = () => {
         { loading ? <CSpinner/> : <CTable>
           <CTableHead>
             <CTableRow>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">City</CTableHeaderCell>
               <CTableHeaderCell scope="col">Vat</CTableHeaderCell>
               <CTableHeaderCell scope="col">Activate</CTableHeaderCell>
               <CTableHeaderCell scope="col">Disabled</CTableHeaderCell>
               <CTableHeaderCell scope="col">market</CTableHeaderCell>
-              <CTableHeaderCell scope="col"></CTableHeaderCell>
+              <CTableHeaderCell scope="col">Action</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
             {pickersVatData.map((item, index) => (
               <CTableRow key={index}>
+                <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{item.name}</CTableDataCell>
                 <CTableDataCell>{item.city}</CTableDataCell>
                 <CTableDataCell>{item.vat ? item.vat : <CBadge color="warning">Empty</CBadge>}</CTableDataCell>

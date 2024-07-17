@@ -574,6 +574,7 @@ const GroupOfOrders = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">No</CTableHeaderCell>
               <CTableHeaderCell scope="col">Rider Assign No</CTableHeaderCell>
               <CTableHeaderCell scope="col">Rider Status</CTableHeaderCell>
@@ -595,6 +596,7 @@ const GroupOfOrders = () => {
             {groceryGroupsData.map((item, index) => {
               return (
                 <CTableRow key={index}>
+                  <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                   <CTableDataCell>{item.no}</CTableDataCell>
                   <CTableDataCell>{item.ridersAssigningNo}</CTableDataCell>
                   <CTableDataCell>
@@ -754,7 +756,7 @@ const GroupOfOrders = () => {
         </CModalBody>
         <CModalFooter>
           <CButton
-            color="warning"
+            style={{backgroundColor: '#ff4d4d', color: 'white'}}
             onClick={() => handleTogglePickers(picker.shopper?.id, status, picker.id)}
           >
             Change
@@ -819,6 +821,7 @@ const GroupOfOrders = () => {
             <CTable>
               <CTableHead>
                 <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
                   <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Email</CTableHeaderCell>
@@ -833,6 +836,7 @@ const GroupOfOrders = () => {
               <CTableBody>
                 {pickerData.map((item, index) => (
                   <CTableRow key={index}>
+                    <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>{item.name}</CTableDataCell>
                     <CTableDataCell>{item.surname}</CTableDataCell>
                     <CTableDataCell>{item.email}</CTableDataCell>

@@ -201,6 +201,7 @@ const Orders = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">No</CTableHeaderCell>
               <CTableHeaderCell scope="col">Customer</CTableHeaderCell>
               <CTableHeaderCell scope="col">Status</CTableHeaderCell>
@@ -215,8 +216,9 @@ const Orders = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {ordersData.map((item) => (
-              <CTableRow key={item.id}>
+            {ordersData.map((item,index) => (
+              <CTableRow key={index}>
+                <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                 <CTableDataCell>{item.no}</CTableDataCell>
                 <CTableDataCell>{item.customer}</CTableDataCell>
                 <CTableDataCell><CBadge style={{ width:80 }} color="info">{item.status}</CBadge></CTableDataCell>

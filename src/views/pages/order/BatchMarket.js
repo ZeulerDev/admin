@@ -115,7 +115,7 @@ const BatchMarkets = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
-              <CTableHeaderCell scope="col">No</CTableHeaderCell>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">Chain Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Address</CTableHeaderCell>
               <CTableHeaderCell scope="col">Orders</CTableHeaderCell>
@@ -124,7 +124,7 @@ const BatchMarkets = () => {
           <CTableBody>
             {batchMarketsData.markets?.map((item, index) => (
               <CTableRow key={index}>
-                <CTableDataCell>#</CTableDataCell>
+                <CTableDataCell>{index+1}</CTableDataCell>
                 <CTableDataCell>{item.chain}</CTableDataCell>
                 <CTableDataCell>{item.address}</CTableDataCell>
                 <CTableDataCell>

@@ -65,6 +65,7 @@ const MarketManagement = () => {
   const [itemsPerPage, setItemsPerPage] = useState(0)
   const [pickerIdModal, setPickerIdModal] = useState('')
   const [marketIdModal, setMarketIdModal] = useState('')
+  const [isDisable, setIsDisable] = useState(true)
   
   
   useEffect(() => {
@@ -315,18 +316,25 @@ const MarketManagement = () => {
       .then((res) => {
         if (res.status === 200) {
           setChainMarketData(res.data.data)
+          console.log('data market')
           setLoadingModal(false)
-          if(moveNext){
-            const nextCount = count + res.data.data.length
-            setItemsPerPage(nextCount)
-          } else {
-            const nextCount = count - res.data.data.length
-            if(count < 0){
-              setItemsPerPage(0)
-            } else {
-              setItemsPerPage(nextCount)
-            }
+          if (res.data.data.length < 20) {
+            setIsDisable(true)
+            console.log("ok")
+          } else if (res.data.data.length > 19) {
+            setIsDisable(false)
           }
+          // if(moveNext){
+          //   const nextCount = count + res.data.data.length
+          //   setItemsPerPage(nextCount)
+          // } else {
+          //   const nextCount = count - res.data.data.length
+          //   if(count < 0){
+          //     setItemsPerPage(0)
+          //   } else {
+          //     setItemsPerPage(nextCount)
+          //   }
+          // }
         } else if (res.status === 500) {
           dispatch({
             type : SET_ALERT,
@@ -343,11 +351,16 @@ const MarketManagement = () => {
   }
 
   const nextPage = () => {
-    loadData(itemsPerPage, true)
+    const c = itemsPerPage + 20
+    setItemsPerPage(c)
+    loadData(c, true)
   }
 
   const previousPage = () => {
-    loadData(itemsPerPage, false)
+    const c = itemsPerPage - 20
+    console.log(c)
+    setItemsPerPage(c)
+    loadData(c, false)
   }
 
   const addMarket = (pickerId, marketId, ) => {
@@ -562,6 +575,7 @@ const MarketManagement = () => {
     {loading ? <CSpinner/> : <CTable>
       <CTableHead>
         <CTableRow>
+          <CTableHeaderCell scope="col">#</CTableHeaderCell>
           <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
           <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
           <CTableHeaderCell scope="col">Email</CTableHeaderCell>
@@ -576,6 +590,7 @@ const MarketManagement = () => {
       <CTableBody>
        { pickerData.map((item, index) =>(
       <CTableRow key={index}>
+              <CTableDataCell>{index + 1}</CTableDataCell>
               <CTableDataCell>{item.name}</CTableDataCell>
               <CTableDataCell>{item.surname}</CTableDataCell>
               <CTableDataCell>{item.email}</CTableDataCell>
@@ -634,6 +649,7 @@ const MarketManagement = () => {
         { loadingModal ? <CSpinner/> : <CTable>
         <CTableHead>
           <CTableRow>
+            <CTableHeaderCell scope="col">#</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Address</CTableHeaderCell>
             <CTableHeaderCell scope="col">City</CTableHeaderCell>
@@ -644,6 +660,7 @@ const MarketManagement = () => {
         <CTableBody>
           {chainMarket.map((item, index) => (
             <CTableRow key={index}>
+              <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
               <CTableDataCell>{item.chain.name}</CTableDataCell>
               <CTableDataCell>{item.address}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
@@ -666,12 +683,12 @@ const MarketManagement = () => {
             
 
         <CModalFooter>
-        {/* <CPagination aria-label="Page navigation example">
-        <CPaginationItem disabled={itemsPerPage <= 20 ? true : false} onClick={previousPage}>
+        <CPagination aria-label="Page navigation example">
+        <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
           Previous
         </CPaginationItem>
-        <CPaginationItem onClick={nextPage}>Next</CPaginationItem>
-      </CPagination> */}
+        <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
+      </CPagination>
         </CModalFooter>
 
         </CModalBody>

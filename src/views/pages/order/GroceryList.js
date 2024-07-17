@@ -65,7 +65,6 @@ const GroceryList = () => {
       .then((res) => {
         if (res.status === 200) {
           setGroceryListData(res.data)
-          console.log(res.data)
           setLoading(false)
           if (res.data.length < 50) {
             setIsDisable(true)
@@ -134,7 +133,7 @@ const GroceryList = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
-              <CTableHeaderCell scope="col">No</CTableHeaderCell>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Date</CTableHeaderCell>
               <CTableHeaderCell scope="col">Type</CTableHeaderCell>
@@ -144,9 +143,9 @@ const GroceryList = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {groceryListData.map((item) => (
-              <CTableRow key={item.id}>
-                <CTableDataCell>#</CTableDataCell>
+            {groceryListData.map((item, index) => (
+              <CTableRow key={index}>
+                <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                 <CTableDataCell>{item.name? item.name : ""}</CTableDataCell>
                 <CTableDataCell>{item.data}</CTableDataCell>
                 <CTableDataCell>{item.type}</CTableDataCell>
@@ -194,7 +193,7 @@ const GroceryList = () => {
 
       <CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Customer Information</CModalTitle>
+          <CModalTitle>Customer Order List Information</CModalTitle>
         </CModalHeader>
         <CModalBody
           style={{
@@ -211,6 +210,7 @@ const GroceryList = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Price</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Saving</CTableHeaderCell>
@@ -222,7 +222,8 @@ const GroceryList = () => {
               <CTableBody>
                 {itemsData.map((items, index) => (
                   <CTableRow key={index}>
-                    <CTableHeaderCell scope="row">
+                    <CTableDataCell>{index + 1}</CTableDataCell>
+                    <CTableHeaderCell>
                       <CCardImage
                         style={{ width: 50, height: 50, borderRadius: 10 }}
                         src={`https://api.zeuler.com/image/` + items.photo}
@@ -243,9 +244,9 @@ const GroceryList = () => {
           )}
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
-          </CButton>
+          </CButton> */}
         </CModalFooter>
       </CModal>
 

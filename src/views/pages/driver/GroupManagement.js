@@ -301,22 +301,11 @@ const GroupManagement = () => {
           setLoadingModal(false)
           if (res.data.length < 20) {
             setIsDisable(true)
-            console.log('ok')
+            console.log("ok")
           } else if (res.data.length > 19) {
             setIsDisable(false)
           }
-
-          if (moveNext) {
-            const nextCount = count + res.data.length
-            setItemsPerPage(nextCount)
-          } else {
-            const nextCount = count - res.data.length
-            if (count < 0) {
-              setItemsPerPage(0)
-            } else {
-              setItemsPerPage(nextCount)
-            }
-          }
+          
         } else if (res.status === 500) {
           dispatch({
             type : SET_ALERT,
@@ -333,12 +322,18 @@ const GroupManagement = () => {
   }
 
   const nextPage = () => {
-    loadModalMarketGroupData(itemsPerPage, true)
+    const c = itemsPerPage + 20
+    setItemsPerPage(c)
+    loadData(c, true)
   }
 
   const previousPage = () => {
-    loadModalMarketGroupData(itemsPerPage, false)
+    const c = itemsPerPage - 20
+    console.log(c)
+    setItemsPerPage(c)
+    loadData(c, false)
   }
+
 
   const closeModal = () => {
     console.log('close', driverGroupData)
@@ -559,6 +554,7 @@ const GroupManagement = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Email</CTableHeaderCell>
@@ -573,6 +569,7 @@ const GroupManagement = () => {
           <CTableBody>
             {driverData.map((item, index) => (
               <CTableRow key={index}>
+                <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{item.name}</CTableDataCell>
                 <CTableDataCell>{item.surname}</CTableDataCell>
                 <CTableDataCell>{item.email}</CTableDataCell>
@@ -644,6 +641,7 @@ const GroupManagement = () => {
         {loadingModal ? <CSpinner/> :  <CTable>
         <CTableHead>
           <CTableRow>
+            <CTableHeaderCell scope="col">#</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">City</CTableHeaderCell>
             <CTableHeaderCell scope="col">Location</CTableHeaderCell>
@@ -652,7 +650,8 @@ const GroupManagement = () => {
         <CTableBody>
           {marketGroupData.map((item, index) => (
             <CTableRow key={index}>
-              <CTableHeaderCell scope="row">{item.name}</CTableHeaderCell>
+              <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+              <CTableDataCell>{item.name}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
               <CTableDataCell>
                 
@@ -699,11 +698,16 @@ const GroupManagement = () => {
 
 
         </CModalBody>
-        {/* <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton>
-        </CModalFooter> */}
+        <CModalFooter>
+        <CPagination aria-label="Page navigation example">
+        <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
+          Previous
+        </CPaginationItem>
+        <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>
+          Next
+        </CPaginationItem>
+      </CPagination>
+        </CModalFooter>
       </CModal>
     </CContainer>
   )

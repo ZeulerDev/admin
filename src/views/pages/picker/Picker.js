@@ -505,6 +505,7 @@ const Pickers = () => {
     {loading ? <CSpinner/> : <CTable>
       <CTableHead>
         <CTableRow>
+          <CTableHeaderCell scope="col">#</CTableHeaderCell>
           <CTableHeaderCell scope="col">Id</CTableHeaderCell>
           <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
           <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
@@ -522,6 +523,7 @@ const Pickers = () => {
       <CTableBody>
        { pickerData.map((item, index) =>(
       <CTableRow key={index}>
+              <CTableDataCell>{index+1}</CTableDataCell>
               <CTableDataCell>{item.code}</CTableDataCell>
               <CTableDataCell>{item.name}</CTableDataCell>
               <CTableDataCell>{item.surname}</CTableDataCell>

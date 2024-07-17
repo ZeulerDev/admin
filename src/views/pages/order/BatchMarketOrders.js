@@ -116,6 +116,7 @@ const BatchMarketOrders = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">No</CTableHeaderCell>
               <CTableHeaderCell scope="col">Status</CTableHeaderCell>
               <CTableHeaderCell scope="col">Address</CTableHeaderCell>
@@ -130,6 +131,7 @@ const BatchMarketOrders = () => {
           <CTableBody>
             {batchMarketOrdersData.map((order, index) => (
               <CTableRow key={index}>
+                 <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{order.order.no}</CTableDataCell>
                 <CTableDataCell>
                   <CBadge style={{ width: 80 }} color="info">

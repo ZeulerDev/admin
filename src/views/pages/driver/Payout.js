@@ -233,6 +233,7 @@ const DriverPayout = ()=>{
         {loading ? <CSpinner/> : <CTable>
           <CTableHead>
             <CTableRow>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">No</CTableHeaderCell>
               <CTableHeaderCell scope="col">Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Status</CTableHeaderCell>
@@ -267,6 +268,7 @@ const DriverPayout = ()=>{
                 }
                 return (
                     <CTableRow key={index}>
+                      <CTableDataCell>{index + 1}</CTableDataCell>
                       <CTableDataCell>{item.no}</CTableDataCell>
                       <CTableDataCell>{item.name}</CTableDataCell>
                       <CTableDataCell>

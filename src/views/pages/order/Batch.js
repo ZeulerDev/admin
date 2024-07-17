@@ -742,6 +742,7 @@ const Batch = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">No</CTableHeaderCell>
               <CTableHeaderCell scope="col">Duration</CTableHeaderCell>
               <CTableHeaderCell scope="col">Distance</CTableHeaderCell>
@@ -763,6 +764,7 @@ const Batch = () => {
           <CTableBody>
             {batchesData.map((item, index) => (
               <CTableRow key={index}>
+                <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                 <CTableHeaderCell scope="row">{item.no}</CTableHeaderCell>
                 <CTableHeaderCell scope="row">{item.duration}</CTableHeaderCell>
                 <CTableDataCell>{item.distance}</CTableDataCell>
@@ -989,6 +991,7 @@ const Batch = () => {
         <CTable>
           <CTableHead>
             <CTableRow>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Email</CTableHeaderCell>
@@ -1003,6 +1006,7 @@ const Batch = () => {
           <CTableBody>
             {driverData.map((item, index) => (
               <CTableRow key={index}>
+                <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{item.name}</CTableDataCell>
                 <CTableDataCell>{item.surname}</CTableDataCell>
                 <CTableDataCell>{item.email}</CTableDataCell>
