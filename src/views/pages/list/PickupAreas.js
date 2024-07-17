@@ -30,7 +30,7 @@ import { useAppContext } from '../../../context/AppContext'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
-import { cilBasket, cilDelete, cilInfo, cilPencil } from '@coreui/icons'
+import { cilBasket, cilDelete, cilInfo, cilPencil, cilTrash } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
 import { MapContainer, TileLayer, Marker, Popup,FeatureGroup, Polygon } from 'react-leaflet';
@@ -57,14 +57,16 @@ const PickupAreas = () => {
   const [id,setId] = useState('')
   const [name , setName] = useState('')
   const [nameDisplay , setNameDisplay] = useState('')
+  const [visibleDelete, setVisibleDelete] = useState(false)
+  const [pickupId, setPickupId] = useState(false)
  
   useEffect(() => {
     if (user && token) {
-      loadData(0, true)
+      loadData(0)
     }
   }, [paramCity, user])
 
-  const loadData = (count, moveNext) => {
+  const loadData = (count) => {
     setLoading(true)
     axios
       .get(
@@ -81,7 +83,6 @@ const PickupAreas = () => {
           setLoading(false)
           if (res.data.length < 20) {
             setIsDisable(true)
-            console.log("ok")
           } else if (res.data.length > 19) {
             setIsDisable(false)
           }
@@ -296,6 +297,63 @@ const PickupAreas = () => {
     }
   }
 
+  const handleToggle = (id) => {
+    setVisibleDelete(!visibleDelete)
+    setPickupId(id)
+  }
+
+  const deletePickupArea =(id)=>{
+    console.log(id)
+    axios
+      .delete(
+        BASE_URL+`pickup/area/delete/`+id,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch({
+            type : SET_ALERT,
+            payload : {
+              status : true,
+              title : 'Pickup Area Delete',
+              message : 'Pick up area deleted Successfully',
+              color : 'success'
+            }
+          })
+          setVisibleDelete(false)
+          loadData(0, true)
+
+        }  else if (res.status === 204) {
+          dispatch({
+            type : SET_ALERT,
+            payload : {
+              status : true,
+              title : 'Pickup Area Delete',
+              message : res.data.message,
+              color : 'warning'
+            }
+          })
+        } else if (res.status === 500) {
+          dispatch({
+            type : SET_ALERT,
+            payload : {
+              status : true,
+              title : 'Pickup Area Delete',
+              message : res.data.message,
+              color : 'warning'
+            }
+          })
+        }
+      }).catch((err) => {
+        console.error('Error:', err)
+      })
+
+  }
+
   return (
     <CContainer>
       <CBadge style={{ marginLeft: '75.5%'}} color="secondary">Filter by</CBadge>
@@ -318,6 +376,7 @@ const PickupAreas = () => {
             <CTableHeaderCell scope="col">Type</CTableHeaderCell>
             <CTableHeaderCell scope="col">City</CTableHeaderCell>
             <CTableHeaderCell scope="col">View</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Action</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -341,6 +400,12 @@ const PickupAreas = () => {
               <CButton size='sm' style={{backgroundColor: '#ff4d4d', color:'white'}} variant="outline" onClick={() => viewMapModal(item.geometry.coordinate, item._id)}>
                    View map
                 </CButton>
+              </CTableDataCell>
+              <CTableDataCell>
+              <CButton size='sm' style={{backgroundColor: '#ff4d4d'}} variant="outline" onClick={() => handleToggle(item._id)}>
+              <CIcon icon={cilTrash} size='lg' style={{color:'white'}}/>
+                </CButton>
+           
               </CTableDataCell>
             </CTableRow>
           ))}
@@ -444,6 +509,20 @@ const PickupAreas = () => {
           
           <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => updateName()}>Save changes</CButton>
         </CModalFooter>
+      </CModal>
+
+      <CModal alignment="center" visible={visibleDelete} scrollable size='sm' onClose={() => setVisibleDelete(false)}>
+        <CModalHeader closeButton={false}>
+          <CModalTitle>Confirmation</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+        <a>Are you sure you want to delete this pickup area?</a><br></br><br></br>
+        <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton onClick={() => deletePickupArea(pickupId)} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setVisibleDelete(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
+     
+        </CModalBody>
       </CModal>
     </CContainer>
   )

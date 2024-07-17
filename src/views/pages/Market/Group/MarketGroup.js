@@ -310,7 +310,7 @@ const MarketGroup = () => {
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">City</CTableHeaderCell>
             <CTableHeaderCell scope="col">Location</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Remove</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Action</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>

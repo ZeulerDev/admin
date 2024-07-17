@@ -40,6 +40,7 @@ const Market = () => {
   const [paramChainId, setParamChainData] = useState('')
   const [paramCity, setParamCityData] = useState('')
   const [itemsPerPage, setItemsPerPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0)
   const [selectedCity, setSelectedCity] = useState('All Cities')
   const [selectedChain, setSelectedChian] = useState('All Chains')
   const [isChecked, setIsChecked] = useState()
@@ -404,7 +405,7 @@ const Market = () => {
         <CTableBody>
           {chainMarket.map((item, index) => (
             <CTableRow key={index}>
-              <CTableDataCell>{index + 1}</CTableDataCell>
+              <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
               <CTableDataCell>{item.chain.name}</CTableDataCell>
               <CTableDataCell>{item.address}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
