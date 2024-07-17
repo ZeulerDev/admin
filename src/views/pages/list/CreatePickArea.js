@@ -189,10 +189,8 @@ function MapComponent() {
          onChange={(e) => setName(e.target.value)} />
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton>
-          <CButton color="primary" onClick={() => handleSubmit()}>Save area</CButton>
+         
+          <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => handleSubmit()}>Save area</CButton>
         </CModalFooter>
       </CModal>
     </CContainer>
