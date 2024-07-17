@@ -19,7 +19,9 @@ import {
   CTableRow,
 } from '@coreui/react'
 import React, { useEffect,useState } from 'react'
-import { Marker, Popup } from 'react-leaflet'
+// import { Marker, Popup } from 'react-leaflet'
+const Marker = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Marker })));
+const Popup = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Popup })))
 import { MapContainer } from 'react-leaflet/MapContainer'
 import { TileLayer } from 'react-leaflet/TileLayer'
 import { useMap } from 'react-leaflet/hooks'
