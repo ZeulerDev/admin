@@ -255,6 +255,7 @@ const Customer = () => {
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Surname</CTableHeaderCell>
             <CTableHeaderCell scope="col">email</CTableHeaderCell>
@@ -268,8 +269,9 @@ const Customer = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {customerData.map((item) => (
-            <CTableRow key={item.id}>
+          {customerData.map((item,index) => (
+            <CTableRow key={index}>
+              <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
               <CTableHeaderCell scope="row"><CCardImage style={{ width : 50, height: 50, borderRadius : 10 }} src={`https://api.zeuler.com/image/`+item.photo} /></CTableHeaderCell>
               <CTableDataCell>{item.name}</CTableDataCell>
               <CTableDataCell>{item.surname}</CTableDataCell>
@@ -332,7 +334,7 @@ const Customer = () => {
             <CTableBody>
               {customerAddressData.map((items, index) => (
                 <CTableRow key={index}>
-                  <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                  <CTableDataCell scope="row">{index + 1}</CTableDataCell>
                   <CTableDataCell>{items.name}</CTableDataCell>
                   <CTableDataCell>{items.intercom}</CTableDataCell>
                   <CTableDataCell>{items.flat}</CTableDataCell>

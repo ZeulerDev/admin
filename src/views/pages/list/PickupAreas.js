@@ -372,6 +372,7 @@ const PickupAreas = () => {
       { loading ? <CSpinner/> : <CTable>
         <CTableHead>
           <CTableRow>
+            <CTableHeaderCell scope="col">#</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Type</CTableHeaderCell>
             <CTableHeaderCell scope="col">City</CTableHeaderCell>
@@ -382,18 +383,19 @@ const PickupAreas = () => {
         <CTableBody>
           {pickupAreasData.map((item, index) => (
             <CTableRow key={index}>
+               <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
               {/* <CTableDataCell>{item.name} <Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item._id, item.name)}  /></Link> </CTableDataCell> */}
               <CTableDataCell>
                   <span>{item.name}</span>
-  <Link to={``}>
-    <CIcon
-      style={{ marginLeft: 20, float: 'right' }}
-      icon={cilPencil}
-      size="sm"
-      onClick={() => handleToggleName(item._id, item.name)}
-    />
-  </Link>
-</CTableDataCell>
+              <Link to={``}>
+                <CIcon
+                  style={{ marginLeft: 20, float: 'right' }}
+                  icon={cilPencil}
+                   size="sm"
+                   onClick={() => handleToggleName(item._id, item.name)}
+               />
+              </Link>
+              </CTableDataCell>
               <CTableDataCell>{item.geometry.type}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
               <CTableDataCell>

@@ -313,7 +313,7 @@ const DriverPayout = ()=>{
          </CModalBody>
       </CModal> */}
 
-      <CModal 
+      {/* <CModal 
       alignment="center" 
       transition={false}
       visible={payOutConfirmation} 
@@ -333,6 +333,19 @@ const DriverPayout = ()=>{
             Yes
           </CButton>
          </CModalBody>
+      </CModal> */}
+      <CModal alignment="center" visible={payOutConfirmation} scrollable size='sm' onClose={() => setPayOutConfirmation(false)}>
+        <CModalHeader closeButton={false}>
+          <CModalTitle>Confirmation</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+        <a>Are you sure you want to pay out status ?</a><br></br><br></br>
+        <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton onClick={() => handleConfirmation()} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setPayOutConfirmation(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
+     
+        </CModalBody>
       </CModal>
 
 

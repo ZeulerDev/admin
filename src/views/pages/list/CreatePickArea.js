@@ -1,5 +1,6 @@
-import React, { useRef,useEffect,useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup,FeatureGroup } from 'react-leaflet';
+import React, { useRef,useEffect,useState,Suspense } from 'react';
+import { MapContainer, TileLayer, Popup,FeatureGroup } from 'react-leaflet';
+const Marker = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Marker })));
 import { EditControl } from 'react-leaflet-draw';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
@@ -10,6 +11,18 @@ import CIcon from '@coreui/icons-react';
 import { cilInfo } from '@coreui/icons';
 import { SET_ALERT } from '../../../context/context_reducer';
 import { BASE_URL } from '../../../context/config';
+
+import L from 'leaflet';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 function MapComponent() {
   const featureGroupRef = useRef(null);
@@ -145,6 +158,7 @@ function MapComponent() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      <Suspense fallback={<div>Loading...</div>}>
        {marketGroupLocation.map((item, index) => (
           <Marker key={index} position={[item.lat, item.lng]}>
              <Popup>
@@ -174,6 +188,7 @@ function MapComponent() {
           }}
         />
       </FeatureGroup>
+      </Suspense>
     </MapContainer>
 
 

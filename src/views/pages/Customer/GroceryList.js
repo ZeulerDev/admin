@@ -107,6 +107,7 @@ const Orders = () => {
       { loading ? <CSpinner/> : <CTable>
         <CTableHead>
           <CTableRow>
+            <CTableHeaderCell scope="col">#</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Total</CTableHeaderCell>
             <CTableHeaderCell scope="col">Date</CTableHeaderCell>
@@ -116,9 +117,10 @@ const Orders = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {OrderData.map((item) => (
-            <CTableRow key={item.id}>
-              <CTableHeaderCell scope="row">{item.name}</CTableHeaderCell>
+          {OrderData.map((item,index) => (
+            <CTableRow key={index}>
+              <CTableDataCell>{index + 1}</CTableDataCell>
+              <CTableDataCell scope="row">{item.name}</CTableDataCell>
               <CTableDataCell>{item.total}</CTableDataCell>
               <CTableDataCell>{item.date}</CTableDataCell>
               <CTableDataCell>{item.saving}</CTableDataCell>
@@ -160,6 +162,7 @@ const Orders = () => {
             <CTable>
             <CTableHead>
               <CTableRow>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Price</CTableHeaderCell>
@@ -174,7 +177,8 @@ const Orders = () => {
             <CTableBody>
               {ProductData.map((item, index) => (
                 <CTableRow key={index}>
-                  <CTableHeaderCell scope="row"><CCardImage style={{ width :'50px', height:'50px' }} src={`https://api.zeuler.com/image/`+item.photo} /></CTableHeaderCell>
+                  <CTableDataCell>{index + 1}</CTableDataCell>
+                  <CTableDataCell scope="row"><CCardImage style={{ width :'50px', height:'50px' }} src={`https://api.zeuler.com/image/`+item.photo} /></CTableDataCell>
                   <CTableDataCell>{item.name}</CTableDataCell>
                   <CTableDataCell>{item.price}</CTableDataCell>
                   <CTableDataCell>{item.subTotal}</CTableDataCell>

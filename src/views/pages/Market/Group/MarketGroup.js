@@ -316,7 +316,7 @@ const MarketGroup = () => {
         <CTableBody>
           {marketGroupData.map((item, index) => (
             <CTableRow key={index}>
-              <CTableDataCell >{index + 1}</CTableDataCell>
+              <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
               <CTableDataCell>
                   <span>{item.name}</span>
   <Link to={``}>
@@ -390,6 +390,8 @@ const MarketGroup = () => {
      
         </CModalBody>
       </CModal>
+
+      
     </CContainer>
   )
 }

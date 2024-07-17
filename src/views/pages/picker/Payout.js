@@ -156,7 +156,15 @@ const Payout = ()=>{
               }
             })
             setPayOutData([...list])
-
+            dispatch({
+              type : SET_ALERT,
+              payload : {
+                status : true,
+                title : 'Pricker Payout status',
+                message : "Payout status updated successfully",
+                color:'success'
+              }
+            })
 
             
           } else if (res.status === 203) {
@@ -324,7 +332,7 @@ const Payout = ()=>{
          </CModalBody>
       </CModal>
 
-      <CModal  transition={false} alignment="center" visible={payOutConfirmation} scrollable size='lg' onClose={() => setPayOutConfirmation(false)}>
+      {/* <CModal  transition={false} alignment="center" visible={payOutConfirmation} scrollable size='lg' onClose={() => setPayOutConfirmation(false)}>
         <CModalHeader closeButton>
           <CModalTitle>Confirmation</CModalTitle>
         </CModalHeader>
@@ -338,9 +346,21 @@ const Payout = ()=>{
             Yes
           </CButton>
          </CModalBody>
+      </CModal> */}
+
+      <CModal alignment="center" visible={payOutConfirmation} scrollable size='sm' onClose={() => setPayOutConfirmation(false)}>
+        <CModalHeader closeButton={false}>
+          <CModalTitle>Confirmation</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+        <a>Are you sure you want to pay out status ?</a><br></br><br></br>
+        <div style={{display : "flex", justifyContent : 'center'}}>
+        <CButton onClick={() => handleConfirmation()} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
+        <CButton onClick={() => setPayOutConfirmation(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
+        </div>
+     
+        </CModalBody>
       </CModal>
-
-
 
 
 
