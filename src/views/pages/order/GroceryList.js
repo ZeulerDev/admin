@@ -310,9 +310,9 @@ const GroceryList = () => {
           )}
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisibleCustomer(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisibleCustomer(false)}>
             Close
-          </CButton>
+          </CButton> */}
         </CModalFooter>
       </CModal>
     </CContainer>

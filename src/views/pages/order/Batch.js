@@ -839,6 +839,7 @@ const Batch = () => {
             <CTable>
               <CTableHead>
                 <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Order No</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Address</CTableHeaderCell>
@@ -852,6 +853,7 @@ const Batch = () => {
               <CTableBody>
                 {batchCustomersDetails.customers?.map((items, index) => (
                   <CTableRow key={index}>
+                    <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>{items.orderNo}</CTableDataCell>
                     <CTableDataCell>{items.name}</CTableDataCell>
                     <CTableDataCell>{items.address}</CTableDataCell>

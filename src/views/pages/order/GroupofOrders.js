@@ -589,7 +589,7 @@ const GroupOfOrders = () => {
               <CTableHeaderCell scope="col">End</CTableHeaderCell>
               <CTableHeaderCell scope="col">Picker</CTableHeaderCell>
               <CTableHeaderCell scope="col">Order</CTableHeaderCell>
-              <CTableHeaderCell scope="col"></CTableHeaderCell>
+              <CTableHeaderCell scope="col">Order Details</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
@@ -707,7 +707,7 @@ const GroupOfOrders = () => {
         </CModalBody>
         <CModalFooter>
          
-          <CButton color="primary" onClick={() => handleUpdateBonus()}>
+          <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => handleUpdateBonus()}>
             Save changes
           </CButton>
         </CModalFooter>

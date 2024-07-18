@@ -174,6 +174,7 @@ const BatchMarketOrders = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Price</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Qty</CTableHeaderCell>
@@ -185,12 +186,13 @@ const BatchMarketOrders = () => {
               <CTableBody>
                 {batchItems.map((product, index) => (
                   <CTableRow key={index}>
-                    <CTableHeaderCell scope="row">
+                    <CTableDataCell>{index + 1}</CTableDataCell>
+                    <CTableDataCell>
                       <CCardImage
                         style={{ width: 50, height: 50, borderRadius: 10 }}
                         src={`https://api.zeuler.com/image/` + product.photo}
                       />
-                    </CTableHeaderCell>
+                    </CTableDataCell>
                     <CTableDataCell>{product.name}</CTableDataCell>
                     <CTableDataCell>{product.price}</CTableDataCell>
                     <CTableDataCell>{product.qty}</CTableDataCell>

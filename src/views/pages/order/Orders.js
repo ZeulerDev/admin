@@ -276,6 +276,7 @@ const Orders = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Price</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Qty</CTableHeaderCell>
@@ -287,12 +288,13 @@ const Orders = () => {
               <CTableBody>
                 {orderDataDetails.items?.map((items, index) => (
                   <CTableRow key={index}>
-                    <CTableHeaderCell scope="row">
+                    <CTableDataCell>{index+1}</CTableDataCell>
+                    <CTableDataCell>
                       <CCardImage
                         style={{ width: 50, height: 50, borderRadius: 10 }}
                         src={`https://api.zeuler.com/image/` + items.photo}
                       />
-                    </CTableHeaderCell>
+                    </CTableDataCell>
                     <CTableDataCell>{items.name}</CTableDataCell>
                     <CTableDataCell>{items.price}</CTableDataCell>
                     <CTableDataCell>{items.qty}</CTableDataCell>
