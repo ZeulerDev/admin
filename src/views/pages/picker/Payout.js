@@ -28,13 +28,13 @@ import {
   import axios from 'axios'
   import { useAppContext } from '../../../context/AppContext'
   import { SET_ALERT } from '../../../context/context_reducer'
-  // import { PDFViewer } from '@react-pdf/renderer'
+  import { PDFViewer } from '@react-pdf/renderer'
 // import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrationPDF'
-// import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
-// import {OccasionalEmployeePDF} from '../../../components/OccasionalEmployeePDF'
-const FlatRateVatRegistrationPDF = React.lazy(()=>import('../../../components/FlatRateVatRegistrationPDF'))
-const OccasionalEmployeePDF = React.lazy(() => import('../../../components/OccasionalEmployeePDF'));
-const PDFViewer = React.lazy(() => import('@react-pdf/renderer').then(module => ({ default: module.PDFViewer })));
+import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
+import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
+// const FlatRateVatRegistrationPDF = React.lazy(()=>import('../../../components/FlatRateVatRegistrationPDF'))
+// const OccasionalEmployeePDF = React.lazy(() => import('../../../components/OccasionalEmployeePDF'));
+// const PDFViewer = React.lazy(() => import('@react-pdf/renderer').then(module => ({ default: module.PDFViewer })));
 
 import { BASE_URL } from '../../../context/config'
 

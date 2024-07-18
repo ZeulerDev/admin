@@ -33,7 +33,7 @@ const FlatRateVatRegistrationPDF = ({data}) => {
         <View style={[styles.section, styles.page]}>
           <View style={styles.section}>
             <div style={{ textAlign: 'left', fontSize: 10 }}>
-            <Image src={imagePDF} style={{ width: 80, height: 80 }} />
+              <Image src={imagePDF} style={{ width: 80, height: 80 }} />
               <Text style={{marginTop: 18}}>DATI FISCALI DEL RICEVENTE</Text>
               <Text style={{ marginTop: 18 }}>ZEULER SRL</Text>
               <Text style={{ marginTop: 5 }}>Viale Luigi Majno 28, 20129 Milano MI</Text>

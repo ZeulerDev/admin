@@ -38,10 +38,9 @@ import { SET_ALERT, SET_TOKEN } from '../../../context/context_reducer'
 import CIcon from '@coreui/icons-react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import L from 'leaflet';
-import 'leaflet-routing-machine';
-import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
-import RoutingMachine from '../../../components/Map'
+import L from 'leaflet'
+// import 'leaflet-routing-machine'
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import { BASE_URL } from '../../../context/config'
 
 
@@ -93,7 +92,18 @@ const Batch = () => {
   const mapRef = useRef(null);
 
   useEffect(() => {
+    console.log('it comes to batches page')
+  }, [])
+
+  // return (
+  //   <div>
+  //     <h1>Batch</h1>
+  //   </div>
+  // )
+
+  useEffect(() => {
     if (user && token) {
+      console.log('the user was validated in batch')
       loadData(0, true)
     }
   }, [user, token, paramStatus])
@@ -711,6 +721,7 @@ const Batch = () => {
   });
 
 
+  
   
   return (
     <CContainer>

@@ -29,10 +29,10 @@ import {
   import { useAppContext } from '../../../context/AppContext'
   import { SET_ALERT } from '../../../context/context_reducer'
   import { useNavigate } from 'react-router-dom'
-// import { PDFViewer } from '@react-pdf/renderer'
+import { PDFViewer } from '@react-pdf/renderer'
 // import OrdinaryVatRegistrationPDF from '../../../components/OrdinaryVatRegistrationPDF'
-// import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
-// import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
+import FlatRateVatRegistrationPDF from '../../../components/FlatRateVatRegistrationPDF'
+import OccasionalEmployeePDF from '../../../components/OccasionalEmployeePDF'
 import '../../../scss/styles.scss'
 import { BASE_URL } from '../../../context/config'
 
@@ -300,7 +300,7 @@ const DriverPayout = ()=>{
         </CPagination> */}
 
 
-        {/* <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
+        <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
           <CModalTitle>Information</CModalTitle>
         </CModalHeader>
@@ -313,9 +313,9 @@ const DriverPayout = ()=>{
           ) : null
           }
          </CModalBody>
-      </CModal> */}
+      </CModal>
 
-      {/* <CModal 
+      <CModal 
       alignment="center" 
       transition={false}
       visible={payOutConfirmation} 
@@ -335,7 +335,8 @@ const DriverPayout = ()=>{
             Yes
           </CButton>
          </CModalBody>
-      </CModal> */}
+      </CModal>
+
       <CModal alignment="center" visible={payOutConfirmation} scrollable size='sm' onClose={() => setPayOutConfirmation(false)}>
         <CModalHeader closeButton={false}>
           <CModalTitle>Confirmation</CModalTitle>
