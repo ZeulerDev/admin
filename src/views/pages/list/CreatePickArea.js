@@ -40,8 +40,20 @@ function MapComponent() {
     console.log(type);
     console.log('layer',layer._latlngs);
     setVisible(true)
-    setArea(layer._latlngs)
+    // setArea(layer._latlngs)
+    console.log('area',layer)
+    const formattedArray = layer._latlngs.map(point => point.map(data => [data.lng, data.lat ]));
+    console.log(formattedArray);
+
+    const layerLatLngs = convertToLatLngArray(formattedArray);
+    console.log(layerLatLngs);
+    setArea(formattedArray)
   };
+  function convertToLatLngArray(data) {
+    return data.map(point => point.map(data => ({ lng: data[0],lat: data[1],  })));
+  }
+  
+
 
   const handleSubmit = () => {
 

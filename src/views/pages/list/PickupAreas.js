@@ -141,10 +141,16 @@ const PickupAreas = () => {
 
   const viewMapModal = (items, id)=>{
     setVisible(true)
-    setPolygonData(items);
-    setId(id)
     console.log(items)
+    const layerLatLngs = convertToLatLngArray(items);
+    setPolygonData(layerLatLngs);
+    setId(id)
+    console.log(layerLatLngs)
   }
+  function convertToLatLngArray(data) {
+    return data.map(point => point.map(data => ({ lng: data[0], lat: data[1] })));
+  }
+  
 
   const handleToggleName = (id, name)=>{
     setVisibleName(true)
@@ -399,7 +405,7 @@ const PickupAreas = () => {
               <CTableDataCell>{item.geometry.type}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
               <CTableDataCell>
-              <CButton size='sm' style={{backgroundColor: '#ff4d4d', color:'white'}} variant="outline" onClick={() => viewMapModal(item.geometry.coordinate, item._id)}>
+              <CButton size='sm' style={{backgroundColor: '#ff4d4d', color:'white'}} variant="outline" onClick={() => viewMapModal(item.geometry.coordinates, item._id)}>
                    View map
                 </CButton>
               </CTableDataCell>
