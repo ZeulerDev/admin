@@ -1,1 +1,0 @@
-import{l as o}from"./leaflet-src-CpSjNylw.js";import{c as a,a as n,e as c}from"./leaflet-BZBJUip3.js";const i=a(function({children:u,...r},t){const e=new o.FeatureGroup([],r);return n(e,c(t,{layerContainer:e,overlayContainer:e}))});export{i as F};
