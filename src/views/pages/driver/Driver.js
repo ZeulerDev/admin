@@ -336,6 +336,7 @@ const Drivers = () => {
                       }
                     })
                     setDriverData([...list])
+                    loadDriversData()
                     dispatch({
                       type : SET_ALERT,
                       payload : {
@@ -352,7 +353,7 @@ const Drivers = () => {
                       payload : {
                         status : true,
                         title : 'Driver update error',
-                        message : res.data.message,
+                        message : 'Email already exist',
                         color:'warning'
                       }
                     })
@@ -363,11 +364,22 @@ const Drivers = () => {
                       payload : {
                         status : true,
                         title : 'Driver update error',
-                        message : "Email Already include",
+                        message : "Something is missing",
                         color:'warning'
                       }
                     })
-                  } else if (res.status === 500) {
+                  } else if (res.status === 404) {
+                    console.log(res.message)
+                    dispatch({
+                      type : SET_ALERT,
+                      payload : {
+                        status : true,
+                        title : 'Driver update error',
+                        message : "Driver not found",
+                        color:'warning'
+                      }
+                    })
+                  }else if (res.status === 500) {
                     dispatch({
                       type : SET_ALERT,
                       payload : {

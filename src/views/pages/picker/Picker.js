@@ -332,6 +332,7 @@ const Pickers = () => {
                       }
                     })
                     setPickerData([...list])
+                    loadPickersData()
                     dispatch({
                       type : SET_ALERT,
                       payload : {
@@ -347,7 +348,7 @@ const Pickers = () => {
                       payload : {
                         status : true,
                         title : 'Picker update error',
-                        message : res.data.message,
+                        message : 'Email already exists',
                         color:'warning'
                       }
                     })
@@ -361,7 +362,17 @@ const Pickers = () => {
                         color:'warning'
                       }
                     })
-                  } else if (res.status === 500) {
+                  } else if (res.status === 404) {
+                    dispatch({
+                      type : SET_ALERT,
+                      payload : {
+                        status : true,
+                        title : 'Picker update error',
+                        message : 'Missing required fields',
+                        color:'warning'
+                      }
+                    })
+                  }else if (res.status === 500) {
                     dispatch({
                       type : SET_ALERT,
                       payload : {
