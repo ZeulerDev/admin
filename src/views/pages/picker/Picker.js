@@ -295,7 +295,7 @@ const Pickers = () => {
   }
 
   const handleSubmit = () => {
-    if(name && surname && email && phone && iban && cityEdit && vat && address){
+    if(name && surname && email && phone && iban && cityEdit && address){
 
       const formData = {
         name: name,

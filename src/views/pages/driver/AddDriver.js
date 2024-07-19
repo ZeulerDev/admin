@@ -37,7 +37,7 @@ const CreateDriver = ()=>{
 
     const handleSubmit = () => {
 
-      if(name && surname && password && email && phone && iban && city && vat && employeeId && gender && address && code){
+      if(name && surname && password && email && phone && iban && city && employeeId && gender && address && code){
         const formData = {
           name: name,
           surname: surname,
@@ -47,7 +47,7 @@ const CreateDriver = ()=>{
           contact: phone,
           iban: iban,
           city: city,
-          vat:vat,
+          vat: vat,
           employeeId: employeeId,
           gender: gender,
           address : address

@@ -1,5 +1,5 @@
 import React, { useRef,useEffect,useState,Suspense } from 'react';
-import { MapContainer, TileLayer, Popup,FeatureGroup } from 'react-leaflet';
+import { MapContainer, TileLayer, Popup,FeatureGroup,Polygon } from 'react-leaflet';
 const Marker = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Marker })));
 import { EditControl } from 'react-leaflet-draw';
 import 'leaflet/dist/leaflet.css';
@@ -33,6 +33,9 @@ function MapComponent() {
   const [name , setName] = useState('')
   const [visible, setVisible] = useState(false)
   const [area, setArea] = useState([])
+  const [pickupAreasData, setPickupAreasData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [paramCity, setParamCityLoadData] = useState('')
   
   const handleCreated = (e) => {
     const type = e.layerType;
@@ -40,18 +43,19 @@ function MapComponent() {
     console.log(type);
     console.log('layer',layer._latlngs);
     setVisible(true)
-    // setArea(layer._latlngs)
     console.log('area',layer)
-    const formattedArray = layer._latlngs.map(point => point.map(data => [data.lng, data.lat ]));
-    console.log(formattedArray);
+    // const formattedArray = layer._latlngs.map(point => point.map(data => [data.lng, data.lat ]));
+    // console.log(formattedArray);
 
-    const layerLatLngs = convertToLatLngArray(formattedArray);
-    console.log(layerLatLngs);
-    setArea(formattedArray)
+    const formattedArray = layer._latlngs.map(point => {
+      const newData = point.map(data => [data.lng, data.lat]);
+      newData.push(newData[0]); // Add the first element to the end
+      return newData;
+  });
+  
+  console.log(formattedArray);
+  setArea(formattedArray)
   };
-  function convertToLatLngArray(data) {
-    return data.map(point => point.map(data => ({ lng: data[0],lat: data[1],  })));
-  }
   
 
 
@@ -147,6 +151,58 @@ function MapComponent() {
     }
   }, [user, paramMapCity])
 
+  useEffect(() => {
+    if (user && token) {
+      loadPickAreaData(0)
+    }
+    }, [])
+
+  const loadPickAreaData = (count) => {
+    axios
+      .get(
+        BASE_URL+`pickups/areas/${count}?city=${paramCity}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          console.log('pickup areas', res.data)
+
+          if(res.data.length > 0){
+            const location = res.data.map((item) => {
+              return item.geometry.coordinates
+            })
+            console.log('location', location)
+
+            const layerLatLngs = convertToLatLngArray(location);
+            console.log('Convert location', layerLatLngs)
+            
+            setPickupAreasData(layerLatLngs)
+          }else{
+            setPickupAreasData([])
+          }
+         
+        } else if (res.status === 500) {
+          dispatch({
+            type : SET_ALERT,
+            payload : {
+              status : true,
+              title : 'Market Loading error',
+              message : res.data.message
+            }
+          })
+        }
+      }).catch((err) => {
+        console.error('Error: ', err)
+      })
+  }
+  function convertToLatLngArray(data) {
+    return data.map(point => point.map(data => data.map(loc => ({ lng: loc[0], lat: loc[1] }))));
+  }
+
   return (
     <CContainer>
     
@@ -187,6 +243,10 @@ function MapComponent() {
             </Popup>
           </Marker>
         ))}
+
+          {pickupAreasData.length > 0 && (
+              <Polygon positions={pickupAreasData} />
+            )}
       <FeatureGroup ref={featureGroupRef}>
         <EditControl
           position="topright"

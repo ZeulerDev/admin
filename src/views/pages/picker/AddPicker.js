@@ -37,7 +37,7 @@ const CreatePicker = ()=>{
 
     const handleSubmit = () => {
 
-      if(name && surname && password && email && phone && iban && city && vat && employeeId && gender&& address && code){
+      if(name && surname && password && email && phone && iban && city && employeeId && gender&& address && code){
         const formData = {
           name: name,
           surname: surname,

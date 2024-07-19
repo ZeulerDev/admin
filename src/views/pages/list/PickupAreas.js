@@ -59,6 +59,10 @@ const PickupAreas = () => {
   const [nameDisplay , setNameDisplay] = useState('')
   const [visibleDelete, setVisibleDelete] = useState(false)
   const [pickupId, setPickupId] = useState(false)
+  const [allAreas, setAllAreas] = useState([])
+  // const [milanoLocation, setMilanoLocation] = useState([45.4666507,9.1823022])
+  // const [napoliLocation, setNapoliLocation] = useState([40.85631, 14.24641])
+  const [location, setlocation] = useState([])
  
   useEffect(() => {
     if (user && token) {
@@ -80,6 +84,14 @@ const PickupAreas = () => {
       .then((res) => {
         if (res.status === 200) {
           setPickupAreasData(res.data)
+
+          const location = res.data.map((item) => {
+            return item.geometry.coordinates
+          })
+
+          const layerLatLngs = convertToLatLngArrayAll(location);
+          setAllAreas(layerLatLngs)
+
           setLoading(false)
           if (res.data.length < 20) {
             setIsDisable(true)
@@ -98,21 +110,13 @@ const PickupAreas = () => {
         }
       }).catch((err) => {
         console.error('Error: ', err)
-        if (err.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.error('Response data:', err.response.data);
-          console.error('Response status:', err.response.status);
-          console.error('Response headers:', err.response.headers);
-        } else if (err.request) {
-          // The request was made but no response was received
-          console.error('Request data:', err.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.error('Error message:', err.message);
-        }
       })
   }
+
+  function convertToLatLngArrayAll(data) {
+    return data.map(point => point.map(data => data.map(loc => ({ lng: loc[0], lat: loc[1] }))));
+  }
+
 
   const nextPage = () => {
     const c = itemsPerPage + 20
@@ -137,15 +141,21 @@ const PickupAreas = () => {
       setParamMaoCityData(city)
     }
   }
+  
  
 
-  const viewMapModal = (items, id)=>{
+  const viewMapModal = (items, id,citys)=>{
     setVisible(true)
-    console.log(items)
+    if(citys === 'Milano'){
+      setlocation([45.4666507,9.1823022])
+      city('Milano')
+    }else if(citys === 'Napoli'){
+      setlocation([40.85631, 14.24641])
+      city('Napoli')
+    }
     const layerLatLngs = convertToLatLngArray(items);
     setPolygonData(layerLatLngs);
     setId(id)
-    console.log(layerLatLngs)
   }
   function convertToLatLngArray(data) {
     return data.map(point => point.map(data => ({ lng: data[0], lat: data[1] })));
@@ -191,7 +201,15 @@ const PickupAreas = () => {
   const handleCreated = (e) => {
     const layer = e.layer;
     console.log('layer',layer._latlngs);
-    setArea(layer._latlngs)
+
+    const formattedArray = layer._latlngs.map(point => {
+      const newData = point.map(data => [data.lng, data.lat]);
+      newData.push(newData[0]); // Add the first element to the end
+      return newData;
+  });
+  
+  console.log(formattedArray);
+    setArea(formattedArray)
   };
 
   const handleUpdate = (id) => {
@@ -405,7 +423,7 @@ const PickupAreas = () => {
               <CTableDataCell>{item.geometry.type}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
               <CTableDataCell>
-              <CButton size='sm' style={{backgroundColor: '#ff4d4d', color:'white'}} variant="outline" onClick={() => viewMapModal(item.geometry.coordinates, item._id)}>
+              <CButton size='sm' style={{backgroundColor: '#ff4d4d', color:'white'}} variant="outline" onClick={() => viewMapModal(item.geometry.coordinates, item._id,item.city)}>
                    View map
                 </CButton>
               </CTableDataCell>
@@ -429,7 +447,11 @@ const PickupAreas = () => {
         <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
       </CPagination>
 
-      <CModal alignment="center" visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
+      <CModal alignment="center" visible={visible} scrollable size='xl' 
+      onClose={() => {
+        setVisible(false)
+        city('all')
+        }}>
         <CModalHeader closeButton>
           <CModalTitle>Map View</CModalTitle>
         </CModalHeader>
@@ -449,7 +471,7 @@ const PickupAreas = () => {
 
         <MapContainer
       dragging={true}
-      center={[40.85631, 14.24641]}
+      center={location}
       zoom={13}
       scrollWheelZoom={true}
       style={{ height: '500px', width: '100%' }}
@@ -476,7 +498,11 @@ const PickupAreas = () => {
         ))}
 
             {polygonData.length > 0 && (
-              <Polygon positions={polygonData} />
+              <Polygon strokeColor="yellow" strokeWidth={2} fillColor="red"  positions={polygonData} />
+            )}
+
+            {allAreas.length > 0 && (
+              <Polygon positions={allAreas} />
             )}
 
       <FeatureGroup ref={featureGroupRef}>
