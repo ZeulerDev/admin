@@ -1,1 +1,0 @@
-import{c as a,l as o,a as n,e as c}from"./leaflet-DS4KrRZ4.js";const l=a(function({children:p,...t},r){const e=new o.FeatureGroup([],t);return n(e,c(r,{layerContainer:e,overlayContainer:e}))});export{l as F};
