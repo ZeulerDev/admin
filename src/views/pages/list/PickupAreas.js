@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef,Suspense } from 'react'
 import {
   CContainer,
   CTable,
@@ -33,11 +33,25 @@ import CIcon from '@coreui/icons-react'
 import { cilBasket, cilDelete, cilInfo, cilPencil, cilTrash } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer'
-import { MapContainer, TileLayer, Marker, Popup,FeatureGroup, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer, Popup,FeatureGroup, Polygon } from 'react-leaflet';
 import { EditControl } from 'react-leaflet-draw';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import { BASE_URL } from '../../../context/config'
+
+const Marker = React.lazy(() => import('react-leaflet').then(module => ({ default: module.Marker })));
+
+import L from 'leaflet';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 const PickupAreas = () => {
   const featureGroupRef = useRef(null);
@@ -480,6 +494,7 @@ const PickupAreas = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      <Suspense fallback={<div>Loading...</div>}>
        {marketGroupLocation.map((item, index) => (
           <Marker key={index} position={[item.lat, item.lng]}>
              <Popup>
@@ -518,6 +533,7 @@ const PickupAreas = () => {
           }}
         />
       </FeatureGroup>
+      </Suspense>
     </MapContainer>
         </CModalBody>
         <CModalFooter>
