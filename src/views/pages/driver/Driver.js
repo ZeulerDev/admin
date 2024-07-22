@@ -507,7 +507,7 @@ const Drivers = () => {
           ))}
         </CDropdownMenu>
       </CDropdown>
-      <CNavbar className="bg-body-tertiary">
+      <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
       <CFormInput
         type="text"
         placeholder="Search by Driver ID"

@@ -43,6 +43,7 @@ const Customer = () => {
   const [customerData, setCustomerData] = useState([])
   const [customerAddressData, setAddressCustomerData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [loadingMain, setLoadingMain] = useState(false)
   const [itemsPerPage, setItemsPerPage] = useState(0)
 
   const [visibleCustomer, setVisibleCustomer] = useState(false)
@@ -61,17 +62,16 @@ const Customer = () => {
   }, [user, token,searchQuery])
 
   const loadData = (count, moveNext) => {
-    setLoading(true)
+    setLoadingMain(true)
     axios.get(BASE_URL+'assistant/customers/' + count+'?email='+searchQuery, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
         .then((res) => {
-          console.log(res.status)
           if (res.status === 200) {
             setCustomerData(res.data.list)
-            setLoading(false)
+            setLoadingMain(false)
             console.log(BASE_URL)
             if (res.data.list.length < 50) {
               setIsDisable(true)
@@ -122,6 +122,7 @@ const Customer = () => {
         })
         .then((res) => {
           if (res.status === 200) {
+            console.log(res.data)
             setAddressCustomerData(res.data)
             setLoading(false)
           } else if (res.status === 500) {
@@ -251,7 +252,7 @@ const Customer = () => {
          />
       </CNavbar >
 
-      { loading ? <CSpinner/> : <CTable>
+      { loadingMain ? <CSpinner/> : <CTable>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -286,13 +287,13 @@ const Customer = () => {
               </CTableDataCell>
               <CTableDataCell>
                 <Link>
-                <CIcon icon={cilInfo} size='xl'  onClick={() => handleToggle(item.id)}/>
+                <CIcon icon={cilInfo} size='xl'  onClick={() => handleToggle(item._id)}/>
                 </Link>
                
                
               </CTableDataCell>
               <CTableDataCell>
-              <Link to={`/customers/list/${item.id}`}>
+              <Link to={`/customers/list/${item._id}`}>
                 <CIcon  icon={cilNotes} size='xl' />
                 </Link>
               </CTableDataCell>
