@@ -70,13 +70,13 @@ const Customer = () => {
         .then((res) => {
           console.log(res.status)
           if (res.status === 200) {
-            setCustomerData(res.data)
+            setCustomerData(res.data.list)
             setLoading(false)
             console.log(BASE_URL)
-            if (res.data.length < 50) {
+            if (res.data.list.length < 50) {
               setIsDisable(true)
               console.log("ok")
-            } else if (res.data.length > 49) {
+            } else if (res.data.list.length > 49) {
               setIsDisable(false)
             }
             
