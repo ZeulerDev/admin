@@ -28,7 +28,7 @@ import { SET_ALERT } from '../../../context/context_reducer'
 const Orders = () => {
   const { id } = useParams()
 
-  const [{ token }, dispatch] = useAppContext()
+  const [{ token, user }, dispatch] = useAppContext()
   const [OrderData, setOrderData] = useState([])
   const [loading, setLoading] = useState(false)
   const [ProductData, setProductData] = useState([])
@@ -37,6 +37,29 @@ const Orders = () => {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoading(false);
+    }, 20000);
+
+    if(user && token){
+      loadGroceryData(id, timer)
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [])
+
+  const loadGroceryData =(id,timer)=>{
     if (token) {
       setLoading(true)
       axios
@@ -49,6 +72,7 @@ const Orders = () => {
           if (res.status === 200) {
             setOrderData(res.data)
             setLoading(false)
+            clearTimeout(timer);
           } else if (res.status === 500) {
             dispatch({
               type : SET_ALERT,
@@ -63,7 +87,7 @@ const Orders = () => {
           console.error('Error:', error)
         })
     }
-  }, [])
+  }
 
   const loadProducts = (id) => {
     if (token) {

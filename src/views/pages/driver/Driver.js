@@ -134,10 +134,25 @@ const Drivers = () => {
   }
 
   useEffect(() => {
-    loadDriversData()
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoading(false);
+    }, 20000);
+    loadDriversData(timer)
+    return () => {
+      clearTimeout(timer);
+    };
   }, [paramCity, paramGroup, paramChainId,paramCode, alert])
 
-  const loadDriversData = () => {
+  const loadDriversData = (timer) => {
     if (user && token) {
       setLoading(true)
       let url = BASE_URL+`assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
@@ -157,7 +172,7 @@ const Drivers = () => {
           if (res.status === 200) {
             setDriverData(res.data)
             setLoading(false)
-            
+            clearTimeout(timer)
           } else if (res.status === 500) {
             dispatch({
               type: SET_ALERT,

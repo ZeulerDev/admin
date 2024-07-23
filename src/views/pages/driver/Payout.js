@@ -52,12 +52,28 @@ const DriverPayout = ()=>{
     const[alert, setAlert] = useState(false)
 
     useEffect(() => {
+      const timer = setTimeout(() => {
+        dispatch({
+          type: SET_ALERT,
+          payload: {
+            status: true,
+            title: 'Data Loading',
+            message: 'Data loading error: Timeout exceeded',
+            color: 'warning'
+          }
+        });
+        setLoading(false);
+      }, 20000);
        if(user && token){
-        loadData()
+        loadData(timer)
        } 
+
+       return () => {
+        clearTimeout(timer);
+      };
     },[statusParam,searchQuery])
 
-    const loadData  = () => {
+    const loadData  = (timer) => {
       setLoading(true)
       axios.get(BASE_URL+`assistant/drivers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
             headers:{
@@ -69,7 +85,7 @@ const DriverPayout = ()=>{
                 setPayOutData(res.data)  
                 setLoading(false)
                 setAlert(false)
-
+                clearTimeout(timer);
               } else if (res.status === 204) {
                 dispatch({
                   type : SET_ALERT,

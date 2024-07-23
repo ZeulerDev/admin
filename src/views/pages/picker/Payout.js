@@ -54,14 +54,29 @@ const Payout = ()=>{
 
 
     useEffect(() => {
-      console.log('Payout with')
-       if(user && token){
-        loadData()
-       } 
-    },[statusParam,searchQuery])
+      const timer = setTimeout(() => {
+        dispatch({
+          type: SET_ALERT,
+          payload: {
+            status: true,
+            title: 'Data Loading',
+            message: 'Data loading error: Timeout exceeded',
+            color: 'warning'
+          }
+        });
+        setLoading(false);
+      }, 20000);
+
+      loadData(timer); // Call the loadData method
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }, [statusParam, searchQuery]);
 
 
-    const loadData =()=>{
+
+    const loadData =(timer)=>{
       setLoading(true)
       axios.get(BASE_URL+`assistant/pickers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
           headers:{
@@ -72,7 +87,7 @@ const Payout = ()=>{
           if (res.status === 200) {
               setPayOutData(res.data)  
               setLoading(false)
-
+              clearTimeout(timer)
             } else if (res.status === 204) {
               dispatch({
                 type : SET_ALERT,
@@ -84,6 +99,8 @@ const Payout = ()=>{
                 }
               })
             }else if (res.status === 500) {
+            console.log('error','500')
+
                 dispatch({
                   type : SET_ALERT,
                   payload : {

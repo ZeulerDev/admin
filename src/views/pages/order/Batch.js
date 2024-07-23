@@ -89,26 +89,31 @@ const Batch = () => {
   })
   const [isDisable, setIsDisable] = useState(true)
   
-  const mapRef = useRef(null);
 
   useEffect(() => {
-    console.log('it comes to batches page')
-  }, [])
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoading(false);
+    }, 20000);
 
-  // return (
-  //   <div>
-  //     <h1>Batch</h1>
-  //   </div>
-  // )
-
-  useEffect(() => {
     if (user && token) {
-      console.log('the user was validated in batch')
       loadData(0, true)
     }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [user, token, paramStatus])
 
-  const loadData = (count, moveNext) => {
+  const loadData = (count, timer) => {
     setLoading(true)
     axios
       .get(BASE_URL+'assistant/batches/' + count + '?status='+paramStatus, {
@@ -120,6 +125,7 @@ const Batch = () => {
         if (res.status === 200) {
           setBatchesData(res.data)
           setLoading(false)
+          clearTimeout(timer)
           if (res.data.length < 50) {
             setIsDisable(true)
             console.log("ok")

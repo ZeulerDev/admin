@@ -54,14 +54,33 @@ const Customer = () => {
   const [phone, setPhone] = useState()
   const [searchQuery, setSearchQuery] = useState('');
   const [isDisable, setIsDisable] = useState(true)
+  const [resultCount, setResultCount] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoadingMain(false);
+    }, 20000);
+
     if(user && token){
-      loadData(0, true)
+      loadData(0, timer)
     }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [user, token,searchQuery])
 
-  const loadData = (count, moveNext) => {
+  const loadData = (count, timer) => {
     setLoadingMain(true)
     axios.get(BASE_URL+'assistant/customers/' + count+'?email='+searchQuery, {
           headers: {
@@ -71,7 +90,9 @@ const Customer = () => {
         .then((res) => {
           if (res.status === 200) {
             setCustomerData(res.data.list)
+            setResultCount(res.data.count)
             setLoadingMain(false)
+            clearTimeout(timer);
             console.log(BASE_URL)
             if (res.data.list.length < 50) {
               setIsDisable(true)
@@ -107,6 +128,12 @@ const Customer = () => {
     console.log(c)
     setItemsPerPage(c)
     loadData(c, false)
+  }
+
+  const handlePage = (page) => {
+    const c = (page - 1) * 50;
+      setItemsPerPage(c);
+      loadData(c, true);
   }
 
   const handleToggle = (id) => {
@@ -236,8 +263,41 @@ const Customer = () => {
 
     }
     
+    
+
+    
       
   }
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePages = (page) => {
+    setCurrentPage(page);
+    const c = (page - 1) * 50;
+    setItemsPerPage(c);
+    loadData(c, true);
+  };
+
+  const renderPageNumbers = () => {
+    const totalPages = Math.ceil(resultCount / 50);
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+    const startIndex = Math.max(currentPage - 2, 1);
+    const endIndex = Math.min(startIndex + 4, totalPages);
+    const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
+    return displayedPageNumbers.map((number) => (
+      <CPaginationItem
+        key={number}
+        active={currentPage === number}
+        onClick={() => handlePages(number)}
+      >
+        {number}
+      </CPaginationItem>
+    ));
+  };
+
 
   return (
     <CContainer >
@@ -309,10 +369,32 @@ const Customer = () => {
 
       }
 
-      <CPagination aria-label="Page navigation example">
+        <CPagination aria-label="Page navigation example">
+          <CPaginationItem
+            disabled={itemsPerPage <= 0 ? true : false}
+            onClick={previousPage}
+          >
+            Previous
+          </CPaginationItem>
+          {renderPageNumbers()}
+          <CPaginationItem
+            disabled={isDisable === true ? true : false}
+            onClick={nextPage}
+          >
+            Next
+          </CPaginationItem>
+        </CPagination>
+       
+      {/* <CPagination aria-label="Page navigation example">
         <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>Previous</CPaginationItem>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <CPaginationItem key={index} active={itemsPerPage === index * 50} onClick={() => handlePage(index + 1)}>
+            {index + 1}
+          </CPaginationItem>
+        ))}
         <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
-      </CPagination>
+      </CPagination> */}
+     
 
       <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
         <CModalHeader closeButton>

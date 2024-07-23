@@ -125,10 +125,25 @@ const GroupManagement = () => {
   }
 
   useEffect(() => {
-    loadDriversData()
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoading(false);
+    }, 20000);
+    loadDriversData(timer)
+    return () => {
+      clearTimeout(timer);
+    };
   }, [paramCity, paramGroup, paramChainId,alert])
 
-  const loadDriversData = () => {
+  const loadDriversData = (timer) => {
     if (user && token) {
       setLoading(true)
       axios
@@ -144,7 +159,7 @@ const GroupManagement = () => {
           if (res.status === 200) {
             setDriverData(res.data)
             setLoading(false)
-            
+            clearTimeout(timer)
           } else if (res.status === 500) {
             dispatch({
               type: SET_ALERT,

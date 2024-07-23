@@ -52,12 +52,27 @@ const Orders = () => {
   const [isDisable, setIsDisable] = useState(true)
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoading(false);
+    }, 20000);
     if (user && token) {
-      loadData(0, true)
+      loadData(0, timer)
     }
+    return () => {
+      clearTimeout(timer);
+    };
   }, [user, token, selectedDates])
 
-  const loadData = (count, moveNext) => {
+  const loadData = (count, timer) => {
     setLoading(true)
     axios
       .get(BASE_URL+'assistant/grocery/orders/' + count + '?date=' + selectedDates, {
@@ -69,6 +84,7 @@ const Orders = () => {
         if (res.status === 200) {
           setOrdersData(res.data)
           setLoading(false)
+          clearTimeout(timer)
           if (res.data.length < 50) {
             setIsDisable(true)
             console.log("ok")

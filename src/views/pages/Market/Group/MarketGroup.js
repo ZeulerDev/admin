@@ -60,12 +60,29 @@ const MarketGroup = () => {
   }
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoading(false);
+    }, 20000);
+
     if (user && token) {
-      loadData(0, true)
+      loadData(0, timer)
     }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [user, paramCity])
 
-  const loadData = (count, moveNext) => {
+  const loadData = (count, timer) => {
     setLoading(true)
     axios
       .get(BASE_URL+`market/groups/fetch/${count}?city=${paramCity}`, {
@@ -78,6 +95,7 @@ const MarketGroup = () => {
         if (res.status === 200) {
           setMarketGroupData(res.data)
           setLoading(false)
+          clearTimeout(timer)
           if (res.data.length < 20) {
             setIsDisable(true)
             console.log('ok')

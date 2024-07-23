@@ -42,49 +42,72 @@ const VatManagement = () => {
 
  
 
+    
     useEffect(() => {
-        if(user && token){
-            setLoading(true)
-            axios
-              .get(BASE_URL+`assistant/vat/shoppers/0?search=`+searchQuery, {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              })
-              .then((res) => {
-                if (res.status === 200) {
-                  setPickersVatData(res.data)  
-                  setLoading(false)
-                  console.log('done')
-
-                } else if (res.status === 204) {
-                  dispatch({
-                    type : SET_ALERT,
-                    payload : {
-                      status : true,
-                      title : 'Error',
-                      message : res.data.message,
-                      color:'warning'
-                    }
-                  })
-                }else if (res.status === 500) {
-                    dispatch({
-                      type : SET_ALERT,
-                      payload : {
-                        status : true,
-                        title : 'Error',
-                        message : res.data.message,
-                        color:'warning'
-                      }
-                    })
-                  }
-              })
-              .catch((error) => {
-                console.error('Error:', error)
-              })
-      
+      let timer = setTimeout(() => {
+        dispatch({
+          type: SET_ALERT,
+          payload: {
+            status: true,
+            title: 'Data Loading',
+            message: 'Data loading error: Timeout exceeded',
+            color: 'warning'
           }
+        });
+        setLoading(false);
+      }, 20000);
+        
+      loadVatData(timer)
+      return () => {
+        clearTimeout(timer);
+      };
+    
     },[searchQuery])
+
+    const loadVatData = (timer) => {
+      if(user && token){
+        setLoading(true)
+        axios
+          .get(BASE_URL+`assistant/vat/shoppers/0?search=`+searchQuery, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setPickersVatData(res.data)
+              clearTimeout(timer)
+              setLoading(false)
+              console.log('done')
+
+            } else if (res.status === 204) {
+              dispatch({
+                type : SET_ALERT,
+                payload : {
+                  status : true,
+                  title : 'Error',
+                  message : res.data.message,
+                  color:'warning'
+                }
+              })
+            }else if (res.status === 500) {
+                dispatch({
+                  type : SET_ALERT,
+                  payload : {
+                    status : true,
+                    title : 'Error',
+                    message : res.data.message,
+                    color:'warning'
+                  }
+                })
+              }
+          })
+          .catch((error) => {
+            console.error('Error:', error)
+          })
+  
+      }
+    }
 
     const handleToggle = (id, vatPid = null) => {
         setVisible(!visible)

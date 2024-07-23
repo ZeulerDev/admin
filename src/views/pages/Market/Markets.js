@@ -80,12 +80,29 @@ const Market = () => {
   
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoading(false);
+    }, 20000);
+
     if (user && token) {
-      loadData(0, true)
+      loadData(0, timer)
     }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [paramChainId, paramCity, user])
 
-  const loadData = (count, moveNext) => {
+  const loadData = (count, timer) => {
     setLoading(true)
     axios
       .get(
@@ -100,6 +117,7 @@ const Market = () => {
         if (res.status === 200) {
           setChainMarketData(res.data.data)
           setLoading(false)
+          clearTimeout(timer)
           if (res.data.data.length < 20) {
             setIsDisable(true)
             console.log("ok")

@@ -75,12 +75,29 @@ const GroupOfOrders = () => {
   const [isDisable, setIsDisable] = useState(true)
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoading(false);
+    }, 20000);
+
     if (user && token) {
       loadData(0, true)
     }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [user, token, searchQuery, paramStatus,selectedDates])
 
-  const loadData = (count, moveNext) => {
+  const loadData = (count, timer) => {
     setLoading(true)
     axios.get(
         BASE_URL+'assistant/grocery/group/' + count +'?rider=' +searchQuery + '&status=' + paramStatus+ '&date=' + selectedDates,
@@ -96,6 +113,7 @@ const GroupOfOrders = () => {
           setGroceryGroupsData(res.data)
           console.log('dataaaaaaa')
           setLoading(false)
+          clearTimeout(timer)
           if (res.data.length < 50) {
             setIsDisable(true)
             console.log("ok")

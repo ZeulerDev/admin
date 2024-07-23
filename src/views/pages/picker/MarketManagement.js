@@ -129,10 +129,25 @@ const MarketManagement = () => {
   }
 
   useEffect(() => {
-    loadPickersData()
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoading(false);
+    }, 20000);
+    loadPickersData(timer)
+    return () => {
+      clearTimeout(timer);
+    };
   },[paramCity, paramGroup, paramChainId,alert])
   
-  const loadPickersData = () => {
+  const loadPickersData = (timer) => {
     if(user && token){
       setLoading(true)
       axios
@@ -146,6 +161,7 @@ const MarketManagement = () => {
             setPickerData(res.data)  
             setLoading(false)
             setAlert(false)
+            clearTimeout(timer)
           } else if (res.status === 500) {
             dispatch({
               type : SET_ALERT,

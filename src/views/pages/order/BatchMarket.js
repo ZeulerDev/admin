@@ -43,12 +43,29 @@ const BatchMarkets = () => {
   const { id } = useParams()
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Data Loading',
+          message: 'Data loading error: Timeout exceeded',
+          color: 'warning'
+        }
+      });
+      setLoading(false);
+    }, 20000);
+
     if (user && token) {
-      loadData(id)
+      loadData(id,timer)
     }
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [user, token])
 
-  const loadData = (id) => {
+  const loadData = (id,timer) => {
     setLoading(true)
     axios
       .get(BASE_URL+'assistant/batch/markets/' + id, {
@@ -61,6 +78,7 @@ const BatchMarkets = () => {
           console.log(res.data)
           setBatchMarketsData(res.data)
           setLoading(false)
+          clearTimeout(timer);
         } else if (res.status === 203) {
             dispatch({
               type: SET_ALERT,
