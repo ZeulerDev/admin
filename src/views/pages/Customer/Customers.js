@@ -43,6 +43,7 @@ const Customer = () => {
   const [customerData, setCustomerData] = useState([])
   const [customerAddressData, setAddressCustomerData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [loadingAddress, setLoadingAddress] = useState(false)
   const [loadingMain, setLoadingMain] = useState(false)
   const [itemsPerPage, setItemsPerPage] = useState(0)
 
@@ -55,9 +56,13 @@ const Customer = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isDisable, setIsDisable] = useState(true)
   const [resultCount, setResultCount] = useState(0)
-  const [totalPages, setTotalPages] = useState(0)
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [itemsPerPageAddress, setItemsPerPageAddress] = useState(0)
+  const [currentPageAddress, setCurrentPageAddress] = useState(1)
+  const [resultCountAddress, setResultCountAddress] = useState(0)
+  const [isDisableAddress, setIsDisableAddress] = useState(true)
+  const [addressId, setAddressId] = useState('')
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -135,28 +140,50 @@ const Customer = () => {
     loadData(c, false)
   }
 
-  const handlePage = (page) => {
-    const c = (page - 1) * 50;
-      setItemsPerPage(c);
-      loadData(c, true);
+  const nextPageAddress = () => {
+    setCurrentPageAddress(currentPageAddress + 1);
+    const c = itemsPerPageAddress + 20
+    setItemsPerPageAddress(c)
+    handleToggle(addressId,c)
   }
 
-  const handleToggle = (id) => {
-    setVisible(!visible)
+  const previousPageAddress = () => {
+    setCurrentPageAddress(currentPageAddress - 1);
+    const c = itemsPerPageAddress - 20
+    console.log(c)
+    setItemsPerPageAddress(c)
+    handleToggle(addressId,c)
+  }
 
+  const mangeAddressModal = (id) => {
+    setVisible(!visible)
+    setAddressId(id)
+    handleToggle(id,0)
+  }
+
+
+  const handleToggle = (id,count) => {
+    setAddressId(id)
     if (token) {
-      setLoading(true)
+      setLoadingAddress(true)
       axios
-        .get(BASE_URL+'assistant/addresses/customer/' + id, {
+        .get(BASE_URL+`assistant/addresses/customer/${count}/` + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
         .then((res) => {
           if (res.status === 200) {
-            console.log(res.data)
-            setAddressCustomerData(res.data)
-            setLoading(false)
+            console.log(res.data.count)
+            setAddressCustomerData(res.data.list)
+            setResultCountAddress(res.data.count)
+            if (res.data.list.length < 20) {
+              setIsDisableAddress(true)
+              console.log("ok")
+            } else if (res.data.list.length > 19) {
+              setIsDisableAddress(false)
+            }
+            setLoadingAddress(false)
           } else if (res.status === 500) {
             dispatch({
               type : SET_ALERT,
@@ -302,6 +329,32 @@ const Customer = () => {
     ));
   };
 
+  const handlePagesAddress = (page) => {
+    setCurrentPageAddress(page);
+    const c = (page - 1) * 20;
+    setItemsPerPageAddress(c);
+    handleToggle(addressId,c);
+  };
+
+  const renderPageNumbersAddress = () => {
+    const totalPages = Math.ceil(resultCountAddress / 20);
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+    const startIndex = Math.max(currentPageAddress - 2, 1);
+    const endIndex = Math.min(startIndex + 4, totalPages);
+    const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
+    return displayedPageNumbers.map((number) => (
+      <CPaginationItem
+        key={number}
+        active={currentPageAddress === number}
+        onClick={() => handlePagesAddress(number)}
+      >
+        {number}
+      </CPaginationItem>
+    ));
+  };
 
   return (
     <CContainer >
@@ -351,7 +404,7 @@ const Customer = () => {
               </CTableDataCell>
               <CTableDataCell>
                 <Link>
-                <CIcon icon={cilInfo} size='xl'  onClick={() => handleToggle(item._id)}/>
+                <CIcon icon={cilInfo} size='xl'  onClick={() => mangeAddressModal(item._id)}/>
                 </Link>
                
                
@@ -400,14 +453,21 @@ const Customer = () => {
       </CPagination> */}
      
 
-      <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
+      <CModal visible={visible} scrollable size='xl' 
+      onClose={() => {
+        setVisible(false)
+        setItemsPerPageAddress(0)
+        setCurrentPageAddress(1)
+        setIsDisableAddress(true)
+        setAddressId('')
+        }}>
         <CModalHeader closeButton>
-          <CModalTitle>Order Grocery List</CModalTitle>
+          <CModalTitle>Used Addresses</CModalTitle>
         </CModalHeader>
         <CModalBody style={{ overflowY: 'auto', maxHeight: '70vh', display : "flex", justifyContent : 'center'}}>
           
           {
-            loading ? <CSpinner/> : <CTable>
+            loadingAddress ? <CSpinner/> : <CTable>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -421,7 +481,7 @@ const Customer = () => {
             <CTableBody>
               {customerAddressData.map((items, index) => (
                 <CTableRow key={index}>
-                  <CTableDataCell scope="row">{index + 1}</CTableDataCell>
+                  <CTableDataCell>{itemsPerPageAddress + index + 1}</CTableDataCell>
                   <CTableDataCell>{items.name}</CTableDataCell>
                   <CTableDataCell>{items.intercom}</CTableDataCell>
                   <CTableDataCell>{items.flat}</CTableDataCell>
@@ -436,10 +496,21 @@ const Customer = () => {
           
         </CModalBody>
         <CModalFooter>
-          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton>
-          <CButton color="primary">Save changes</CButton> */}
+        <CPagination aria-label="Page navigation example">
+          <CPaginationItem
+            disabled={itemsPerPageAddress <= 0 ? true : false}
+            onClick={previousPageAddress}
+          >
+            Previous
+          </CPaginationItem>
+          {renderPageNumbersAddress()}
+          <CPaginationItem
+            disabled={isDisableAddress === true ? true : false}
+            onClick={nextPageAddress}
+          >
+            Next
+          </CPaginationItem>
+        </CPagination>
         </CModalFooter>
       </CModal>
 
