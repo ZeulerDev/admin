@@ -56,6 +56,8 @@ const Customer = () => {
   const [isDisable, setIsDisable] = useState(true)
   const [resultCount, setResultCount] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1);
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -91,6 +93,7 @@ const Customer = () => {
           if (res.status === 200) {
             setCustomerData(res.data.list)
             setResultCount(res.data.count)
+            
             setLoadingMain(false)
             clearTimeout(timer);
             console.log(BASE_URL)
@@ -118,12 +121,14 @@ const Customer = () => {
   }
 
   const nextPage = () => {
+    setCurrentPage(currentPage + 1);
     const c = itemsPerPage + 50
     setItemsPerPage(c)
     loadData(c, true)
   }
 
   const previousPage = () => {
+    setCurrentPage(currentPage - 1);
     const c = itemsPerPage - 50
     console.log(c)
     setItemsPerPage(c)
@@ -269,7 +274,6 @@ const Customer = () => {
       
   }
 
-  const [currentPage, setCurrentPage] = useState(1);
 
   const handlePages = (page) => {
     setCurrentPage(page);
