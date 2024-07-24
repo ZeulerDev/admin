@@ -116,7 +116,7 @@ const Analytics = () => {
        <CRow xs={{ gutter: 4 }}>
          
           <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d',color:'white' }} value={<><h2>
                 {analyticsData.tot_orders ? analyticsData.tot_orders : 0} 
               </h2>
               </>}
@@ -127,7 +127,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d',color:'white' }} value={<><h2>
                 {analyticsData.tot_batches ? analyticsData.tot_batches : 0}
               </h2>
               </>}
@@ -138,7 +138,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d',color:'white' }} value={<><h2>
                 {analyticsData?.ave_orders_per_batch?.toFixed(2) || 0.00} 
               </h2>
               </>}
@@ -149,7 +149,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.aov?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -162,7 +162,7 @@ const Analytics = () => {
           </CRow><br></br>
           <CRow xs={{ gutter: 4 }}>
          <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.tot_value?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -173,7 +173,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.tot_cost_product?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -184,7 +184,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.ave_order_rev?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -195,7 +195,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 { analyticsData?.tot_rev?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -209,7 +209,7 @@ const Analytics = () => {
           </CRow><br></br>
           <CRow xs={{ gutter: 4 }}>
          <CCol sm={6} xl={4} xxl={3}>
-            <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+            <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
 
               { analyticsData?.ave_batch_cogs?.toFixed(2) || 0.00} €
             </h2>
@@ -221,7 +221,7 @@ const Analytics = () => {
               </>} />
           </CCol>
           <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.ave_order_cogs?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -232,7 +232,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.tot_cogs?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -243,7 +243,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 { analyticsData?.ave_order_gross_profit?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -257,7 +257,7 @@ const Analytics = () => {
           </CRow><br></br>
           <CRow xs={{ gutter: 4 }}>
            <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' , color:'white'}} value={<><h2>
                 {analyticsData?.tot_gross_profit?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -268,7 +268,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.grocess_margin?.toFixed(2) || 0} %
               </h2>
               </>}
@@ -279,7 +279,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.ave_order_grocess_margin?.toFixed(2) || 0} %
               </h2>
               </>}
@@ -291,7 +291,7 @@ const Analytics = () => {
             </CCol>
             
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 { analyticsData?.tot_driver_cost?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -305,7 +305,7 @@ const Analytics = () => {
           </CRow><br></br>
           <CRow xs={{ gutter: 4 }}>
          <CCol sm={6} xl={4} xxl={3}>
-            <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+            <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
               {analyticsData?.ave_driver_cost_per_order?.toFixed(2) || 0.00} €
             </h2>
             </>}
@@ -316,7 +316,7 @@ const Analytics = () => {
               </>} />
           </CCol>
           <CCol sm={6} xl={4} xxl={3}>
-            <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+            <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
               {analyticsData?.ave_driver_cost_per_driver?.toFixed(2) || 0.00} €
             </h2>
             </>}
@@ -327,7 +327,7 @@ const Analytics = () => {
               </>} />
           </CCol>
           <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.tot_picker_cost?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -339,7 +339,7 @@ const Analytics = () => {
             </CCol>
             
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.ave_picker_cost_per_order?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -353,7 +353,7 @@ const Analytics = () => {
           </CRow><br></br>
           <CRow xs={{ gutter: 4 }}>
          <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.ave_picker_cost_per_picker?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -364,7 +364,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.tot_driver_and_picker_cost?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -375,7 +375,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-            <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+            <CWidgetStatsA style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
               {analyticsData?.ave_driver_and_picker_cost_per_order?.toFixed(2) || 0.00} €
             </h2>
             </>}
@@ -387,7 +387,7 @@ const Analytics = () => {
           </CCol>
             
           <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.ave_markup?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -401,7 +401,7 @@ const Analytics = () => {
           </CRow><br></br>
           <CRow xs={{ gutter: 4 }}>
          <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.tot_markup?.toFixed(2) || 0.00} €
               </h2>
               </>}
@@ -412,7 +412,7 @@ const Analytics = () => {
                 </>} />
             </CCol>
             <CCol sm={6} xl={4} xxl={3}>
-              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d' }} value={<><h2>
+              <CWidgetStatsA  style={{ height: 160,backgroundColor:'#ff4d4d', color:'white' }} value={<><h2>
                 {analyticsData?.ave_small_order_fee?.toFixed(2) || 0.00} €
               </h2>
               </>}
