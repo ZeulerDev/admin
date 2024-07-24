@@ -21,7 +21,8 @@ import {
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CModalFooter
+  CModalFooter,
+  CBadge
 } from '@coreui/react'
 import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
@@ -49,6 +50,9 @@ const Products = () => {
   const [id,setId] = useState('')
   const [price , setPrice] = useState('')
   const [priceDisplay , setPriceDisplay] = useState('')
+  const [resultCount, setResultCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchType, setSearchType] = useState('NAME')
 
   useEffect(() => {
     if (user && token) {
@@ -120,19 +124,20 @@ const Products = () => {
   const loadData = (count, moveNext) => {
     setLoading(true)
     axios
-      .get( BASE_URL+`product/all/${count}?marketId=${paramMId}&name=${searchQuery}`, {
+      .get( BASE_URL+`product/all/${count}?marketId=${paramMId}&name=${searchQuery}&type=${searchType}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
         if (res.status === 200) {
-          setProductData(res.data)
+          setProductData(res.data.list)
+          setResultCount(res.data.count)
           setLoading(false)
-          if (res.data.length < 20) {
+          if (res.data.list.length < 20) {
               setIsDisable(true)
               console.log("ok")
-            } else if (res.data.length > 19) {
+            } else if (res.data.list.length > 19) {
               setIsDisable(false)
             }
         } else if (res.status === 203) {
@@ -182,7 +187,7 @@ const Products = () => {
 
   const market = (mId, marketName) => {
     if (mId === 'all') {
-        setParamMarketData('')
+      setParamMarketData('')
       setSelectedMarket('All Markets')
       setParamChainData('')
       setSelectedChian('All Chains')
@@ -194,12 +199,14 @@ const Products = () => {
 
 
   const nextPage = () => {
+    setCurrentPage(currentPage + 1)
     const c = itemsPerPage + 50
     setItemsPerPage(c)
     loadData(c, true)
   }
 
   const previousPage = () => {
+    setCurrentPage(currentPage - 1)
     const c = itemsPerPage - 50
     console.log(c)
     setItemsPerPage(c)
@@ -228,6 +235,33 @@ const Products = () => {
       handleUpdate(id)
     }
   }
+
+  const handlePages = (page) => {
+    setCurrentPage(page);
+    const c = (page - 1) * 50;
+    setItemsPerPage(c);
+    loadData(c, true);
+  };
+
+  const renderPageNumbers = () => {
+    const totalPages = Math.ceil(resultCount / 50);
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+    const startIndex = Math.max(currentPage - 2, 1);
+    const endIndex = Math.min(startIndex + 4, totalPages);
+    const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
+    return displayedPageNumbers.map((number) => (
+      <CPaginationItem
+        key={number}
+        active={currentPage === number}
+        onClick={() => handlePages(number)}
+      >
+        {number}
+      </CPaginationItem>
+    ));
+  };
 
   const handleUpdate = (id) => {
 
@@ -290,22 +324,16 @@ const Products = () => {
    }else{
     alert('Please Check the Fields!')
    }
+
+   
     
   }
 
 
   return (
     <CContainer>
-      <CNavbar className="bg-body-tertiary">
-      <CFormInput  
-         type ="text" 
-         placeholder="Search by Product name" 
-         style={{ width : 450, marginLeft: '2%' }}
-         value={searchQuery}
-         onChange={(e) => setSearchQuery(e.target.value)}
-       
-         />
-      <CDropdown style={{ marginRight: '1%', width:'15%',backgroundColor: '#ff4d4d'  }}>
+       <CBadge style={{ marginLeft: '57%'}} color="secondary">Filter by</CBadge>
+       <CDropdown style={{marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d'  }}>
           <CDropdownToggle >{selectedChain}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
@@ -317,7 +345,7 @@ const Products = () => {
           </CDropdownMenu>
         </CDropdown>
 
-        <CDropdown style={{ marginRight: '1%', width:'35%',backgroundColor: '#ff4d4d'  }}>
+       <CDropdown style={{ marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d' }}>
           <CDropdownToggle >{selectedMarket}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => market('all')}>Select the Chain</CDropdownItem>
@@ -328,37 +356,78 @@ const Products = () => {
             ))}
           </CDropdownMenu>
         </CDropdown>
+      <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
+      <CBadge style={{ marginLeft: '0.2%'}} color="secondary">Select the seatch type</CBadge>
+      <CDropdown style={{ marginRight: '0%', width:'17%',backgroundColor: '#ff4d4d' }}>
+      <CDropdownToggle >{searchType} </CDropdownToggle>
+          <CDropdownMenu>
+            <CDropdownItem onClick={() => setSearchType('NAME')}>By Name</CDropdownItem>
+            <CDropdownItem onClick={() => setSearchType('ID')}>By Product Id</CDropdownItem>
+            <CDropdownItem onClick={() => setSearchType('BRAND')}>By BRAND NAME</CDropdownItem>
+          </CDropdownMenu>
+        </CDropdown>
+      <CFormInput  
+         type ="text" 
+         placeholder="Search here" 
+         style={{ width : 450,  marginRight: '30%' }}
+         value={searchQuery}
+         onChange={(e) => setSearchQuery(e.target.value)}
+       
+         />
+      
       </CNavbar>
 
       { loading ? <CSpinner/> : <CTable>
         <CTableHead>
           <CTableRow>
+            <CTableHeaderCell scope="col">#</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Product Id</CTableHeaderCell>
             <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Price</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Brand</CTableHeaderCell>
             <CTableHeaderCell scope="col">Chain</CTableHeaderCell>
             <CTableHeaderCell scope="col">Market Address</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {ProductData.map((item, index) => (
+          {ProductData.map((item, index) => {
+            return (
             <CTableRow key={index}>
-              <CTableHeaderCell scope="row"><CCardImage style={{ width :'50px', height:'50px' }} src={`https://api.zeuler.com/image/`+item.photo} /></CTableHeaderCell>
+               <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+               <CTableDataCell>{item.pid}</CTableDataCell>
+              <CTableHeaderCell onClick={()=>{console.log('click image')}}><CCardImage style={{ width :'50px', height:'50px' }} src={`https://api.zeuler.com/image/`+item.image} /></CTableHeaderCell>
               <CTableDataCell>{item.name}</CTableDataCell>
               <CTableDataCell>{item.price}<Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item.productId, item.price)}  /></Link></CTableDataCell>
+              <CTableDataCell>{item.brand}</CTableDataCell>
               <CTableDataCell>{item.chainName}</CTableDataCell>
               <CTableDataCell>{item.marketAddress}</CTableDataCell>
             </CTableRow>
-          ))}
+          )})}
         </CTableBody>
       </CTable>
 
       }
 
-    <CPagination aria-label="Page navigation example">
+      <CPagination aria-label="Page navigation example">
+          <CPaginationItem
+            disabled={itemsPerPage <= 0 ? true : false}
+            onClick={previousPage}
+          >
+            Previous
+          </CPaginationItem>
+          {renderPageNumbers()}
+          <CPaginationItem
+            disabled={isDisable === true ? true : false}
+            onClick={nextPage}
+          >
+            Next
+          </CPaginationItem>
+        </CPagination>
+    {/* <CPagination aria-label="Page navigation example">
         <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>Previous</CPaginationItem>
         <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
-      </CPagination>
+      </CPagination> */}
 
       <CModal alignment="center" visible={visiblePriceModal} scrollable size='sm' onClose={() => setVisiblePriceModal(false)}>
         <CModalHeader closeButton>
@@ -373,10 +442,10 @@ const Products = () => {
          onChange={(e) => setPrice(e.target.value)} />
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisiblePriceModal(false)}>
+          {/* <CButton color="secondary" onClick={() => setVisiblePriceModal(false)}>
             Close
-          </CButton>
-          <CButton color="primary" onClick={() => updateName()}>Save changes</CButton>
+          </CButton> */}
+          <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => updateName()}>Save changes</CButton>
         </CModalFooter>
       </CModal>
 
