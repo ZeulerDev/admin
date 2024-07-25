@@ -52,6 +52,10 @@ const Payout = ()=>{
     const [payoutStatus, setPayoutStatus] = useState('')
     const [payoutId, setPayoutId] = useState('')
 
+    const [resultCount, setResultCount] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(0)
+    const [isDisable, setIsDisable] = useState(true)
 
     useEffect(() => {
       const timer = setTimeout(() => {
@@ -67,7 +71,7 @@ const Payout = ()=>{
         setLoading(false);
       }, 20000);
 
-      loadData(timer); // Call the loadData method
+      loadData(0, timer); 
 
       return () => {
         clearTimeout(timer);
@@ -76,18 +80,25 @@ const Payout = ()=>{
 
 
 
-    const loadData =(timer)=>{
+    const loadData =(count, timer)=>{
       setLoading(true)
-      axios.get(BASE_URL+`assistant/pickers/payouts/0?status=${statusParam}&no=${searchQuery}`,{
+      axios.get(BASE_URL+`assistant/pickers/payouts/${count}?status=${statusParam}&no=${searchQuery}`,{
           headers:{
               Authorization: `Bearer ${token}`,
           },
       })
       .then((res)=>{
           if (res.status === 200) {
-              setPayOutData(res.data)  
+              setPayOutData(res.data.data)  
+              setResultCount(res.data.count)
               setLoading(false)
               clearTimeout(timer)
+              if (res.data.list.length < 50) {
+                setIsDisable(true)
+                console.log("ok")
+              } else if (res.data.list.length > 49) {
+                setIsDisable(false)
+              }
             } else if (res.status === 204) {
               dispatch({
                 type : SET_ALERT,
@@ -118,6 +129,22 @@ const Payout = ()=>{
           console.log('Error', err)
       })
     }
+
+    
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1);
+    const c = itemsPerPage + 50
+    setItemsPerPage(c)
+    loadData(c, true)
+  }
+
+  const previousPage = () => {
+    setCurrentPage(currentPage - 1);
+    const c = itemsPerPage - 50
+    console.log(c)
+    setItemsPerPage(c)
+    loadData(c, false)
+  }
 
     const handleToggle = (type, item) => {
         setVisible(!visible)
@@ -235,6 +262,34 @@ const Payout = ()=>{
       }
     }
 
+    const handlePages = (page) => {
+      setCurrentPage(page);
+      const c = (page - 1) * 50;
+      setItemsPerPage(c);
+      loadData(c, true);
+    };
+  
+    const renderPageNumbers = () => {
+      const totalPages = Math.ceil(resultCount / 50);
+      const pageNumbers = [];
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+      const startIndex = Math.max(currentPage - 2, 1);
+      const endIndex = Math.min(startIndex + 4, totalPages);
+      const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
+      return displayedPageNumbers.map((number) => (
+        <CPaginationItem
+          key={number}
+          active={currentPage === number}
+          onClick={() => handlePages(number)}
+        >
+          {number}
+        </CPaginationItem>
+      ));
+    };
+  
+
     return(
 
         <CContainer>
@@ -326,10 +381,21 @@ const Payout = ()=>{
         </CTable>}
        
   
-        {/* <CPagination aria-label="Page navigation example">
-          <CPaginationItem>Previous</CPaginationItem>
-          <CPaginationItem>Next</CPaginationItem>
-        </CPagination> */}
+        <CPagination aria-label="Page navigation example">
+          <CPaginationItem
+            disabled={itemsPerPage <= 0 ? true : false}
+            onClick={previousPage}
+          >
+            Previous
+          </CPaginationItem>
+          {renderPageNumbers()}
+          <CPaginationItem
+            disabled={isDisable === true ? true : false}
+            onClick={nextPage}
+          >
+            Next
+          </CPaginationItem>
+        </CPagination>
 
 
         <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>

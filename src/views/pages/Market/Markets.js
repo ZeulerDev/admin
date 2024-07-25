@@ -40,7 +40,6 @@ const Market = () => {
   const [paramChainId, setParamChainData] = useState('')
   const [paramCity, setParamCityData] = useState('')
   const [itemsPerPage, setItemsPerPage] = useState(0)
-  const [currentPage, setCurrentPage] = useState(0)
   const [selectedCity, setSelectedCity] = useState('All Cities')
   const [selectedChain, setSelectedChian] = useState('All Chains')
   const [isChecked, setIsChecked] = useState()
@@ -49,6 +48,8 @@ const Market = () => {
   const navigate = useNavigate()
   const [visible, setVisible] = useState(false)
   const [mId, setMId] = useState('')
+  const [resultCount, setResultCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (token) {
@@ -116,6 +117,7 @@ const Market = () => {
       .then((res) => {
         if (res.status === 200) {
           setChainMarketData(res.data.data)
+          setResultCount(res.data.count)
           setLoading(false)
           clearTimeout(timer)
           if (res.data.data.length < 20) {
@@ -140,16 +142,18 @@ const Market = () => {
   }
 
   const nextPage = () => {
+    setCurrentPage(currentPage + 1);
     const c = itemsPerPage + 20
     setItemsPerPage(c)
     loadData(c, true)
   }
 
   const previousPage = () => {
+    setCurrentPage(currentPage - 1);
     const c = itemsPerPage - 20
     console.log(c)
     setItemsPerPage(c)
-    loadData(c, false)
+    loadData(c, true)
   }
 
   const chain = (chainId, chianName) => {
@@ -375,6 +379,33 @@ const Market = () => {
 
   }
   
+  const handlePages = (page) => {
+    setCurrentPage(page);
+    const c = (page - 1) * 20;
+    setItemsPerPage(c);
+    loadData(c, true);
+  };
+
+  const renderPageNumbers = () => {
+    const totalPages = Math.ceil(resultCount / 20);
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+    console.log(pageNumbers,totalPages);
+    const startIndex = Math.max(currentPage - 2, 1);
+    const endIndex = Math.min(startIndex + 4, totalPages);
+    const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
+    return displayedPageNumbers.map((number) => (
+      <CPaginationItem
+        key={number}
+        active={currentPage === number}
+        onClick={() => handlePages(number)}
+      >
+        {number}
+      </CPaginationItem>
+    ));
+  };
 
   return (
     <CContainer>
@@ -472,12 +503,29 @@ const Market = () => {
 
       }
 
+      
       <CPagination aria-label="Page navigation example">
+          <CPaginationItem
+            disabled={itemsPerPage <= 0 ? true : false}
+            onClick={previousPage}
+          >
+            Previous
+          </CPaginationItem>
+          {renderPageNumbers()}
+          <CPaginationItem
+            disabled={isDisable === true ? true : false}
+            onClick={nextPage}
+          >
+            Next
+          </CPaginationItem>
+        </CPagination>
+
+      {/* <CPagination aria-label="Page navigation example">
         <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
           Previous
         </CPaginationItem>
         <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
-      </CPagination>
+      </CPagination> */}
 
       
       <CModal alignment="center" visible={visible} scrollable size='sm' onClose={() => setVisible(false)}>

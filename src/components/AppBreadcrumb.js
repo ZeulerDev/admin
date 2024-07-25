@@ -12,9 +12,9 @@ const AppBreadcrumb = () => {
   const [batchId, setBatchId] = useState(null);
 
   const getBatchIdFromPath = (pathname) => {
-    console.log('called',pathname)
+    // console.log('called',pathname)
     const parts = pathname.split('/');
-    console.log('called',parts)
+    // console.log('called',parts)
     const batch = parts.indexOf('batches');
     if(batch !== -1) {
       console.log('called',batch)
@@ -87,7 +87,7 @@ const AppBreadcrumb = () => {
   }
 
   const breadcrumbs = getBreadcrumbs(currentLocation)
-  console.log('breadcrumbs',breadcrumbs)
+  // console.log('breadcrumbs',breadcrumbs)
   return (
     <CBreadcrumb className="my-0">
       <CBreadcrumbItem href="/">Home</CBreadcrumbItem>

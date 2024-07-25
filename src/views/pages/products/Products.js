@@ -36,7 +36,7 @@ const Products = () => {
 
   const [{user, token }, dispatch] = useAppContext()
   const [loading, setLoading] = useState(false)
-  const [ProductData, setProductData] = useState([])
+  const [productData, setProductData] = useState([])
   const [itemsPerPage, setItemsPerPage] = useState(0)
   const [isDisable, setIsDisable] = useState(true)
   const [chainData, setChainData] = useState([])
@@ -53,6 +53,9 @@ const Products = () => {
   const [resultCount, setResultCount] = useState(0)
   const [currentPage, setCurrentPage] = useState(1);
   const [searchType, setSearchType] = useState('NAME')
+
+  const [imageUpload, setImageUpload] = useState(false)
+  const [productId, setProductId] = useState('')
 
   useEffect(() => {
     if (user && token) {
@@ -325,7 +328,80 @@ const Products = () => {
     alert('Please Check the Fields!')
    }
 
-   
+  }
+
+  const handleToggleImageUploader = (id)=>{
+    setImageUpload(!imageUpload)
+    setProductId(id)
+  }
+
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadedImageView, setUploadedImageView] = useState(null);
+
+  const handleImageUpload = (file) => {
+    console.log(file)
+    setUploadedImageView(URL.createObjectURL(file))
+    setUploadedImage(file)
+  };
+
+
+  const handleImageUploadSubmit = async (id, img) => {
+    console.log(id, img)
+
+  
+    if(user && token){
+
+    const formData = new FormData();
+    formData.append('image', img);
+    formData.append('id', id);
+
+    axios.post(BASE_URL+'test/product/image/update', formData,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },})
+      .then((res) => {
+        if (res.status === 200) {
+          setImageUpload(false)
+          setProductId('')
+          setUploadedImage(null)
+          console.log('response',res.data)
+
+          // const updatedEntity = res.data
+          // const found = productData.find((f) => f.id === updatedEntity.id)
+          // if(found){
+          //   found.bonus = updatedEntity.bonus
+          // }
+
+          // setProductData([...productData])
+
+          dispatch({
+                type : SET_ALERT,
+                payload : {
+                  status : true,
+                  title : 'Image upload ',
+                  message : 'Image upload success',
+                  color: 'success'
+                }
+              })
+          loadData(0, true)
+        } else if (res.status === 500) {
+              dispatch({
+                type : SET_ALERT,
+                payload : {
+                  status : true,
+                  title : 'Image upload error',
+                  message : res.data.message,
+                  color: 'danger'
+                }
+              })
+               
+            }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+    }
     
   }
 
@@ -391,12 +467,12 @@ const Products = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {ProductData.map((item, index) => {
+          {productData.map((item, index) => {
             return (
             <CTableRow key={index}>
                <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                <CTableDataCell>{item.pid}</CTableDataCell>
-              <CTableHeaderCell onClick={()=>{console.log('click image')}}><CCardImage style={{ width :'50px', height:'50px' }} src={`https://api.zeuler.com/image/`+item.image} /></CTableHeaderCell>
+              <CTableHeaderCell onClick={()=>{handleToggleImageUploader(item.productId)}}><CCardImage style={{ width :'50px', height:'50px' }} src={`https://api.zeuler.com/image/`+item.image} /></CTableHeaderCell>
               <CTableDataCell>{item.name}</CTableDataCell>
               <CTableDataCell>{item.price}<Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item.productId, item.price)}  /></Link></CTableDataCell>
               <CTableDataCell>{item.brand}</CTableDataCell>
@@ -424,10 +500,6 @@ const Products = () => {
             Next
           </CPaginationItem>
         </CPagination>
-    {/* <CPagination aria-label="Page navigation example">
-        <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>Previous</CPaginationItem>
-        <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
-      </CPagination> */}
 
       <CModal alignment="center" visible={visiblePriceModal} scrollable size='sm' onClose={() => setVisiblePriceModal(false)}>
         <CModalHeader closeButton>
@@ -446,6 +518,33 @@ const Products = () => {
             Close
           </CButton> */}
           <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => updateName()}>Save changes</CButton>
+        </CModalFooter>
+      </CModal>
+
+      <CModal alignment="center" visible={imageUpload} scrollable size='lg' 
+      onClose={() => {
+        setImageUpload(false)
+        setUploadedImage(null)
+        setUploadedImageView(null)
+      }}>
+        <CModalHeader closeButton>
+          <CModalTitle>Image Uploader</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          {
+            uploadedImageView &&  <CCardImage style={{ width :'100px', height:'100px' }} src={uploadedImageView} alt="Uploaded Image" />
+          }
+
+          <input
+            style={{marginLeft:'5%'}}
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            onChange={(e) => handleImageUpload(e.target.files[0])}
+          />
+        </CModalBody>
+        <CModalFooter>
+          
+          <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => {handleImageUploadSubmit(productId,uploadedImage)}}>Upload Image</CButton>
         </CModalFooter>
       </CModal>
 

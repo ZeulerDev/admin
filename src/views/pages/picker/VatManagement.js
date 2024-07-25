@@ -40,7 +40,10 @@ const VatManagement = () => {
     const [vatId, setVatId] = useState('')
     const [searchQuery, setSearchQuery] = useState('');
 
- 
+    const [resultCount, setResultCount] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(0)
+    const [isDisable, setIsDisable] = useState(true)
 
     
     useEffect(() => {
@@ -57,28 +60,34 @@ const VatManagement = () => {
         setLoading(false);
       }, 20000);
         
-      loadVatData(timer)
+      loadVatData(0, timer)
       return () => {
         clearTimeout(timer);
       };
     
     },[searchQuery])
 
-    const loadVatData = (timer) => {
+    const loadVatData = (count, timer) => {
       if(user && token){
         setLoading(true)
         axios
-          .get(BASE_URL+`assistant/vat/shoppers/0?search=`+searchQuery, {
+          .get(BASE_URL+`assistant/vat/shoppers/${count}?search=`+searchQuery, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           })
           .then((res) => {
             if (res.status === 200) {
-              setPickersVatData(res.data)
+              setPickersVatData(res.data.list)
+              setResultCount(res.data.count)
               clearTimeout(timer)
               setLoading(false)
-              console.log('done')
+              if (res.data.list.length < 50) {
+                setIsDisable(true)
+                console.log("ok")
+              } else if (res.data.list.length > 49) {
+                setIsDisable(false)
+              }
 
             } else if (res.status === 204) {
               dispatch({
@@ -107,6 +116,21 @@ const VatManagement = () => {
           })
   
       }
+    }
+
+    const nextPage = () => {
+      setCurrentPage(currentPage + 1);
+      const c = itemsPerPage + 50
+      setItemsPerPage(c)
+      loadVatData(c, true)
+    }
+  
+    const previousPage = () => {
+      setCurrentPage(currentPage - 1);
+      const c = itemsPerPage - 50
+      console.log(c)
+      setItemsPerPage(c)
+      loadVatData(c, false)
     }
 
     const handleToggle = (id, vatPid = null) => {
@@ -204,7 +228,33 @@ const VatManagement = () => {
               })
           }
       }
+
+      const handlePages = (page) => {
+        setCurrentPage(page);
+        const c = (page - 1) * 50;
+        setItemsPerPage(c);
+        loadVatData(c, true);
+      };
     
+      const renderPageNumbers = () => {
+        const totalPages = Math.ceil(resultCount / 50);
+        const pageNumbers = [];
+        for (let i = 1; i <= totalPages; i++) {
+          pageNumbers.push(i);
+        }
+        const startIndex = Math.max(currentPage - 2, 1);
+        const endIndex = Math.min(startIndex + 4, totalPages);
+        const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
+        return displayedPageNumbers.map((number) => (
+          <CPaginationItem
+            key={number}
+            active={currentPage === number}
+            onClick={() => handlePages(number)}
+          >
+            {number}
+          </CPaginationItem>
+        ));
+      };
     return(
         <CContainer>
         <CNavbar className="bg-body-tertiary">
@@ -249,10 +299,21 @@ const VatManagement = () => {
 
         }
   
-        {/* <CPagination aria-label="Page navigation example">
-          <CPaginationItem>Previous</CPaginationItem>
-          <CPaginationItem>Next</CPaginationItem>
-        </CPagination> */}
+        <CPagination aria-label="Page navigation example">
+          <CPaginationItem
+            disabled={itemsPerPage <= 0 ? true : false}
+            onClick={previousPage}
+          >
+            Previous
+          </CPaginationItem>
+          {renderPageNumbers()}
+          <CPaginationItem
+            disabled={isDisable === true ? true : false}
+            onClick={nextPage}
+          >
+            Next
+          </CPaginationItem>
+        </CPagination>
 
 
        
