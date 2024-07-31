@@ -71,6 +71,10 @@ const Drivers = () => {
   const [address, setAddress] = useState()
   const [dId, setDId] = useState()
 
+  const [passCode, setPassCode] = useState('')
+  const [passCodeReEnter, setPassCodeReEnter] = useState('')
+  const [visiblePasswordModal, setVisiblePasswordModal] = useState(false)
+
   useEffect(() => {
     loadMakerGroup()
     loadChain()
@@ -483,6 +487,107 @@ const Drivers = () => {
 
   }
 
+  const handleTogglePassword = () => {
+    setVisibleRider(false)
+    setVisiblePasswordModal(true)
+
+  }
+
+  const updatePassword = (id) => {
+    if(passCode === '' || passCodeReEnter === ''){
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Password update error',
+          message: 'Check the input fields',
+          color: 'warning'
+        }
+      })
+
+    }else if (passCode === passCodeReEnter) {
+      const data = {
+        passcode: passCode
+      }
+      
+      console.log(data, id)
+      if (user && token) {
+        axios
+          .patch(BASE_URL + 'assistant/rider/update/' + id, data, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setVisiblePasswordModal(false)
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Password update',
+                  message: 'Password updated successfully',
+                  color: 'success'
+                }
+              })
+              setVisibleRider(true)
+            } else if (res.status === 204) {
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Password update error',
+                  message: res.data.message
+                }
+              })
+            } else if (res.status === 404) {
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Password update error',
+                  message: res.data.message
+                }
+              })
+            } else if (res.status === 500) {
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Password update error',
+                  message: res.data.message
+                }
+              })
+            }
+          }).catch((error) => {
+            console.error(error)
+          })
+      }
+    } else if(passCode !== passCodeReEnter){ 
+
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Password update error',
+          message: 'Password does not match',
+          color: 'warning'
+        }
+      })
+    
+  }else{
+    dispatch({
+      type: SET_ALERT,
+      payload: {
+        status: true,
+        title: 'Password update error',
+        message: 'Password update error or check the input fields',
+        color: 'warning'
+      }
+    })
+  }
+}
+
   return (
     <CContainer>
       
@@ -663,6 +768,38 @@ const Drivers = () => {
         </CTable>
       )}
 
+<CModal alignment="center" visible={visiblePasswordModal} scrollable size='sm' onClose={() => setVisiblePasswordModal(false)}>
+        <CModalHeader closeButton>
+          <CModalTitle>Update Password</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          {/* <a>Are you sure you want to delete this picker?</a><br></br><br></br> */}
+           <CCol md={12}>
+        <CFormInput
+              id="password"
+              label="Enter New Password"
+              type='password'
+              onChange={(e) => setPassCode(e.target.value)}
+            />
+        </CCol>
+        <br></br>
+        <CCol md={12}>
+        <CFormInput
+              id="repassword"
+              label="Re Enter Password"
+              type='password'
+              onChange={(e) => setPassCodeReEnter(e.target.value)}
+            />
+        </CCol>
+
+        </CModalBody>
+          <CModalFooter>
+              <CButton type="submit" style={{ marginBottom: '3%', backgroundColor: '#ff4d4d', color: 'white' }} onClick={() => {updatePassword(riderEditObj.id)}}>
+                Update
+              </CButton>
+        </CModalFooter>
+      </CModal>
+
       <CModal alignment="center" visible={visibleDelete} scrollable size='sm' onClose={() => setVisibleDelete(false)}>
         <CModalHeader closeButton={false}>
           <CModalTitle>Confirmation</CModalTitle>
@@ -807,11 +944,14 @@ const Drivers = () => {
           </CFormSelect>
         </CCol> */}
   
-        <CCol xs={12}>
+        <CCol xs={6}>
             <CButton style={{ marginBottom:'3%', width:'200px',backgroundColor:'#ff4d4d',color:'white' }} onClick={()=>handleSubmit()}>
               Update Rider
             </CButton>
           </CCol>
+          <CCol xs={6}>
+              <span style={{ fontSize: 15, color: 'red', cursor: 'pointer', marginLeft: '64%', marginTop: '10%' }} onClick={() => handleTogglePassword()}>Change Password</span>
+            </CCol>
         </div>
         </CModalBody>
         {/* <CModalFooter>

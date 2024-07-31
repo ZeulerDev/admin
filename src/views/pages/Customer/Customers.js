@@ -64,6 +64,13 @@ const Customer = () => {
   const [isDisableAddress, setIsDisableAddress] = useState(true)
   const [addressId, setAddressId] = useState('')
 
+  const [passCode, setPassCode] = useState('')
+  const [passCodeReEnter, setPassCodeReEnter] = useState('')
+  const [visiblePasswordModal, setVisiblePasswordModal] = useState(false)
+
+  const [imageUpload, setImageUpload] = useState(false)
+  const [userId, setProductId] = useState('')
+
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch({
@@ -220,7 +227,8 @@ const Customer = () => {
         contact: phone
       }
 
-      const id = customerEditObj.id
+      const id = customerEditObj._id
+      console.log('id',id)
 
       if(user,token){
           if(user && token){
@@ -233,6 +241,7 @@ const Customer = () => {
                 .then((res) => {
                   if (res.status === 200) {
                     setVisibleCustomer(false)
+                    loadData(0, true)
                     const updatedEntity = res.data
                     const list = customerData.map((item) => {
                       if (item.id === updatedEntity.id) {
@@ -243,13 +252,23 @@ const Customer = () => {
                     })
                     setCustomerData([...list])
 
+                    dispatch({
+                      type: SET_ALERT,
+                      payload: {
+                        status: true,
+                        title: 'Customer update',
+                        message: 'Customer updated successfully',
+                        color: 'success'
+                      }
+                    })
+
                   } else if (res.status === 203) {
                     dispatch({
                       type : SET_ALERT,
                       payload : {
                         status : true,
                         title : 'Customer update error',
-                        message : res.data.message,
+                        message : '203',
                         color:'warning'
                       }
                     })
@@ -259,7 +278,7 @@ const Customer = () => {
                       payload : {
                         status : true,
                         title : 'Customer update error',
-                        message : res.data.message,
+                        message : '204',
                         color:'warning'
                       }
                     })
@@ -269,7 +288,7 @@ const Customer = () => {
                       payload : {
                         status : true,
                         title : 'Customer update error',
-                        message : res.data.message,
+                        message : '500',
                         color:'warning'
                       }
                     })
@@ -300,7 +319,6 @@ const Customer = () => {
     
       
   }
-
 
   const handlePages = (page) => {
     setCurrentPage(page);
@@ -356,6 +374,174 @@ const Customer = () => {
     ));
   };
 
+  const handleTogglePassword = () => {
+    setVisibleCustomer(false)
+    setVisiblePasswordModal(true)
+
+  }
+
+  const updatePassword = (id) => {
+    if(passCode === '' || passCodeReEnter === ''){
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Password update error',
+          message: 'Check the input fields',
+          color: 'warning'
+        }
+      })
+
+    }else if (passCode === passCodeReEnter) {
+      const data = {
+        password: passCode
+      }
+      
+      console.log(data, id)
+      if (user && token) {
+        axios
+          .patch(BASE_URL + 'assistant/customers/update/' + id, data, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setVisiblePasswordModal(false)
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Password update',
+                  message: 'Password updated successfully',
+                  color: 'success'
+                }
+              })
+              setVisiblePicker(true)
+            } else if (res.status === 203) {
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Password update error',
+                  message: res.data.message
+                }
+              })
+            } else if (res.status === 204) {
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Password update error',
+                  message: res.data.message
+                }
+              })
+            } else if (res.status === 500) {
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Password update error',
+                  message: res.data.message
+                }
+              })
+            }
+          }).catch((error) => {
+            console.error(error)
+          })
+      }
+    } else if(passCode !== passCodeReEnter){ 
+
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Password update error',
+          message: 'Password does not match',
+          color: 'warning'
+        }
+      })
+    
+  }else{
+    dispatch({
+      type: SET_ALERT,
+      payload: {
+        status: true,
+        title: 'Password update error',
+        message: 'Password update error or check the input fields',
+        color: 'warning'
+      }
+    })
+  }
+}
+
+const handleToggleImageUploader = (id)=>{
+  setImageUpload(!imageUpload)
+  setProductId(id)
+}
+
+const [uploadedImage, setUploadedImage] = useState(null);
+const [uploadedImageView, setUploadedImageView] = useState(null);
+
+const handleImageUpload = (file) => {
+  console.log(file)
+  setUploadedImageView(URL.createObjectURL(file))
+  setUploadedImage(file)
+};
+
+
+const handleImageUploadSubmit = async (id, img) => {
+  console.log(id, img)
+
+
+  if(user && token){
+
+  const formData = new FormData();
+  formData.append('image', img);
+  formData.append('id', id);
+
+  axios.post(BASE_URL+'test/customer/image/update', formData,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },})
+    .then((res) => {
+      if (res.status === 200) {
+        setImageUpload(false)
+        setProductId('')
+        setUploadedImage(null)
+        console.log('response',res.data)
+
+        dispatch({
+              type : SET_ALERT,
+              payload : {
+                status : true,
+                title : 'Image upload ',
+                message : 'Image upload success',
+                color: 'success'
+              }
+            })
+        loadData(0, true)
+      } else if (res.status === 500) {
+            dispatch({
+              type : SET_ALERT,
+              payload : {
+                status : true,
+                title : 'Image upload error',
+                message : res.data.message,
+                color: 'danger'
+              }
+            })
+             
+          }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
+  }
+  
+}
+
   return (
     <CContainer >
       <CNavbar className="bg-body-tertiary">
@@ -390,7 +576,7 @@ const Customer = () => {
           {customerData.map((item,index) => (
             <CTableRow key={index}>
               <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-              <CTableHeaderCell scope="row"><CCardImage style={{ width : 50, height: 50, borderRadius : 10 }} src={`https://api.zeuler.com/image/`+item.photo} /></CTableHeaderCell>
+              <CTableHeaderCell onClick={()=>{handleToggleImageUploader(item._id)}}><CCardImage style={{ width : 50, height: 50, borderRadius : 10 }} src={`https://api.zeuler.com/image/`+item.photo} /></CTableHeaderCell>
               <CTableDataCell>{item.name}</CTableDataCell>
               <CTableDataCell>{item.surname}</CTableDataCell>
               <CTableDataCell>{item.email}</CTableDataCell>
@@ -452,6 +638,65 @@ const Customer = () => {
         <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
       </CPagination> */}
      
+     <CModal alignment="center" visible={imageUpload} scrollable size='lg' 
+      onClose={() => {
+        setImageUpload(false)
+        setUploadedImage(null)
+        setUploadedImageView(null)
+      }}>
+        <CModalHeader closeButton>
+          <CModalTitle>Image Uploader</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          {
+            uploadedImageView &&  <CCardImage style={{ width :'100px', height:'100px' }} src={uploadedImageView} alt="Uploaded Image" />
+          }
+
+          <input
+            style={{marginLeft:'5%'}}
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            onChange={(e) => handleImageUpload(e.target.files[0])}
+          />
+        </CModalBody>
+        <CModalFooter>
+          
+          <CButton style={{backgroundColor:'#ff4d4d', color:'white'}} onClick={() => {handleImageUploadSubmit(userId,uploadedImage)}}>Upload Image</CButton>
+        </CModalFooter>
+      </CModal>
+
+
+     <CModal alignment="center" visible={visiblePasswordModal} scrollable size='sm' onClose={() => setVisiblePasswordModal(false)}>
+        <CModalHeader closeButton>
+          <CModalTitle>Update Password</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          {/* <a>Are you sure you want to delete this picker?</a><br></br><br></br> */}
+           <CCol md={12}>
+        <CFormInput
+              id="password"
+              label="Enter New Password"
+              type='password'
+              onChange={(e) => setPassCode(e.target.value)}
+            />
+        </CCol>
+        <br></br>
+        <CCol md={12}>
+        <CFormInput
+              id="repassword"
+              label="Re Enter Password"
+              type='password'
+              onChange={(e) => setPassCodeReEnter(e.target.value)}
+            />
+        </CCol>
+
+        </CModalBody>
+          <CModalFooter>
+              <CButton type="submit" style={{ marginBottom: '3%', backgroundColor: '#ff4d4d', color: 'white' }} onClick={() => {updatePassword(customerEditObj._id)}}>
+                Update
+              </CButton>
+        </CModalFooter>
+      </CModal>
 
       <CModal visible={visible} scrollable size='xl' 
       onClose={() => {
@@ -554,11 +799,14 @@ const Customer = () => {
             />
         </CCol>
   
-        <CCol xs={12}>
+        <CCol xs={6}>
             <CButton type="submit" style={{ marginBottom:'3%', width:'200px', backgroundColor:'#ff4d4d',color:'white'}} onClick={()=>handleSubmit()}>
               Update Customer
             </CButton>
           </CCol>
+          <CCol xs={6}>
+              <span style={{ fontSize: 15, color: 'red', cursor: 'pointer', marginLeft: '64%', marginTop: '10%' }} onClick={() => handleTogglePassword()}>Change Password</span>
+            </CCol>
         </div>
         </CModalBody>
         {/* <CModalFooter>
