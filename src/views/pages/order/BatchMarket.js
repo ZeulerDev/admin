@@ -75,7 +75,7 @@ const BatchMarkets = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data)
+          // console.log(res.data)
           setBatchMarketsData(res.data)
           setLoading(false)
           clearTimeout(timer);

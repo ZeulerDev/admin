@@ -158,12 +158,12 @@ const Pickers = () => {
     if (user && token) {
       setLoading(true)
 
-      let url = BASE_URL + `assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
+      let url = BASE_URL + `assistant/shoppers/0?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}&code=${paramCode}`
 
-      if (paramCode) {
-        url += `&code=${paramCode}`
-      }
-
+      // if (paramCode) {
+      //   url += ``
+      // }
+ 
       axios
         .get(url, {
           headers: {
@@ -247,7 +247,7 @@ const Pickers = () => {
 
     if (user && token) {
       axios
-        .patch(BASE_URL + 'assistant/shopper/status/' + pickerId, data, {
+        .patch(BASE_URL + 'assistant/shopper/status/' + pickerId, data, { 
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -626,10 +626,10 @@ const Pickers = () => {
       <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
         <CFormInput
           type="text"
-          placeholder="Search by Picker ID"
+          placeholder="Search by Picker by picker Id, name, surname, email and contact"
           className="picker-input"
           value={paramCode}
-          style={{ width: 450, marginLeft: '0%' }}
+          style={{ width: 480, marginLeft: '0%' }}
           onChange={(e) => setParamCodeData(e.target.value)}
         />
 

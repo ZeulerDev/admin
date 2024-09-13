@@ -97,7 +97,7 @@ const Batch = () => {
         payload: {
           status: true,
           title: 'Data Loading',
-          message: 'Data loading error: Timeout exceeded',
+          message: 'Data loading timeout exceeded or no data to show',
           color: 'warning'
         }
       });
@@ -105,7 +105,7 @@ const Batch = () => {
     }, 20000);
 
     if (user && token) {
-      loadData(0, true)
+      loadData(0, timer);
     }
 
     return () => {

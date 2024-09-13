@@ -17,7 +17,10 @@ import {
   cilNotes,
   cilPencil,
   cilPeople,
+  cilPowerStandby,
+  cilPushchair,
   cilPuzzle,
+  cilReportSlash,
   cilSchool,
   cilShareBoxed,
   cilSpeedometer,
@@ -43,12 +46,12 @@ const _nav = [
   //   to: '/theme/colors',
   //   icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
   // },
-  {
-    component: CNavItem,
-    name: 'Customers',
-    to: '/customers',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-  }, 
+  // {
+  //   component: CNavItem,
+  //   name: 'Customers',
+  //   to: '/customers',
+  //   icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  // }, 
   {
     component: CNavItem,
     name: 'Analytics',
@@ -67,11 +70,110 @@ const _nav = [
     to: '/marketgroups',
     icon: <CIcon icon={cilFactory} customClassName="nav-icon" />,
   },
+  {
+    component: CNavGroup,
+    name: 'Customers',
+    to: '/customers',
+    icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Customers',
+        to: '/customers/view',
+      },
+      {
+        component: CNavItem,
+        name: 'Advanced Search',
+        to: '/customers/advanced/search',
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Promotions',
+    to: '/promotions/flayers',
+    icon: <CIcon icon={cilReportSlash} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Promotions',
+        to: '/promotions/all',
+      },{
+        component: CNavItem,
+        name: 'Flayers',
+        to: '/promotions/flayers',
+      },
+      
+    ],
+  },
   // {
   //   component: CNavItem,
   //   name: 'Products',
   //   to: '/products',
   //   icon: <CIcon icon={cilStorage} customClassName="nav-icon" />,
+  // },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Products',
+  //   to: '/products',
+  //   icon: <CIcon icon={cilStorage} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Products',
+  //       to: '/products/view',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Categories',
+  //       to: '/products/categories',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Create Reference',
+  //       to: '/products/virtualreference',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Create Category',
+  //       to: '/products/createcategory',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Change Category Tree',
+  //       to: '/products/categorytree',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Change Sub Categories',
+  //       to: '/products/categorystructure',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Registered Categories',
+  //       to: '/products/registered/categories',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Virtual Products',
+  //       to: '/products/virtualproducts',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Virtual Market',
+  //       to: '/products/virtualmarkets',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'Category Structure',
+  //       to: '/products/main/category/structure',
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: 'DB Category Structure',
+  //       to: '/products/db/main/category/structure',
+  //     },
+  //   ],
   // },
   {
     component: CNavGroup,
@@ -182,16 +284,16 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Create Pick Area',
+        name: 'Create Pickup Area',
         to: '/list/pickerarea',
       },
       {
         component: CNavItem,
-        name: 'View Pick Areas',
+        name: 'View Pickup Areas',
         to: '/list/view',
       },
     ],
-  },
+  }
   // {
   //   component: CNavItem,
   //   name: 'Typography',

@@ -47,6 +47,8 @@ const GroceryList = () => {
   const [itemsData, setItemsData] = useState([])
   const [itemsPerPage, setItemsPerPage] = useState(0)
   const [isDisable, setIsDisable] = useState(true)
+  const [resultCount, setResultCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
 
@@ -82,7 +84,8 @@ const GroceryList = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          setGroceryListData(res.data)
+          setGroceryListData(res.data.list)
+          setResultCount(res.data.count)
           setLoading(false)
           clearTimeout(timer);
           if (res.data.length < 50) {
@@ -117,18 +120,46 @@ const GroceryList = () => {
   }
 
   const nextPage = () => {
-    console.log(itemsPerPage)
+    setCurrentPage(currentPage + 1);
     const c = itemsPerPage + 50
     setItemsPerPage(c)
     loadData(c, true)
   }
 
   const previousPage = () => {
+    setCurrentPage(currentPage - 1);
     const c = itemsPerPage - 50
     console.log(c)
     setItemsPerPage(c)
     loadData(c, false)
   }
+
+  const handlePages = (page) => {
+    setCurrentPage(page);
+    const c = (page - 1) * 50;
+    setItemsPerPage(c);
+    loadData(c, true);
+  };
+
+  const renderPageNumbers = () => {
+    const totalPages = Math.ceil(resultCount / 50);
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+    const startIndex = Math.max(currentPage - 2, 1);
+    const endIndex = Math.min(startIndex + 4, totalPages);
+    const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
+    return displayedPageNumbers.map((number) => (
+      <CPaginationItem
+        key={number}
+        active={currentPage === number}
+        onClick={() => handlePages(number)}
+      >
+        {number}
+      </CPaginationItem>
+    ));
+  };
 
   const handleToggle = (items) => {
     setVisible(!visible)
@@ -203,12 +234,28 @@ const GroceryList = () => {
         </CTable>
       )}
 
-      <CPagination aria-label="Page navigation example">
+        <CPagination aria-label="Page navigation example">
+          <CPaginationItem
+            disabled={itemsPerPage <= 0 ? true : false}
+            onClick={previousPage}
+          >
+            Previous
+          </CPaginationItem>
+          {renderPageNumbers()}
+          <CPaginationItem
+            disabled={isDisable === true ? true : false}
+            onClick={nextPage}
+          >
+            Next
+          </CPaginationItem>
+        </CPagination>
+
+      {/* <CPagination aria-label="Page navigation example">
         <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
           Previous
         </CPaginationItem>
         <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
-      </CPagination>
+      </CPagination> */}
 
       <CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>
         <CModalHeader closeButton>

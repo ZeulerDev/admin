@@ -127,7 +127,7 @@ const Products = () => {
   const loadData = (count, moveNext) => {
     setLoading(true)
     axios
-      .get( BASE_URL+`product/all/${count}?marketId=${paramMId}&name=${searchQuery}&type=${searchType}`, {
+      .get( BASE_URL+`product/all/${count}?marketId=${paramMId}&name=${searchQuery}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -144,6 +144,7 @@ const Products = () => {
               setIsDisable(false)
             }
         } else if (res.status === 203) {
+          setLoading(false)
           dispatch({
             type : SET_ALERT,
             payload : {
@@ -153,6 +154,7 @@ const Products = () => {
             }
           })
         }else if (res.status === 204) {
+          setLoading(false)
           dispatch({
             type : SET_ALERT,
             payload : {
@@ -163,6 +165,7 @@ const Products = () => {
             }
           })
         }else if (res.status === 500) {
+          setLoading(false)
           dispatch({
             type : SET_ALERT,
             payload : {
@@ -173,6 +176,7 @@ const Products = () => {
           })
         }
       }).catch((error) => {
+        setLoading(false)
         console.error('Error:', error)
       })
   }
@@ -194,6 +198,7 @@ const Products = () => {
       setSelectedMarket('All Markets')
       setParamChainData('')
       setSelectedChian('All Chains')
+      setChainMarketData([])
     } else {
         setParamMarketData(mId)
       setSelectedMarket(marketName)
@@ -422,30 +427,38 @@ const Products = () => {
         </CDropdown>
 
        <CDropdown style={{ marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d' }}>
-          <CDropdownToggle >{selectedMarket}</CDropdownToggle>
+       <CDropdownToggle>
+              {selectedMarket.length > 15 ? `${selectedMarket.substring(0, 15)}...` : selectedMarket}
+            </CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => market('all')}>Select the Chain</CDropdownItem>
             {chainMarket.map((item, index) => (
+              // <CDropdownItem onClick={() => market(item._id, item.address)} key={index}>
+              //   {item.address}
+              // </CDropdownItem>
               <CDropdownItem onClick={() => market(item._id, item.address)} key={index}>
-                {item.address}
-              </CDropdownItem>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span>{item.address.substring(0, item.address.length / 2)}</span>
+                <span>{item.address.substring(item.address.length / 2)}</span>
+              </div>
+            </CDropdownItem>
             ))}
           </CDropdownMenu>
         </CDropdown>
       <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
-      <CBadge style={{ marginLeft: '0.2%'}} color="secondary">Select the seatch type</CBadge>
-      <CDropdown style={{ marginRight: '0%', width:'17%',backgroundColor: '#ff4d4d' }}>
+      {/* <CBadge style={{ marginLeft: '0.2%'}} color="secondary">Select the seatch type</CBadge> */}
+      {/* <CDropdown style={{ marginRight: '0%', width:'17%',backgroundColor: '#ff4d4d' }}>
       <CDropdownToggle >{searchType} </CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => setSearchType('NAME')}>By Name</CDropdownItem>
             <CDropdownItem onClick={() => setSearchType('ID')}>By Product Id</CDropdownItem>
             <CDropdownItem onClick={() => setSearchType('BRAND')}>By BRAND NAME</CDropdownItem>
           </CDropdownMenu>
-        </CDropdown>
+        </CDropdown> */}
       <CFormInput  
          type ="text" 
-         placeholder="Search here" 
-         style={{ width : 450,  marginRight: '30%' }}
+         placeholder="Search products by name, brand name and product id" 
+         style={{ width : 450,  marginRight: '60%' }}
          value={searchQuery}
          onChange={(e) => setSearchQuery(e.target.value)}
        
@@ -506,7 +519,7 @@ const Products = () => {
           <CModalTitle>Change Price</CModalTitle>
         </CModalHeader>
         <CModalBody>
-        <a>Enter New Name</a><br></br>
+        <a>Enter New Price</a><br></br>
         <CFormInput
          type="text" 
          placeholder={priceDisplay}

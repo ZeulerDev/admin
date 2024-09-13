@@ -159,11 +159,8 @@ const Drivers = () => {
   const loadDriversData = (timer) => {
     if (user && token) {
       setLoading(true)
-      let url = BASE_URL+`assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`
-    
-      if (paramCode) {
-        url += `&code=${paramCode}`
-      }
+      let url = BASE_URL+`assistant/riders/0?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}&code=${paramCode}`
+  
       axios
         .get(url,
           {
@@ -630,7 +627,7 @@ const Drivers = () => {
       <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
       <CFormInput
         type="text"
-        placeholder="Search by Driver ID"
+        placeholder="Search by Driver id, name, surname, email and contact"
         style={{ width : 450, marginLeft: '0%' }}
         value={paramCode}
         onChange={(e) => setParamCodeData(e.target.value)}
@@ -695,6 +692,7 @@ const Drivers = () => {
               <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Email</CTableHeaderCell>
               <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
+              <CTableHeaderCell scope="col">City</CTableHeaderCell>
               <CTableHeaderCell scope="col">Country</CTableHeaderCell>
               <CTableHeaderCell scope="col">Employee ID</CTableHeaderCell>
               <CTableHeaderCell scope="col">Language</CTableHeaderCell>
@@ -713,6 +711,7 @@ const Drivers = () => {
                 <CTableDataCell>{item.surname}</CTableDataCell>
                 <CTableDataCell>{item.email}</CTableDataCell>
                 <CTableDataCell>{item.contact}</CTableDataCell>
+                <CTableDataCell>{item.city}</CTableDataCell>
                 <CTableDataCell>
                   {item.country === 'it' || item.country === 'Italy' ? 'Italy' : item.country}
                 </CTableDataCell>

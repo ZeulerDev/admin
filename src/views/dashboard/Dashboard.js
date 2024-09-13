@@ -93,7 +93,7 @@ const Dashboard = () => {
       loadDataGraph(date);
       // }, index * 50);
     });
-    console.log(combinedDates);
+    // console.log(combinedDates);
   }, []);
 
   useEffect(() => {
@@ -205,7 +205,7 @@ const Dashboard = () => {
           setAverageOrderGrossProfit(prevAvgOGP => [...prevAvgOGP, res.data.ave_order_gross_profit]);
           setTotalGrossProfit(prevTotalGrossProfit => [...prevTotalGrossProfit, res.data.tot_gross_profit]);
           setAverageOrderCOGS(prevAOC => [...prevAOC, res.data.ave_order_cogs]);
-          console.log('graph')
+          // console.log('graph')
         } else if (res.status === 204) {
           dispatch({
             type: SET_ALERT,
@@ -237,7 +237,7 @@ const Dashboard = () => {
 
   const loadData = (date) => {
     // if (user && token) {
-    console.log("date", date)
+    // console.log("date", date)
 
     setLoading(true)
     axios
@@ -248,7 +248,7 @@ const Dashboard = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data)
+          // console.log(res.data)
           setAnalyticsData(res.data)
           setLoading(false)
         } else if (res.status === 204) {
@@ -290,26 +290,26 @@ const Dashboard = () => {
           switch (analyticsType) {
             case 'Total Revenue':
               setTotalData(totalData => [...totalData, res.data.tot_rev]);
-              console.log('Total rev ', res.data.tot_rev)
+              // console.log('Total rev ', res.data.tot_rev)
               break;
             case 'Total Gross Profit':
               setTotalData(totalData => [...totalData, res.data.tot_gross_profit]);
-              console.log('Total Gross Profit ', res.data.tot_gross_profit)
+              // console.log('Total Gross Profit ', res.data.tot_gross_profit)
 
               break;
             case 'Total Orders':
               setTotalData(totalData => [...totalData, res.data.tot_orders]);
-              console.log('TTotal Orders ', res.data.tot_orders)
+              // console.log('TTotal Orders ', res.data.tot_orders)
 
               break;
             case 'Average Order Gross Profit':
               setTotalData(totalData => [...totalData, res.data.ave_order_gross_profit]);
-              console.log('Average Order Gross Profit ', res.data.ave_order_gross_profit)
+              // console.log('Average Order Gross Profit ', res.data.ave_order_gross_profit)
 
               break;
             case 'Average Order COGS':
               setTotalData(totalData => [...totalData, res.data.ave_order_cogs]);
-              console.log('Average Order COGS ', res.data.ave_order_cogs)
+              // console.log('Average Order COGS ', res.data.ave_order_cogs)
 
               break;
             default:
@@ -380,7 +380,6 @@ const Dashboard = () => {
                           label: 'Total Revenue',
                           backgroundColor: 'white',
                           borderColor: 'rgba(255,255,255,.55)',
-                          pointBackgroundColor: getStyle('--cui-primary'),
                           pointBackgroundColor: 'white',
                           pointHoverBackgroundColor: 'yellow',
                           data: totalRevenue,
@@ -780,9 +779,9 @@ const Dashboard = () => {
                   <div className="small text-body-secondary"><span style={{fontSize:15}}>{selectedDatesGraph[0]} - {selectedDatesGraph[1]}</span></div>
                 </CCol>
               </CRow><br></br>
-              <CCol  style={{backgroundColor: '#ff4d4d', color: 'white'}} sm={12} className="d-none d-md-block">
+              <CCol  style={{ color: 'white'}} sm={12} className="d-none d-md-block">
                 <CChart
-                style={{backgroundColor: '#ff4d4d', color: 'white'}}
+                style={{color: '#ff4d4d'}}
                   type="line"
                   data={{
                     labels: selectMonth != 'Select Month' ? chartDates : chartMonth,
@@ -790,9 +789,9 @@ const Dashboard = () => {
                       {
                         label: selectAnalytics,
                         backgroundColor: "rgba(220, 220, 220, 0.2)",
-                        borderColor: "rgba(220, 220, 220, 1)",
-                        pointBackgroundColor: "rgba(220, 220, 220, 1)",
-                        pointBorderColor: "#fff",
+                        borderColor: "#ff4d4d",
+                        pointBackgroundColor: "#ff4d4d",
+                        pointBorderColor: "#ff4d4d",
                         data: totalData,
                       }
                     ],
@@ -804,20 +803,20 @@ const Dashboard = () => {
                     scales: {
                       x: {
                         grid: {
-                          color: getStyle('--cui-border-color-translucent'),
+                          color: 'gray',
                           
                         },
                         ticks: {
-                          color: 'white',
+                          color: 'gray',
                         },
                       },
                       y: {
                         grid: {
-                          color: getStyle('--cui-border-color-translucent'),
+                          color: 'gray',
                         },
                         min: 0,
                         ticks: {
-                          color: 'white',
+                          color: 'gray',
                         },
                       },
                     },

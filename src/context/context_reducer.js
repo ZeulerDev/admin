@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
 
     case SET_TOKEN:
       const token = action.payload
-
+      // console.log(token)
       return {
         ...state,
         token: token,

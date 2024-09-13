@@ -89,7 +89,7 @@ const GroupOfOrders = () => {
     }, 20000);
 
     if (user && token) {
-      loadData(0, true)
+      loadData(0, timer)
     }
 
     return () => {

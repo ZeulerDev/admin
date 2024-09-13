@@ -17,7 +17,7 @@ const AppBreadcrumb = () => {
     // console.log('called',parts)
     const batch = parts.indexOf('batches');
     if(batch !== -1) {
-      console.log('called',batch)
+      // console.log('called',batch)
       const batchIndex = parts.indexOf('orders');
       if (batchIndex !== -1) {
         const id = parts[batchIndex + 1];
@@ -75,9 +75,11 @@ const AppBreadcrumb = () => {
     location.split('/').reduce((prev, curr, index, array) => {
       const currentPathname = `${prev}/${curr}`
       const routeName = getRouteName(currentPathname, routes)
+      // console.log('batch ID',batchId)
       routeName &&
         breadcrumbs.push({
           pathname: currentPathname,
+          // pathname: currentPathname,
           name: routeName,
           active: index + 1 === array.length ? true : false,
         })

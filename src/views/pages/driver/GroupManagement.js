@@ -578,7 +578,7 @@ const GroupManagement = () => {
               <CTableHeaderCell scope="col">Employee ID</CTableHeaderCell>
               <CTableHeaderCell scope="col">Language</CTableHeaderCell>
               <CTableHeaderCell scope="col">Group</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Add Market Group</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>

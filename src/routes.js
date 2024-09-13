@@ -1,6 +1,22 @@
 import React from 'react'
 
 const Products = React.lazy(()=>import('./views/pages/products/Products'))
+const Promotion = React.lazy(()=>import('./views/pages/promotions/Promotion'))
+const ManageProducts = React.lazy(()=>import('./views/pages/promotions/manageProducts'))
+const AddPromotionMarket = React.lazy(()=>import('./views/pages/promotions/AddMarket'))
+const AddPromotion = React.lazy(()=>import('./views/pages/promotions/AddPromotion'))
+const Flayers = React.lazy(()=>import('./views/pages/promotions/Flayers'))
+
+const DbRegisteredCategory = React.lazy(()=>import('./views/pages/products/DbRegisteredCategory'))
+const RegisteredCategory = React.lazy(()=>import('./views/pages/products/RegisteredCategories'))
+const MainCategoryStructure = React.lazy(()=>import('./views/pages/products/MainCategoryStructure'))
+const ChangeCategoryTree = React.lazy(()=>import('./views/pages/products/ChangeCategoryTree'))
+const CategoryStructure = React.lazy(()=>import('./views/pages/products/CategoryStructure'))
+const CreateReference = React.lazy(()=>import('./views/pages/products/CreateReference'))
+const VirtualProducts = React.lazy(()=>import('./views/pages/products/VirtualProducts'))
+const VirtualMarkets = React.lazy(()=>import('./views/pages/products/VirtualMarkets'))
+const Categories = React.lazy(()=>import('./views/pages/products/Categories'))
+const CreateCategories = React.lazy(()=>import('./views/pages/products/CreateCategory'))
 
 const PickerArea = React.lazy(()=>import('./views/pages/list/CreatePickArea'))
 const PickerAreas = React.lazy(()=>import('./views/pages/list/PickupAreas'))
@@ -36,6 +52,7 @@ const MarketGroup = React.lazy(()=>import('./views/pages/Market/Group/MarketGrou
 const Markets = React.lazy(()=>import('./views/pages/Market/Markets'))
 const AddMarket = React.lazy(()=>import('./views/pages/Market/AddMarket'))
 
+const AdvancedSearch = React.lazy(()=>import('./views/pages/Customer/AdvancedSearch'))
 const ItemList = React.lazy(()=>import('./views/pages/Customer/ItemList'))
 const ProductList = React.lazy(()=>import('./views/pages/Customer/ProductList'))
 const OrderList = React.lazy(()=>import('./views/pages/Customer/GroceryList'))
@@ -91,11 +108,26 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 // const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 // const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
-
-
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/products', name: 'Products ', element: Products },
+  { path: '/promotions/products/:id', name: 'Manage Products', element: ManageProducts},
+  { path: '/promotions/market/:id', name: 'Market', element: AddPromotionMarket},
+  { path: '/promotions/add/promotion', name: 'Register Promotions ', element: AddPromotion},
+  { path: '/promotions/flayers', name: 'Flayers ', element: Flayers },
+  { path: '/promotions/all', name: 'Promotions ', element: Promotion },
+  { path: '/promotions', name: 'Promotion', element: Promotion,exact: true },
+  { path: '/products/db/main/category/structure', name: 'DB Category Structure ', element: DbRegisteredCategory },
+  { path: '/products/main/category/structure', name: 'Category Structure ', element: MainCategoryStructure },
+  { path: '/products/categorytree', name: 'Change Category Tree ', element: ChangeCategoryTree },
+  { path: '/products/registered/categories', name: 'Registered Category ', element: RegisteredCategory },
+  { path: '/products/categorystructure', name: 'Change Sub Categories ', element: CategoryStructure },
+  { path: '/products/createcategory', name: 'Create Category ', element: CreateCategories },
+  { path: '/products/virtualreference', name: 'Create Reference ', element: CreateReference },
+  { path: '/products/virtualproducts', name: 'Virtual Products ', element: VirtualProducts },
+  { path: '/products/virtualmarkets', name: 'Virtual Markets ', element: VirtualMarkets },
+  { path: '/products/categories', name: 'Categories ', element: Categories },
+  { path: '/products/view', name: 'Products ', element: Products },
+  { path: '/products', name: 'Products', element: Products,exact: true },
   { path: '/list/view', name: 'Picker Areas ', element: PickerAreas },
   { path: '/list/pickerarea', name: 'Picker Area ', element: PickerArea },
   { path: '/list', name: 'List', element: PickerAreas,exact: true },
@@ -128,10 +160,12 @@ const routes = [
   { path: '/marketgroups', name: 'MarketGroup', element: MarketGroup },
   { path: '/markets/addmarket', name: 'AddMarket', element: AddMarket },
   { path: '/markets', name: 'Markets', element: Markets },
-  { path: '/customers/items', name: 'ItemsList', element: ItemList },
+  { path: '/customers/advanced/search', name: 'AdvancedSearch', element: AdvancedSearch },
+  { path: '/customers/items/:id', name: 'OrderList', element: ItemList },
   { path: '/customers/list/products/:id', name: 'Products', element: ProductList },
   { path: '/customers/list/:id', name: 'Lists', element: OrderList },
-  { path: '/customers', name: 'Customer', element: Customer },
+  { path: '/customers/view', name: 'Customer', element: Customer },
+  { path: '/customers', name: 'Customer', element: Customer,exact: true },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   // { path: '/theme', name: 'Theme', element: Colors, exact: true },
   // { path: '/theme/colors', name: 'Colors', element: Colors },

@@ -547,7 +547,7 @@ const handleImageUploadSubmit = async (id, img) => {
       <CNavbar className="bg-body-tertiary">
       <CFormInput  
          type ="text" 
-         placeholder="Search by customer email" 
+         placeholder="Search by customer name, surname, email and contact" 
          style={{ width : 450, marginLeft: '0%' }}
          value={searchQuery}
          onChange={(e) => setSearchQuery(e.target.value)}
@@ -568,7 +568,8 @@ const handleImageUploadSubmit = async (id, img) => {
             <CTableHeaderCell scope="col">Language</CTableHeaderCell>
             <CTableHeaderCell scope="col">Edit</CTableHeaderCell>
             <CTableHeaderCell scope="col">Address</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Grocery</CTableHeaderCell>
+            <CTableHeaderCell scope="col">List</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Order</CTableHeaderCell>
             {/* <CTableHeaderCell scope="col">Products</CTableHeaderCell> */}
           </CTableRow>
         </CTableHead>
@@ -600,11 +601,11 @@ const handleImageUploadSubmit = async (id, img) => {
                 <CIcon  icon={cilNotes} size='xl' />
                 </Link>
               </CTableDataCell>
-              {/* <CTableDataCell>
-              <Link to={`/customers/items`}>
+              <CTableDataCell>
+              <Link to={`/customers/items/${item._id}`}>
                  <CIcon icon={cilList} size='xl'/>
                 </Link>
-              </CTableDataCell> */}
+              </CTableDataCell>
             </CTableRow>
           ))}
         </CTableBody>
