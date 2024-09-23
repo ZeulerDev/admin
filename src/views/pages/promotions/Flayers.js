@@ -705,9 +705,24 @@ const Flayers = () => {
             )
             .then((res) => {
                 if (res.status === 200) {
-                    setAssignMarkets(res.data)
-                    console.log('data market')
-                    setLoadingMarkerModal(false)
+                    if(res.data.length !== 0){
+                        setAssignMarkets(res.data)
+                        console.log('data market')
+                        setLoadingMarkerModal(false)
+                    }else{
+                        setLoadingMarkerModal(false)
+                        dispatch({
+                            type: SET_ALERT,
+                            payload: {
+                                status: true,
+                                title: 'Market Loading',
+                                message: 'No market assigned to this flayer',
+                                color:'info'
+                            }
+                        })
+                    }
+
+                   
                 } else if (res.status === 500) {
                     dispatch({
                         type: SET_ALERT,
