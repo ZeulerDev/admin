@@ -875,7 +875,7 @@ const ManageProducts = () => {
             <CNavbar style={{justifyContent : 'flex-start'}} className="bg-body-tertiary">
                 <CFormInput
                     type="text"
-                    placeholder="Search products by nameeeee"
+                    placeholder="Search products by name"
                     style={{ width: 450, marginRight: '0%' }}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
