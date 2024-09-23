@@ -112,69 +112,69 @@ const _nav = [
   //   to: '/products',
   //   icon: <CIcon icon={cilStorage} customClassName="nav-icon" />,
   // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Products',
-  //   to: '/products',
-  //   icon: <CIcon icon={cilStorage} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Products',
-  //       to: '/products/view',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Categories',
-  //       to: '/products/categories',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Create Reference',
-  //       to: '/products/virtualreference',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Create Category',
-  //       to: '/products/createcategory',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Change Category Tree',
-  //       to: '/products/categorytree',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Change Sub Categories',
-  //       to: '/products/categorystructure',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Registered Categories',
-  //       to: '/products/registered/categories',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Virtual Products',
-  //       to: '/products/virtualproducts',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Virtual Market',
-  //       to: '/products/virtualmarkets',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Category Structure',
-  //       to: '/products/main/category/structure',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'DB Category Structure',
-  //       to: '/products/db/main/category/structure',
-  //     },
-  //   ],
-  // },
+  {
+    component: CNavGroup,
+    name: 'Products',
+    to: '/products',
+    icon: <CIcon icon={cilStorage} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Products',
+        to: '/products/view',
+      },
+      {
+        component: CNavItem,
+        name: 'Categories',
+        to: '/products/categories',
+      },
+      {
+        component: CNavItem,
+        name: 'Create Reference',
+        to: '/products/virtualreference',
+      },
+      {
+        component: CNavItem,
+        name: 'Create Category',
+        to: '/products/createcategory',
+      },
+      {
+        component: CNavItem,
+        name: 'Change Category Tree',
+        to: '/products/categorytree',
+      },
+      {
+        component: CNavItem,
+        name: 'Change Sub Categories',
+        to: '/products/categorystructure',
+      },
+      {
+        component: CNavItem,
+        name: 'Registered Categories',
+        to: '/products/registered/categories',
+      },
+      {
+        component: CNavItem,
+        name: 'Virtual Products',
+        to: '/products/virtualproducts',
+      },
+      {
+        component: CNavItem,
+        name: 'Virtual Market',
+        to: '/products/virtualmarkets',
+      },
+      {
+        component: CNavItem,
+        name: 'Category Structure',
+        to: '/products/main/category/structure',
+      },
+      {
+        component: CNavItem,
+        name: 'DB Category Structure',
+        to: '/products/db/main/category/structure',
+      },
+    ],
+  },
   {
     component: CNavGroup,
     name: 'Pickers',

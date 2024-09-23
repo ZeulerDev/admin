@@ -82,10 +82,16 @@ const Flayers = () => {
     const [loadingModal, setLoadingModal] = useState(false)
     const [chainMarket, setChainMarketData] = useState([])
     const [ifHaveMarket, setIfHaveMarket] = useState('')
-    const [flayerAccId,setFlayerAccId] = useState('')
-    const [flayerObject,setFlayerObject] = useState({
-        flayerId:''
+    const [flayerAccId, setFlayerAccId] = useState('')
+    const [flayerObject, setFlayerObject] = useState({
+        flayerId: ''
     })
+
+    const [visibleAssignMarket, setVisibleAssignMarket] = useState(false)
+    const [fId, setFid] = useState('')
+    const [assignMarkets, setAssignMarkets] = useState([])
+    const [loadingMarketModal, setLoadingMarkerModal] = useState(false)
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -190,7 +196,7 @@ const Flayers = () => {
     };
 
 
-    const handleMarketView = (stores,fId) => {
+    const handleMarketView = (stores, fId) => {
         setVisibleMainSubModel(true)
         setMarket(stores)
         setFlayerAccId(fId)
@@ -591,7 +597,7 @@ const Flayers = () => {
         loadChain()
         console.log(id)
         setFlayerObject({
-            flayerId:id
+            flayerId: id
         })
     }
     // const handleAddMarketClick= (id)=>{
@@ -605,10 +611,10 @@ const Flayers = () => {
 
     const handleMarketAssign = (mid) => {
 
-        
+
         const data = flayerObject
 
-        if(mid && flayerObject !== null){
+        if (mid && flayerObject !== null) {
             if (user && token) {
                 console.log('data', data)
                 axios
@@ -620,7 +626,7 @@ const Flayers = () => {
                     .then((res) => {
                         if (res.status === 200) {
                             console.log("updated")
-    
+
                             dispatch({
                                 type: SET_ALERT,
                                 payload: {
@@ -664,7 +670,7 @@ const Flayers = () => {
                         console.error(error)
                     })
             }
-        }else{
+        } else {
             dispatch({
                 type: SET_ALERT,
                 payload: {
@@ -675,8 +681,51 @@ const Flayers = () => {
                 }
             })
         }
-      
+
     }
+
+
+    const handleToggleName = (id) => {
+        console.log('id', id)
+        setVisibleAssignMarket(true)
+        setFid(id)
+        loadAssignMarketData(id)
+    }
+
+    const loadAssignMarketData = (id) => {
+        setLoadingMarkerModal(true)
+        axios
+            .get(
+                BASE_URL + `flayer/market/assign/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            )
+            .then((res) => {
+                if (res.status === 200) {
+                    setAssignMarkets(res.data)
+                    console.log('data market')
+                    setLoadingMarkerModal(false)
+                } else if (res.status === 500) {
+                    dispatch({
+                        type: SET_ALERT,
+                        payload: {
+                            status: true,
+                            title: 'Market Loading error',
+                            message: res.data.message
+                        }
+                    })
+                }
+            }).catch((err) => {
+                console.error('Error: ', err)
+            })
+    }
+
+
+
+
     return (
         <CContainer>
 
@@ -703,6 +752,7 @@ const Flayers = () => {
                         <CTableHeaderCell scope="col">Markets</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Disabled</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Products</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Assigned Market</CTableHeaderCell>
 
                     </CTableRow>
                 </CTableHead>
@@ -717,7 +767,7 @@ const Flayers = () => {
                                 {/* <CTableDataCell>{item.status === true ? 'Active' : 'Inactive'}</CTableDataCell> */}
                                 <CTableDataCell>{item.status === true ? <CButton size='sm' onClick={() => { handleToggle(item._id, false) }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Deactivate</CButton> : <CButton size='sm' onClick={() => { handleToggle(item._id, true) }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Activate</CButton>}</CTableDataCell>
                                 <CTableDataCell>
-                                    <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleMarketView(item.stores,item._id) }}>
+                                    <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleMarketView(item.stores, item._id) }}>
                                         <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
                                     </CButton>
                                 </CTableDataCell>
@@ -727,7 +777,11 @@ const Flayers = () => {
                                         <CIcon icon={cilViewModule} size='lg' style={{ color: 'white' }} />
                                     </CButton>
                                 </CTableDataCell>
-
+                                <CTableDataCell>
+                                    <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleToggleName(item._id) }}>
+                                        <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
+                                    </CButton>
+                                </CTableDataCell>
                             </CTableRow>
                         )
                     })}
@@ -751,6 +805,39 @@ const Flayers = () => {
                 </CPaginationItem>
             </CPagination>
 
+            <CModal alignment="center" visible={visibleAssignMarket} scrollable size='lg' onClose={() => setVisibleAssignMarket(false)}>
+                <CModalHeader closeButton>
+                    <CModalTitle>All Assign Markets details</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+
+                    {loadingMarketModal ? <CSpinner /> : <CTable>
+                        <CTableHead>
+                            <CTableRow>
+                                <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Chain Name</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Address</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">City</CTableHeaderCell>
+                            </CTableRow>
+                        </CTableHead>
+                        <CTableBody>
+                            {assignMarkets.map((item, index) => (
+                                <CTableRow key={index}>
+                                    <CTableDataCell>{index + 1}</CTableDataCell>
+                                    <CTableDataCell>{item.chain.name}</CTableDataCell>
+                                    <CTableDataCell>{item.address}</CTableDataCell>
+                                    <CTableDataCell>{item.city}</CTableDataCell>
+                                </CTableRow>
+                            ))}
+                        </CTableBody>
+                    </CTable>
+
+                    }
+
+                </CModalBody>
+                <CModalFooter>
+                </CModalFooter>
+            </CModal>
 
             <CModal alignment="center" visible={visibleMainSubModel} scrollable size='lg' onClose={() => {
                 setVisibleMainSubModel(false)
@@ -775,7 +862,7 @@ const Flayers = () => {
                                         <CTableDataCell>{index + 1}</CTableDataCell>
                                         <CTableDataCell>{item.address}</CTableDataCell>
                                         <CTableDataCell>
-                                            <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleMarketsView( item._id, item.market) }}>
+                                            <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleMarketsView(item._id, item.market) }}>
                                                 <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
                                             </CButton>
                                         </CTableDataCell>

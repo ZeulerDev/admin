@@ -94,7 +94,7 @@ const MarketDistance = ()=>{
                ))}
 
                 </CTableDataCell>
-                <CTableDataCell>{item.distance} km</CTableDataCell>
+                <CTableDataCell>{item.distance} m</CTableDataCell>
                 <CTableDataCell>{item.duration} min</CTableDataCell>
               </CTableRow>
           ))}
