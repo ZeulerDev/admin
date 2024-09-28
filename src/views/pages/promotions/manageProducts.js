@@ -914,11 +914,11 @@ const ManageProducts = () => {
                             <CTableDataCell>{item.pid}</CTableDataCell>
                             <CTableHeaderCell onClick={() => { }}><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
                             <CTableDataCell>{item.name}</CTableDataCell>
-                            <CTableDataCell>{item.price.basePrice.toFixed(2)}</CTableDataCell>
-                            <CTableDataCell>{item.price.tax.toFixed(2)}</CTableDataCell>
+                            <CTableDataCell> {(item.price?.basePrice ?? 0).toFixed(2)} </CTableDataCell>
+                            <CTableDataCell>{(item.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
                             <CTableDataCell>{item.price.percentage}%</CTableDataCell>
-                            <CTableDataCell>{item.price.markup.toFixed(2)}</CTableDataCell>
-                            <CTableDataCell>{item.price.total.toFixed(2)}</CTableDataCell>
+                            <CTableDataCell>{(item.price?.markup ?? 0).toFixed(2)}</CTableDataCell>
+                            <CTableDataCell>{(item.price?.total ?? 0).toFixed(2)}</CTableDataCell>
                             <CTableDataCell>{item.promo_value} €<Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item.productId, item.promo_value)} /></Link></CTableDataCell>
                             <CTableDataCell>{item.brand}</CTableDataCell>
                             <CTableDataCell>{item.chainName}</CTableDataCell>
@@ -1014,11 +1014,11 @@ const ManageProducts = () => {
                                         <CTableDataCell>{item.pid}</CTableDataCell>
                                         <CTableHeaderCell><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
                                         <CTableDataCell>{item.name}</CTableDataCell>
-                                        <CTableDataCell>{item.price.basePrice.toFixed(2)}</CTableDataCell>
-                                        <CTableDataCell>{item.price.tax.toFixed(2)}</CTableDataCell>
+                                        <CTableDataCell> {(item.price?.basePrice ?? 0).toFixed(2)} </CTableDataCell>
+                                        <CTableDataCell>{(item.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
                                         <CTableDataCell>{item.price.percentage}%</CTableDataCell>
-                                        <CTableDataCell>{item.price.markup.toFixed(2)}</CTableDataCell>
-                                        <CTableDataCell>{item.price.total.toFixed(2)}</CTableDataCell>
+                                        <CTableDataCell>{(item.price?.markup ?? 0).toFixed(2)}</CTableDataCell>
+                                        <CTableDataCell>{(item.price?.total ?? 0).toFixed(2)}</CTableDataCell>
                                         <CTableDataCell>{item.brand}</CTableDataCell>
                                         <CTableDataCell>{item.chainName}</CTableDataCell>
                                         <CTableDataCell>{item.marketAddress}</CTableDataCell>
