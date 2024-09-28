@@ -872,7 +872,7 @@ const ManageProducts = () => {
                 Add Products
             </CButton>
 
-            <CNavbar style={{justifyContent : 'flex-start'}} className="bg-body-tertiary">
+            <CNavbar style={{ justifyContent: 'flex-start' }} className="bg-body-tertiary">
                 <CFormInput
                     type="text"
                     placeholder="Search products by name"
@@ -895,7 +895,11 @@ const ManageProducts = () => {
                         <CTableHeaderCell scope="col">Product Id</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                        <CTableHeaderCell scope="col">Price</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Base Price</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Tax</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Markup Percentage </CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Markup</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Total</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Promotion Value</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Brand</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Chain</CTableHeaderCell>
@@ -910,7 +914,11 @@ const ManageProducts = () => {
                             <CTableDataCell>{item.pid}</CTableDataCell>
                             <CTableHeaderCell onClick={() => { }}><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
                             <CTableDataCell>{item.name}</CTableDataCell>
-                            <CTableDataCell>{item.price}</CTableDataCell>
+                            <CTableDataCell>{item.price.basePrice.toFixed(2)}</CTableDataCell>
+                            <CTableDataCell>{item.price.tax.toFixed(2)}</CTableDataCell>
+                            <CTableDataCell>{item.price.percentage}%</CTableDataCell>
+                            <CTableDataCell>{item.price.markup.toFixed(2)}</CTableDataCell>
+                            <CTableDataCell>{item.price.total.toFixed(2)}</CTableDataCell>
                             <CTableDataCell>{item.promo_value} €<Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item.productId, item.promo_value)} /></Link></CTableDataCell>
                             <CTableDataCell>{item.brand}</CTableDataCell>
                             <CTableDataCell>{item.chainName}</CTableDataCell>
@@ -987,7 +995,11 @@ const ManageProducts = () => {
                                 <CTableHeaderCell scope="col">Product Id</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Price</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Base Price</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Tax</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Markup Percentage </CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Markup</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Total</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Brand</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Chain</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Market Address</CTableHeaderCell>
@@ -1002,7 +1014,11 @@ const ManageProducts = () => {
                                         <CTableDataCell>{item.pid}</CTableDataCell>
                                         <CTableHeaderCell><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
                                         <CTableDataCell>{item.name}</CTableDataCell>
-                                        <CTableDataCell>{item.price}<Link to={``}></Link></CTableDataCell>
+                                        <CTableDataCell>{item.price.basePrice.toFixed(2)}</CTableDataCell>
+                                        <CTableDataCell>{item.price.tax.toFixed(2)}</CTableDataCell>
+                                        <CTableDataCell>{item.price.percentage}%</CTableDataCell>
+                                        <CTableDataCell>{item.price.markup.toFixed(2)}</CTableDataCell>
+                                        <CTableDataCell>{item.price.total.toFixed(2)}</CTableDataCell>
                                         <CTableDataCell>{item.brand}</CTableDataCell>
                                         <CTableDataCell>{item.chainName}</CTableDataCell>
                                         <CTableDataCell>{item.marketAddress}</CTableDataCell>
