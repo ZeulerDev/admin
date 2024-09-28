@@ -290,7 +290,19 @@ const VirtualMarket = () => {
                     })
                     .then((res) => {
                         if (res.status === 200) {
-
+                            const updatedEntity = res.data
+                            const list = productData.map((ob) => {
+                                if (ob.productId === updatedEntity.productId) {
+                                    ob.price.basePrice = updatedEntity.price.basePrice
+                                    ob.price.tax = updatedEntity.price.tax
+                                    ob.price.markup = updatedEntity.price.markup
+                                    ob.price.total = updatedEntity.price.total
+                                    return ob
+                                } else {
+                                    return ob
+                                }
+                            })
+                            setProductData([...list])
                             dispatch({
                                 type: SET_ALERT,
                                 payload: {
@@ -302,7 +314,7 @@ const VirtualMarket = () => {
                             })
                             setId('')
                             setPrice('')
-                            loadData(0, true)
+
                             setVisiblePriceModal(false)
                             setPriceDisplay('')
                         } else if (res.status === 204) {
@@ -634,23 +646,23 @@ const VirtualMarket = () => {
                 onClick={() => { handleUpdateAllStatus("1", paramMId) }}
                 style={{ backgroundColor: '#ff4d4d', marginLeft: '2%', width: 120, color: 'white' }}
             >
-                 {loadingActive  ? <CSpinner size='sm' /> : 'Activate All'}
+                {loadingActive ? <CSpinner size='sm' /> : 'Activate All'}
             </CButton>
             <CButton
                 size="sm"
                 onClick={() => { handleUpdateAllStatus("0", paramMId) }}
                 style={{ backgroundColor: '#ff4d4d', marginLeft: '2%', width: 120, color: 'white' }}
             >
-                {loadingActive  ? <CSpinner size='sm' /> :  'Deactivate All' }
+                {loadingActive ? <CSpinner size='sm' /> : 'Deactivate All'}
             </CButton>
             <CButton
                 size="sm"
                 onClick={() => { handleSyncData(paramMId) }}
                 style={{ backgroundColor: '#ff4d4d', marginLeft: '2%', width: 120, color: 'white' }}
-            > 
-            {syncLoading  ? <CSpinner size='sm' /> :
-                "Sync"
-            }
+            >
+                {syncLoading ? <CSpinner size='sm' /> :
+                    "Sync"
+                }
             </CButton>
 
 
@@ -678,22 +690,22 @@ const VirtualMarket = () => {
                     ))}
                 </CDropdownMenu>
             </CDropdown> */}
-            <CDropdown style={{ marginLeft: '2%', width:'17%',backgroundColor: '#ff4d4d' }}>
-       <CDropdownToggle>
-              {selectedMarket.length > 15 ? `${selectedMarket.substring(0, 15)}...` : selectedMarket}
-            </CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem onClick={() => market('all')}>Select the Chain</CDropdownItem>
-            {chainMarket.map((item, index) => (
-              <CDropdownItem onClick={() => market(item._id, item.address)} key={index}>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span>{item.address.substring(0, item.address.length / 2)}</span>
-                <span>{item.address.substring(item.address.length / 2)}</span>
-              </div>
-            </CDropdownItem>
-            ))}
-          </CDropdownMenu>
-        </CDropdown>
+            <CDropdown style={{ marginLeft: '2%', width: '17%', backgroundColor: '#ff4d4d' }}>
+                <CDropdownToggle>
+                    {selectedMarket.length > 15 ? `${selectedMarket.substring(0, 15)}...` : selectedMarket}
+                </CDropdownToggle>
+                <CDropdownMenu>
+                    <CDropdownItem onClick={() => market('all')}>Select the Chain</CDropdownItem>
+                    {chainMarket.map((item, index) => (
+                        <CDropdownItem onClick={() => market(item._id, item.address)} key={index}>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <span>{item.address.substring(0, item.address.length / 2)}</span>
+                                <span>{item.address.substring(item.address.length / 2)}</span>
+                            </div>
+                        </CDropdownItem>
+                    ))}
+                </CDropdownMenu>
+            </CDropdown>
             <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
                 {/* <CBadge style={{ marginLeft: '0.2%' }} color="secondary">Select the seatch type</CBadge>
                 <CDropdown style={{ marginRight: '0%', width: '17%', backgroundColor: '#ff4d4d' }}>
@@ -706,7 +718,7 @@ const VirtualMarket = () => {
                 </CDropdown> */}
                 <CFormInput
                     type="text"
-                    placeholder="Search products by name, brand name and product id" 
+                    placeholder="Search products by name, brand name and product id"
                     style={{ width: 450, marginRight: '50%' }}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -737,7 +749,7 @@ const VirtualMarket = () => {
                                 <CTableDataCell>{item.pid}</CTableDataCell>
                                 <CTableHeaderCell onClick={() => { handleToggleImageUploader(item.productId) }}><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
                                 <CTableDataCell>{item.name}</CTableDataCell>
-                                <CTableDataCell>{item.price}<Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item.productId, item.price)} /></Link></CTableDataCell>
+                                <CTableDataCell>{item.price.basePrice}<Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item.productId, item.price.basePrice)} /></Link></CTableDataCell>
                                 <CTableDataCell>{item.brand}</CTableDataCell>
                                 <CTableDataCell>{item.chainName}</CTableDataCell>
                                 <CTableDataCell>{item.marketAddress}</CTableDataCell>
