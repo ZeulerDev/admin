@@ -126,6 +126,7 @@ const VirtualMarkets = () => {
                 if (res.status === 200) {
                     setChainMarketData(res.data.data)
                     setResultCount(res.data.count)
+                    console.log('count',res.data.count)
                     setLoading(false)
                     clearTimeout(timer)
                     if (res.data.data.length < 20) {
