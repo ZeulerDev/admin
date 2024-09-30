@@ -25,6 +25,7 @@ import {
   CModalBody,
   CFormInput,
   CModalFooter,
+  CCol,
 } from '@coreui/react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -66,7 +67,11 @@ const MarketGroup = () => {
   const [chainMarket, setChainMarketData] = useState([])
   const [isDisableMarket, setIsDisableMarket] = useState(true)
   const [itemsPerPageMarket, setItemsPerPageMarket] = useState(0)
-  const [marketIds, setMarketIds] = useState([])
+  const [groupId, setGroupId] = useState('')
+  const [centerPoint, setCenterPoint] = useState([])
+  const [visibleCenterPoint, setVisibleCenterPoint] = useState(false)
+  const [lng, setLng] = useState('')
+  const [lat, setLat] = useState('')
 
   const city = (city) => {
     if (city === 'all') {
@@ -671,6 +676,107 @@ const MarketGroup = () => {
     }
   }
 
+  const handleCenterPoint = (center, id) => {
+    if(id){
+      setVisibleCenterPoint(true)
+      setCenterPoint(center)
+      setGroupId(id)
+  }
+}
+
+
+const handleSubmitCenterPoint = () => {
+  if (groupId, lat, lng) {
+    console.log('center', groupId, lat, lng)
+    const formData = {
+      lat: lat,
+      lng: lng,
+    }
+
+    if (user, token) {
+      if (user && token) {
+        axios
+          .patch(BASE_URL + 'marketgroup/update/center/' + groupId, formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              setVisibleCenterPoint(false)
+              setGroupId('')
+              setCenterPoint([])
+              const updatedEntity = res.data
+              const list = marketGroupData.map((ob) => {
+                if (ob._id === updatedEntity._id) {
+                 ob.center = updatedEntity.center
+                  return ob
+                } else {
+                  return ob
+                }
+              })
+              setMarketGroupData([...list])
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Manage Center Point',
+                  message: 'successfully center point assigned to the market group',
+                  color: 'success'
+                }
+              })
+
+            } else if (res.status === 400) {
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Manage Center Point',
+                  message: res.data.message,
+                  color: 'warning'
+                }
+              })
+            } else if (res.status === 404) {
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Manage Center Point',
+                  message: res.data.message,
+                  color: 'warning'
+                }
+              })
+            } else if (res.status === 500) {
+              dispatch({
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Manage Center Point',
+                  message: res.data.message,
+                  color: 'warning'
+                }
+              })
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error)
+          })
+
+      }
+    }
+  } else {
+    dispatch({
+      type: SET_ALERT,
+      payload: {
+        status: true,
+        title: 'Error!',
+        message: 'check fields again',
+        color: 'warning'
+      }
+    })
+  }
+}
+
   return (
     <CContainer>
       <Link to={`/marketgroups/marketmap`}>
@@ -706,6 +812,7 @@ const MarketGroup = () => {
             <CTableHeaderCell scope="col">Location</CTableHeaderCell>
             <CTableHeaderCell scope="col">Action</CTableHeaderCell>
             <CTableHeaderCell scope="col">Add Markets</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Add Center Point</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -744,6 +851,11 @@ const MarketGroup = () => {
               </CTableDataCell>
               <CTableDataCell>
                 <CButton onClick={() => { handleToggleAddMarket(item._id) }} size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">
+                  <CIcon icon={cilPlus} size='lg' style={{ color: 'white' }} />
+                </CButton>
+              </CTableDataCell>
+              <CTableDataCell>
+                <CButton onClick={() => { handleCenterPoint(item.center, item._id) }} size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">
                   <CIcon icon={cilPlus} size='lg' style={{ color: 'white' }} />
                 </CButton>
               </CTableDataCell>
@@ -812,6 +924,7 @@ const MarketGroup = () => {
                 <CTableHeaderCell scope="col">Address</CTableHeaderCell>
                 <CTableHeaderCell scope="col">City</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Remove</CTableHeaderCell>
+              
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -824,6 +937,7 @@ const MarketGroup = () => {
                   <CTableDataCell>
                     <CButton size='sm' onClick={() => removeMarket(gId, item._id)} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Remove</CButton>
                   </CTableDataCell>
+               
                 </CTableRow>
               ))}
             </CTableBody>
@@ -912,6 +1026,36 @@ const MarketGroup = () => {
 
         </CModalBody>
       </CModal>
+
+      <CModal visible={visibleCenterPoint} scrollable size="lg" onClose={() => setVisibleCenterPoint(false)}>
+                <CModalHeader closeButton>
+                    <CModalTitle>Manage Center Point</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                    <div className="row g-3" >
+                        <CCol md={6}>
+                            <CFormInput
+                                id="lat"
+                                label="Latitude"
+                                defaultValue={centerPoint?.lat}
+                                onChange={(e) => setLat(e.target.value)}
+                            />
+                        </CCol>
+                        <CCol md={6}>
+                            <CFormInput
+                                id="lng"
+                                label="Longitude"
+                                defaultValue={centerPoint?.lng}
+                                onChange={(e) => setLng(e.target.value)}
+                            />
+                        </CCol>
+                        <CButton type="submit" style={{ marginBottom: '3%', width: '200px', backgroundColor: '#ff4d4d', color: 'white' }} onClick={() => handleSubmitCenterPoint()}>
+                           Add Center Point
+                        </CButton>
+
+                    </div>
+                </CModalBody>
+            </CModal>
 
     </CContainer>
   )

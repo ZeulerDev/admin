@@ -476,6 +476,18 @@ const ManageProducts = () => {
                     .then((res) => {
                         if (res.status === 200) {
                             console.log('market', res.data.market)
+                            if(res.data.market.length === 0){
+                                setLoadingModal(false)
+                                dispatch({
+                                    type: SET_ALERT,
+                                    payload: {
+                                        status: true,
+                                        title: 'Products loading',
+                                        message: 'No Market found',
+                                        color: 'info'
+                                    },
+                                })
+                            }
                             setMarketIds(res.data.market.map((item) => ({ _id: item._id, name: item.address })))
                         } else if (res.status === 203) {
                             dispatch({
@@ -553,6 +565,7 @@ const ManageProducts = () => {
                 .then((res) => {
                     if (res.status === 200) {
                         // console.log('market', res.data.list)
+                        
                         setProductsModal(res.data.list)
                         setResultCount(res.data.count)
                         setLoadingModal(false)
@@ -564,6 +577,7 @@ const ManageProducts = () => {
                             setIsDisable(false)
                         }
                     } else if (res.status === 203) {
+                        setLoadingModal(false)
                         dispatch({
                             type: SET_ALERT,
                             payload: {
@@ -573,6 +587,7 @@ const ManageProducts = () => {
                             },
                         })
                     } else if (res.status === 500) {
+                        setLoadingModal(false)
                         dispatch({
                             type: SET_ALERT,
                             payload: {
@@ -584,6 +599,7 @@ const ManageProducts = () => {
                     }
                 })
         } else {
+            setLoadingModal(false)
             dispatch({
                 type: SET_ALERT,
                 payload: {
