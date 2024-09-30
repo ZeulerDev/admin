@@ -69,7 +69,7 @@ const VirtualMarket = () => {
     useEffect(() => {
         if (token) {
             axios
-                .get('http://localhost:8003/assistant/market/chains/all', {
+                .get(BASE_URL+'assistant/market/chains/all', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -96,7 +96,7 @@ const VirtualMarket = () => {
     const loadDataMarkets = (chainId) => {
         axios
             .get(
-                `http://localhost:8003/assistant/market/locations?brand=${chainId}`,
+                BASE_URL+`assistant/market/locations?brand=${chainId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

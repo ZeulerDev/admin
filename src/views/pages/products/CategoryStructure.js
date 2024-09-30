@@ -157,7 +157,7 @@ const CreateCategory = () => {
     const loadDataMarkets = (chainId) => {
         axios
             .get(
-                `http://localhost:8003/assistant/market/locations?brand=${chainId}`,
+                BASE_URL+`assistant/market/locations?brand=${chainId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
