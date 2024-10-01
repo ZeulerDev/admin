@@ -139,7 +139,7 @@ const GroceryOrderLits = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get('http://localhost:8003/assistant/grocery/order/product/'+ id, {
+        .get(BASE_URL+'assistant/grocery/order/product/'+ id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

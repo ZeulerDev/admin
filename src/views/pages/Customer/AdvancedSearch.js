@@ -77,7 +77,7 @@ const Orders = () => {
                 payload: {
                     status: true,
                     title: 'Data Loading',
-                    message: 'Data loading error: Timeout exceeded',
+                    message: 'There no data to display at the moment or something went wrong',
                     color: 'warning'
                 }
             });

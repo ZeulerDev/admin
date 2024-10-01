@@ -1,6 +1,7 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
+  cilAvTimer,
   cilBarChart,
   cilBell,
   cilCalculator,
@@ -106,6 +107,28 @@ const _nav = [
       
     ],
   },
+  {
+    component: CNavGroup,
+    name: 'Virtual',
+    to: '/virtual/flayers',
+    icon: <CIcon icon={cilShareBoxed} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Create Reference',
+        to: '/virtual/reference',
+      },{
+        component: CNavItem,
+        name: 'Virtual Market',
+        to: '/virtual/markets',
+      },{
+        component: CNavItem,
+        name: 'Virtual Products',
+        to: '/virtual/products',
+      },
+      
+    ],
+  },
   // {
   //   component: CNavItem,
   //   name: 'Products',
@@ -130,11 +153,6 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: 'Create Reference',
-        to: '/products/virtualreference',
-      },
-      {
-        component: CNavItem,
         name: 'Create Category',
         to: '/products/createcategory',
       },
@@ -152,16 +170,6 @@ const _nav = [
         component: CNavItem,
         name: 'Registered Categories',
         to: '/products/registered/categories',
-      },
-      {
-        component: CNavItem,
-        name: 'Virtual Products',
-        to: '/products/virtualproducts',
-      },
-      {
-        component: CNavItem,
-        name: 'Virtual Market',
-        to: '/products/virtualmarkets',
       },
       {
         component: CNavItem,
