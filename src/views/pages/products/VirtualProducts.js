@@ -98,7 +98,7 @@ const VirtualMarket = () => {
     const loadDataMarkets = (chainId) => {
         axios
             .get(
-                BASE_URL + `assistant/market/locations?brand=${chainId}`,
+                BASE_URL + `assistant/reference/market/locations?brand=${chainId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -493,12 +493,11 @@ const VirtualMarket = () => {
 
     const handleStatus =(activate)=>{
         setVisible(true)
-        setActivate(activate)
-        // if(activate === 'active'){
-        //     handleUpdateAllStatus("1", paramMId)
-        // }else if(activate === 'deactive'){
-        //     handleUpdateAllStatus("0", paramMId)
-        // }
+        if(activate === 'active'){
+            setActivate(true)
+        }else if(activate === 'deactive'){
+            setActivate(false)
+        }
     }
 
     const handleUpdateAllStatus = (status, mid) => {
@@ -542,9 +541,9 @@ const VirtualMarket = () => {
                                 type: SET_ALERT,
                                 payload: {
                                     status: true,
-                                    title: 'Product Details Update error',
-                                    message: 'Product status update error',
-                                    color: 'danger'
+                                    title: 'Product Details Update',
+                                    message: 'No products found in this market address to update',
+                                    color: 'info'
                                 }
                             })
                             setLoadingActive(false)
