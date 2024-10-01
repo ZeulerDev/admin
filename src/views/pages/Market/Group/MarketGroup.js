@@ -680,6 +680,8 @@ const MarketGroup = () => {
     if(id){
       setVisibleCenterPoint(true)
       setCenterPoint(center)
+      setLat(center.lat)
+      setLng(center.lng)
       setGroupId(id)
   }
 }

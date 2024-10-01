@@ -643,6 +643,7 @@ const VirtualMarket = () => {
 
 
             } else {
+                setSyncLoading(false)
                 dispatch({
                     type: SET_ALERT,
                     payload: {
