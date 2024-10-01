@@ -84,10 +84,6 @@ const VirtualMarkets = () => {
         }
     }, [])
 
- 
-
-
-
     useEffect(() => {
         const timer = setTimeout(() => {
             dispatch({

@@ -59,6 +59,8 @@ const VirtualMarket = () => {
 
     const [imageUpload, setImageUpload] = useState(false)
     const [productId, setProductId] = useState('')
+    const [visible, setVisible] = useState(false)
+    const [isActivate, setActivate] = useState(false)
 
     useEffect(() => {
         if (user && token) {
@@ -69,7 +71,7 @@ const VirtualMarket = () => {
     useEffect(() => {
         if (token) {
             axios
-                .get(BASE_URL+'assistant/market/chains/all', {
+                .get(BASE_URL + 'assistant/market/chains/all', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -96,7 +98,7 @@ const VirtualMarket = () => {
     const loadDataMarkets = (chainId) => {
         axios
             .get(
-                BASE_URL+`assistant/market/locations?brand=${chainId}`,
+                BASE_URL + `assistant/market/locations?brand=${chainId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -130,7 +132,7 @@ const VirtualMarket = () => {
     const loadData = (count, moveNext) => {
         setLoading(true)
         axios
-            .get(BASE_URL + `product/all/${count}?marketId=${paramMId}&name=${searchQuery}`, {
+            .get(BASE_URL + `virtual/product/all/${count}?marketId=${paramMId}&name=${searchQuery}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -139,6 +141,7 @@ const VirtualMarket = () => {
                 if (res.status === 200) {
                     setProductData(res.data.list)
                     setResultCount(res.data.count)
+                    console.log(res.data.count)
                     setLoading(false)
                     if (res.data.list.length < 20) {
                         setIsDisable(true)
@@ -488,6 +491,16 @@ const VirtualMarket = () => {
 
     }
 
+    const handleStatus =(activate)=>{
+        setVisible(true)
+        setActivate(activate)
+        // if(activate === 'active'){
+        //     handleUpdateAllStatus("1", paramMId)
+        // }else if(activate === 'deactive'){
+        //     handleUpdateAllStatus("0", paramMId)
+        // }
+    }
+
     const handleUpdateAllStatus = (status, mid) => {
         setLoadingActive(true)
         let isActive;
@@ -523,6 +536,7 @@ const VirtualMarket = () => {
                             })
                             loadData(0, true)
                             setLoadingActive(false)
+                            setVisible(false)
                         } else if (res.status === 204) {
                             dispatch({
                                 type: SET_ALERT,
@@ -534,6 +548,7 @@ const VirtualMarket = () => {
                                 }
                             })
                             setLoadingActive(false)
+                            setVisible(false)
                         } else if (res.status === 500) {
                             dispatch({
                                 type: SET_ALERT,
@@ -545,11 +560,13 @@ const VirtualMarket = () => {
                                 }
                             })
                             setLoadingActive(false)
+                            setVisible(false)
                         }
                     })
                     .catch((error) => {
                         console.error('Error:', error)
                         setLoadingActive(false)
+                        setVisible(false)
                     })
 
             }
@@ -564,6 +581,8 @@ const VirtualMarket = () => {
                 }
             })
             setSyncLoading(false)
+            setLoadingActive(false)
+            setVisible(false)
         }
 
     }
@@ -643,14 +662,14 @@ const VirtualMarket = () => {
             <CBadge style={{ marginLeft: '0%' }} color="secondary">Action </CBadge>
             <CButton
                 size="sm"
-                onClick={() => { handleUpdateAllStatus("1", paramMId) }}
+                onClick={() => { handleStatus('active') }}
                 style={{ backgroundColor: '#ff4d4d', marginLeft: '2%', width: 120, color: 'white' }}
             >
                 {loadingActive ? <CSpinner size='sm' /> : 'Activate All'}
             </CButton>
             <CButton
                 size="sm"
-                onClick={() => { handleUpdateAllStatus("0", paramMId) }}
+                onClick={() => {  handleStatus('deactive') }}
                 style={{ backgroundColor: '#ff4d4d', marginLeft: '2%', width: 120, color: 'white' }}
             >
                 {loadingActive ? <CSpinner size='sm' /> : 'Deactivate All'}
@@ -795,6 +814,22 @@ const VirtualMarket = () => {
                     Next
                 </CPaginationItem>
             </CPagination>
+
+            <CModal alignment="center" visible={visible} scrollable size='sm' onClose={() => setVisible(false)}>
+                <CModalHeader closeButton={false}>
+                    <CModalTitle>Confirmation</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                    <a>Are you sure you want to change the status of all these products?</a><br></br><br></br>
+                    <div style={{ display: "flex", justifyContent: 'center' }}>
+                        <CButton onClick={() => {isActivate ?   handleUpdateAllStatus("1", paramMId) :    handleUpdateAllStatus("0", paramMId)}} style={{ backgroundColor: '#ff4d4d', color: 'white', marginRight: '10px' }} >Yes</CButton>
+                        <CButton onClick={() =>{
+                             setVisible(false)
+                             
+                             }} style={{ backgroundColor: '#ff4d4d', color: 'white', marginLeft: '10px' }} >No</CButton>
+                    </div>
+                </CModalBody>
+            </CModal>
 
             <CModal alignment="center" visible={visiblePriceModal} scrollable size='sm' onClose={() => setVisiblePriceModal(false)}>
                 <CModalHeader closeButton>
