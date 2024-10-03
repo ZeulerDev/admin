@@ -45,6 +45,7 @@ const VatManagement = React.lazy(()=>import('./views/pages/picker/VatManagement'
 const Picker = React.lazy(()=>import('./views/pages/picker/Picker'))
 const AddPicker = React.lazy(()=>import('./views/pages/picker/AddPicker'))
 
+const MarketLocation = React.lazy(()=>import('./views/pages/Market/Group/ViewMapMarket'))
 const MarketDistance = React.lazy(()=>import('./views/pages/Market/Group/MarketDistances'))
 const MarketMap = React.lazy(()=>import('./views/pages/Market/Group/MarketMap'))
 const CreateMarketGroup = React.lazy(()=>import('./views/pages/Market/Group/CreateMarketGroup'))
@@ -155,6 +156,7 @@ const routes = [
   { path: '/picker/view', name: 'View', element: Picker },
   { path: '/picker', name: 'Pickers', element: Picker,exact: true },
   { path: '/picker/addpicker', name: 'CreatePicker', element: AddPicker },
+  { path: '/marketgroups/view/map/:id', name: 'Market Location', element: MarketLocation },
   { path: '/marketgroups/marketdistance/:id', name: 'MarketDistance', element: MarketDistance },
   { path: '/marketgroups/marketmap', name: 'MarketMap', element: MarketMap },
   { path: '/marketgroups/createmarketgroup', name: 'CreateMarketGroup', element: CreateMarketGroup },

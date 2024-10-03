@@ -56,7 +56,7 @@ const VirtualProducts = () => {
     const loadDataMarkets = (chainId, type) => {
         axios
             .get(
-                BASE_URL+`assistant/market/locations?brand=${chainId}`,
+                BASE_URL+`assistant/market/from/0?brand=${chainId}&type=${type}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

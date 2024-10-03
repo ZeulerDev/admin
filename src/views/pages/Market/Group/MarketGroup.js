@@ -31,7 +31,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useAppContext } from '../../../../context/AppContext'
 import CIcon from '@coreui/icons-react'
-import { cilDelete, cilInfo, cilLocationPin, cilPencil, cilPlus, cilTrash } from '@coreui/icons'
+import { cilDelete, cilInfo, cilLocationPin, cilMap, cilPencil, cilPlus, cilTrash } from '@coreui/icons'
 import { SET_ALERT } from '../../../../context/context_reducer'
 import { BASE_URL } from '../../../../context/config'
 
@@ -469,7 +469,7 @@ const MarketGroup = () => {
     setLoadingModal(true)
     axios
       .get(
-        BASE_URL + `assistant/market/locations/${count}?brand=${paramChainIdModal}&city=${paramCityModal}`,
+        BASE_URL + `assistant/market/add/${count}?brand=${paramChainIdModal}&city=${paramCityModal}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -815,6 +815,7 @@ const handleSubmitCenterPoint = () => {
             <CTableHeaderCell scope="col">Action</CTableHeaderCell>
             <CTableHeaderCell scope="col">Add Markets</CTableHeaderCell>
             <CTableHeaderCell scope="col">Add Center Point</CTableHeaderCell>
+            <CTableHeaderCell scope="col">View Map</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -860,6 +861,13 @@ const handleSubmitCenterPoint = () => {
                 <CButton onClick={() => { handleCenterPoint(item.center, item._id) }} size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">
                   <CIcon icon={cilPlus} size='lg' style={{ color: 'white' }} />
                 </CButton>
+              </CTableDataCell>
+              <CTableDataCell>
+                <Link to={`/marketgroups/view/map/${item._id}`}>
+                <CButton size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">
+                  <CIcon icon={cilMap} size='lg' style={{ color: 'white' }} />
+                </CButton>
+                </Link>
               </CTableDataCell>
             </CTableRow>
           ))}

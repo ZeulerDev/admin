@@ -199,9 +199,11 @@ const Products = () => {
       setParamChainData('')
       setSelectedChian('All Chains')
       setChainMarketData([])
+      setSearchQuery('')
     } else {
       setParamMarketData(mId)
       setSelectedMarket(marketName)
+      setSearchQuery('')
     }
   }
 

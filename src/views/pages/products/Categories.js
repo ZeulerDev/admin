@@ -281,10 +281,14 @@ const Categories = () => {
     if (chainId === 'all') {
       setParamChainData('')
       setSelectedChian('All Chains')
+      setParamMarketData('')
+      setSelectedMarket('All Markets')
     } else {
       setParamChainData(chainId)
       loadDataMarkets(chainId)
       setSelectedChian(chianName)
+      setParamMarketData('')
+      setSelectedMarket('All Markets')
     }
   }
 
