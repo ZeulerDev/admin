@@ -59,6 +59,7 @@ const Orders = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchType, setSearchType] = useState('EMAIL')
     const [searchQuery, setSearchQuery] = useState('');
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
 
     useEffect(() => {
         const currentDate = new Date();
@@ -89,7 +90,21 @@ const Orders = () => {
         return () => {
             clearTimeout(timer);
         };
-    }, [user, token, selectedDates,searchQuery])
+    }, [user, token, selectedDates, debouncedSearchQuery])
+
+    useEffect(() => {
+        const handler = setTimeout(() => {   
+            if (searchQuery.length >= 3) {
+                setDebouncedSearchQuery(searchQuery);
+            }else if (searchQuery.length === 0) {
+                setDebouncedSearchQuery(searchQuery);
+            }
+        }, 500);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [searchQuery]);
 
     const loadData = (count, timer) => {
         console.log(count, selectedDates)
@@ -263,8 +278,8 @@ const Orders = () => {
                     value={selectedDates.length > 0 ? [new Date(selectedDates[0]), new Date(selectedDates[1])] : null} />
 
 
-{/* <CBadge style={{ marginLeft: '0.2%'}} color="secondary">Select the search type</CBadge> */}
-      {/* <CDropdown style={{ marginRight: '0%', width:'20%',backgroundColor: '#ff4d4d' }}>
+                {/* <CBadge style={{ marginLeft: '0.2%'}} color="secondary">Select the search type</CBadge> */}
+                {/* <CDropdown style={{ marginRight: '0%', width:'20%',backgroundColor: '#ff4d4d' }}>
       <CDropdownToggle >{searchType} </CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => setSearchType('NAME')}>By Name</CDropdownItem>
@@ -273,14 +288,14 @@ const Orders = () => {
             <CDropdownItem onClick={() => setSearchType('PHONE')}>By Contact Number</CDropdownItem>
           </CDropdownMenu>
         </CDropdown> */}
-      <CFormInput  
-         type ="text" 
-         placeholder="Search by customer name, surname, email and contact" 
-         style={{ width : 450,  marginRight: '0%' }}
-         value={searchQuery}
-         onChange={(e) => setSearchQuery(e.target.value)}
-       
-         />
+                <CFormInput
+                    type="text"
+                    placeholder="Search by customer name, surname, email and contact"
+                    style={{ width: 450, marginRight: '0%' }}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+
+                />
             </CNavbar>
 
             {loading ? (

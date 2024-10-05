@@ -509,8 +509,8 @@ const VirtualMarkets = () => {
                         <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Address</CTableHeaderCell>
                         <CTableHeaderCell scope="col">City</CTableHeaderCell>
-                        <CTableHeaderCell scope="col">Delivery</CTableHeaderCell>
-                        <CTableHeaderCell scope="col">Pickup</CTableHeaderCell>
+                        {/* <CTableHeaderCell scope="col">Delivery</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Pickup</CTableHeaderCell> */}
                         <CTableHeaderCell scope="col">Scraped</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Delete</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Empty Products</CTableHeaderCell>
@@ -523,7 +523,7 @@ const VirtualMarkets = () => {
                             <CTableDataCell>{item.chain.name}</CTableDataCell>
                             <CTableDataCell>{item.address}</CTableDataCell>
                             <CTableDataCell>{item.city}</CTableDataCell>
-                            <CTableDataCell>
+                            {/* <CTableDataCell>
                                 {item.services.includes('delivery') ? (
                                     <CFormCheck
                                         id="flexCheckChecked"
@@ -554,7 +554,7 @@ const VirtualMarkets = () => {
                                         onChange={() => handleCheckboxChange(item._id, true, 'pickup')}
                                     />
                                 )}
-                            </CTableDataCell>
+                            </CTableDataCell> */}
                             <CTableDataCell>{item.scraped}</CTableDataCell>
                             <CTableDataCell>
                                 <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => handleToggle(item._id)}>

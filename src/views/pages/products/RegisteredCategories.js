@@ -59,6 +59,7 @@ const RegisteredCategories = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchType, setSearchType] = useState('NAME')
     const [searchQuery, setSearchQuery] = useState('');
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
 
     useEffect(() => {
 
@@ -80,7 +81,22 @@ const RegisteredCategories = () => {
         return () => {
             clearTimeout(timer);
         };
-    }, [user, token, searchQuery,searchType])
+    }, [user, token, debouncedSearchQuery,searchType])
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+          if (searchQuery.length >= 3) {
+            setDebouncedSearchQuery(searchQuery);
+        }else if(searchQuery.length === 0){
+          setDebouncedSearchQuery(searchQuery);
+        }
+        }, 500);
+    
+        return () => {
+          clearTimeout(handler);
+        };
+      }, [searchQuery]);
+    
 
     const loadData = (count, timer) => {
         console.log(count, selectedDates)

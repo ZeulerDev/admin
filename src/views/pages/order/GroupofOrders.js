@@ -46,6 +46,7 @@ const GroupOfOrders = () => {
   const [groceryGroupsData, setGroceryGroupsData] = useState([])
   const [loading, setLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
   const [itemsPerPage, setItemsPerPage] = useState(0)
   const [visibleBonus, setVisibleBonus] = useState(false)
   const [groceryGroupId, setGroceryGroupId] = useState('')
@@ -95,7 +96,21 @@ const GroupOfOrders = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [user, token, searchQuery, paramStatus,selectedDates])
+  }, [user, token, debouncedSearchQuery, paramStatus,selectedDates])
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (searchQuery.length >= 3) {
+        setDebouncedSearchQuery(searchQuery);
+    }else if(searchQuery.length === 0){
+      setDebouncedSearchQuery(searchQuery);
+    }
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
 
   const loadData = (count, timer) => {
     setLoading(true)

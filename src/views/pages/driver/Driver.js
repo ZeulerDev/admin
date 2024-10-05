@@ -47,6 +47,7 @@ const Drivers = () => {
   const [paramGroup, setParamGroupData] = useState('')
   const [paramChainId, setParamChainData] = useState('')
   const [paramCode, setParamCodeData] = useState('')
+  const [debouncedParamCode, setDebouncedParamCodeData] = useState(paramCode)
   const [isActivate, setActivate] = useState(false)
   const [driverId, setDriverId] = useState('')
   const navigate = useNavigate()
@@ -154,7 +155,21 @@ const Drivers = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [paramCity, paramGroup, paramChainId,paramCode, alert])
+  }, [paramCity, paramGroup, paramChainId,debouncedParamCode, alert])
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (paramCode.length >= 3) {
+        setDebouncedParamCodeData(paramCode);
+    }else if(paramCode.length === 0){
+      setDebouncedParamCodeData(paramCode)
+    }
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [paramCode]);
 
   const loadDriversData = (timer) => {
     if (user && token) {

@@ -48,6 +48,7 @@ const Promotion = () => {
     const [paramGroup, setParamGroupData] = useState('')
     const [paramChainId, setParamChainData] = useState('')
     const [searchQuery, setSearchQuery] = useState('')
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
     const [isActivate, setActivate] = useState(false)
     const [promotionId, setPromotionId] = useState('')
 
@@ -94,7 +95,22 @@ const Promotion = () => {
             clearTimeout(timer);
         };
 
-    }, [searchQuery])
+    }, [debouncedSearchQuery])
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+          if (searchQuery.length >= 3) {
+            setDebouncedSearchQuery(searchQuery);
+        }else if(searchQuery.length === 0){
+          setDebouncedSearchQuery(searchQuery);
+        }
+        }, 500);
+    
+        return () => {
+          clearTimeout(handler);
+        };
+      }, [searchQuery]);
+    
 
     const loadData = (count, timer) => {
         if (user && token) {

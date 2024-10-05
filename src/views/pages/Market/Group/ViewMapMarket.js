@@ -244,13 +244,6 @@ const ViewMarketMap = () => {
     return (
         <CContainer>
             <CNavbar className="bg-body-tertiary">
-                <CDropdown style={{ marginLeft: '90%', width: '17%', marginRight: '5px', backgroundColor: '#ff4d4d' }}>
-                    <CDropdownToggle style={{ color: 'white' }}>{selectedCity}</CDropdownToggle>
-                    <CDropdownMenu>
-                        <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
-                        <CDropdownItem onClick={() => city('Milano')}>Milano</CDropdownItem>
-                    </CDropdownMenu>
-                </CDropdown>
             </CNavbar>
 
             <MapContainer

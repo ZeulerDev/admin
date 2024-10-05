@@ -47,6 +47,7 @@ const DriverPayout = ()=>{
     const [statusData, setStatus] = useState('All')
     const [statusParam, setStatusParam] = useState('')
     const [searchQuery, setSearchQuery] = useState('')
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
     const [payoutStatus, setPayoutStatus] = useState('')
     const [payoutId, setPayoutId] = useState('')
     const[alert, setAlert] = useState(false)
@@ -76,7 +77,21 @@ const DriverPayout = ()=>{
        return () => {
         clearTimeout(timer);
       };
-    },[statusParam,searchQuery])
+    },[statusParam,debouncedSearchQuery])
+
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        if (searchQuery.length >= 3) {
+          setDebouncedSearchQuery(searchQuery);
+      }else if(searchQuery.length === 0){
+        setDebouncedSearchQuery(searchQuery);
+      }
+      }, 500);
+  
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [searchQuery]);
 
     const loadData  = (count, timer) => {
       setLoading(true)

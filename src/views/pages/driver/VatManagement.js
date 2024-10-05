@@ -39,7 +39,7 @@ const VatManagement = () => {
     const [driverId, setDriverId] = useState('')
     const [vatId, setVatId] = useState('')
     const [searchQuery, setSearchQuery] = useState('');
-
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
     const [resultCount, setResultCount] = useState(0)
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(0)
@@ -65,7 +65,21 @@ const VatManagement = () => {
        return () => {
         clearTimeout(timer);
       };
-    },[searchQuery])
+    },[debouncedSearchQuery])
+
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        if (searchQuery.length >= 3) {
+          setDebouncedSearchQuery(searchQuery);
+      }else if(searchQuery.length === 0){
+        setDebouncedSearchQuery(searchQuery);
+      }
+      }, 500);
+  
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [searchQuery]);
 
     const loadVatData = (count, timer) => {
       if(user && token){

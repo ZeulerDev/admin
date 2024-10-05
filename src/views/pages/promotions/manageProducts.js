@@ -77,6 +77,7 @@ const ManageProducts = () => {
     const [productsIds, setProductsModalIds] = useState([])
     const [marketId, setMarketId] = useState('')
     const [searchQuery, setSearchQuery] = useState('');
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
     const [searchQueryModal, setSearchQueryModal] = useState('');
     const [isOperated, setIsOperated] = useState(false)
 
@@ -92,7 +93,22 @@ const ManageProducts = () => {
     useEffect(() => {
         console.log('id', id)
         loadProducts(id, 0)
-    }, [searchQuery])
+    }, [debouncedSearchQuery])
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+          if (searchQuery.length >= 3) {
+            setDebouncedSearchQuery(searchQuery);
+        }else if(searchQuery.length === 0){
+          setDebouncedSearchQuery(searchQuery);
+        }
+        }, 500);
+    
+        return () => {
+          clearTimeout(handler);
+        };
+      }, [searchQuery]);
+    
 
     const loadProducts = (id, count) => {
         if (id) {

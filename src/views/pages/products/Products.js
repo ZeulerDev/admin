@@ -46,6 +46,7 @@ const Products = () => {
   const [paramMId, setParamMarketData] = useState('')
   const [chainMarket, setChainMarketData] = useState([])
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
   const [visiblePriceModal, setVisiblePriceModal] = useState(false)
   const [id, setId] = useState('')
   const [price, setPrice] = useState('')
@@ -61,7 +62,22 @@ const Products = () => {
     if (user && token) {
       loadData(0, true)
     }
-  }, [user, token, paramMId, searchQuery])
+  }, [user, token, paramMId, debouncedSearchQuery])
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (searchQuery.length >= 3) {
+        setDebouncedSearchQuery(searchQuery);
+    }else if(searchQuery.length === 0){
+      setDebouncedSearchQuery(searchQuery);
+    }
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
+
 
   useEffect(() => {
     if (token) {

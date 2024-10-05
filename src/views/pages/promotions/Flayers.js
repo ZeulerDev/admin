@@ -48,6 +48,7 @@ const Flayers = () => {
     const [itemsPerPage, setItemsPerPage] = useState(0)
     const [isDisable, setIsDisable] = useState(true)
     const [searchQuery, setSearchQuery] = useState('');
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
 
     const [resultCount, setResultCount] = useState(0)
     const [currentPage, setCurrentPage] = useState(1);
@@ -114,7 +115,22 @@ const Flayers = () => {
         return () => {
             clearTimeout(timer);
         };
-    }, [user, token, searchQuery])
+    }, [user, token, debouncedSearchQuery])
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+          if (searchQuery.length >= 3) {
+            setDebouncedSearchQuery(searchQuery);
+        }else if(searchQuery.length === 0){
+          setDebouncedSearchQuery(searchQuery);
+        }
+        }, 500);
+    
+        return () => {
+          clearTimeout(handler);
+        };
+      }, [searchQuery]);
+    
 
     const loadData = (count, timer) => {
         setLoadingMain(true)
@@ -749,7 +765,7 @@ const Flayers = () => {
             <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
                 <CFormInput
                     type="text"
-                    placeholder="Search here"
+                    placeholder="Search by Id, end date and retailer "
                     style={{ width: 450, marginRight: '30%' }}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -765,7 +781,7 @@ const Flayers = () => {
                         <CTableHeaderCell scope="col">Retailer</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Markets</CTableHeaderCell>
-                        <CTableHeaderCell scope="col">Disabled</CTableHeaderCell>
+                        {/* <CTableHeaderCell scope="col">Disabled</CTableHeaderCell> */}
                         <CTableHeaderCell scope="col">Products</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Assigned Market</CTableHeaderCell>
 
@@ -786,7 +802,7 @@ const Flayers = () => {
                                         <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
                                     </CButton>
                                 </CTableDataCell>
-                                <CTableDataCell>{item.disabled === false ? 'No' : 'Yes'}</CTableDataCell>
+                                {/* <CTableDataCell>{item.disabled === false ? 'No' : 'Yes'}</CTableDataCell> */}
                                 <CTableDataCell>
                                     <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleFlayersProductsModal(item._id) }}>
                                         <CIcon icon={cilViewModule} size='lg' style={{ color: 'white' }} />

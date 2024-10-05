@@ -54,6 +54,7 @@ const DbRegisteredCategory = () => {
     const [paramMId, setParamMarketData] = useState('')
     const [chainMarket, setChainMarketData] = useState([])
     const [searchQuery, setSearchQuery] = useState('');
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
 
     const [productData, setProductData] = useState([])
     const [resultCount, setResultCount] = useState(0)
@@ -89,7 +90,22 @@ const DbRegisteredCategory = () => {
         return () => {
             clearTimeout(timer);
         };
-    }, [user, token, searchQuery])
+    }, [user, token, debouncedSearchQuery])
+
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        if (searchQuery.length >= 3) {
+          setDebouncedSearchQuery(searchQuery);
+      }else if(searchQuery.length === 0){
+        setDebouncedSearchQuery(searchQuery);
+      }
+      }, 500);
+  
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [searchQuery]);
+  
 
     const loadData = (count, timer) => {
         console.log('search', searchQuery)
