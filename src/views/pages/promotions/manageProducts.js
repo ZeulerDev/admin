@@ -646,7 +646,7 @@ const ManageProducts = () => {
         setCurrentPage(page);
         const c = (page - 1) * 50;
         setItemsPerPage(c);
-        loadData(c, true);
+        loadMarketsProducts(c, marketId, id)
     };
 
     const renderPageNumbers = () => {
@@ -928,9 +928,9 @@ const ManageProducts = () => {
                         <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Base Price</CTableHeaderCell>
-                        <CTableHeaderCell scope="col">Tax</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Markup Percentage </CTableHeaderCell>
                         <CTableHeaderCell scope="col">Markup</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Tax</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Total</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Promotion Value</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Brand</CTableHeaderCell>
@@ -942,14 +942,14 @@ const ManageProducts = () => {
                 <CTableBody>
                     {products.map((item, index) => (
                         <CTableRow key={index}>
-                            <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                            <CTableDataCell>{itemsPerPageProducts + index + 1}</CTableDataCell>
                             <CTableDataCell>{item.pid}</CTableDataCell>
                             <CTableHeaderCell onClick={() => { }}><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
                             <CTableDataCell>{item.name}</CTableDataCell>
                             <CTableDataCell> {(item.price?.basePrice ?? 0).toFixed(2)} </CTableDataCell>
-                            <CTableDataCell>{(item.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
                             <CTableDataCell>{item.price.percentage}%</CTableDataCell>
                             <CTableDataCell>{(item.price?.markup ?? 0).toFixed(2)}</CTableDataCell>
+                            <CTableDataCell>{(item.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
                             <CTableDataCell>{(item.price?.total ?? 0).toFixed(2)}</CTableDataCell>
                             <CTableDataCell>{item.promo_value} €<Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item.productId, item.promo_value)} /></Link></CTableDataCell>
                             <CTableDataCell>{item.brand}</CTableDataCell>
@@ -989,6 +989,9 @@ const ManageProducts = () => {
                 setIsOperated(false)
                 setVisible(false)
                 setSearchQueryModal('')
+                setResultCountProducts(0)
+                setItemsPerPageProducts(0)
+                setCurrentPageProducts(1)
             }}>
                 <CModalHeader closeButton>
                     <CModalTitle>Products assign view</CModalTitle>
@@ -1028,9 +1031,9 @@ const ManageProducts = () => {
                                 <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Base Price</CTableHeaderCell>
-                                <CTableHeaderCell scope="col">Tax</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Markup Percentage </CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Markup</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Tax</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Total</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Brand</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Chain</CTableHeaderCell>
@@ -1047,9 +1050,9 @@ const ManageProducts = () => {
                                         <CTableHeaderCell><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
                                         <CTableDataCell>{item.name}</CTableDataCell>
                                         <CTableDataCell> {(item.price?.basePrice ?? 0).toFixed(2)} </CTableDataCell>
-                                        <CTableDataCell>{(item.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
                                         <CTableDataCell>{item.price.percentage}%</CTableDataCell>
                                         <CTableDataCell>{(item.price?.markup ?? 0).toFixed(2)}</CTableDataCell>
+                                        <CTableDataCell>{(item.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
                                         <CTableDataCell>{(item.price?.total ?? 0).toFixed(2)}</CTableDataCell>
                                         <CTableDataCell>{item.brand}</CTableDataCell>
                                         <CTableDataCell>{item.chainName}</CTableDataCell>

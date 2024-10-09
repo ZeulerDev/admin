@@ -107,6 +107,19 @@ const _nav = [
       
     ],
   },
+  // {
+  //   component: CNavGroup,
+  //   name: 'Marketing',
+  //   to: '/marketing',
+  //   icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: 'Zeuler',
+  //       to: '/marketing/all',
+  //     }
+  //   ],
+  // },
   {
     component: CNavGroup,
     name: 'Virtual',

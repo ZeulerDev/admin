@@ -226,16 +226,18 @@ const Promotion = () => {
                         setVisible(false)
                         setActivate('')
                         setPromotionId('')
-                        const updatedEntity = res.data
-                        const list = promotionData.map((item) => {
-                            if (item.id === updatedEntity.id) {
-                                console.log('update obj')
-                                return updatedEntity
-                            } else {
-                                return item
-                            }
-                        })
-                        setPromotionData([...list])
+                        loadData(0)
+                        // const updatedEntity = res.data
+                        // const list = promotionData.map((item) => {
+                        //     if (item.id === updatedEntity.id) {
+                        //         item.status = updatedEntity.status
+                        //         console.log('update obj')
+                        //         return updatedEntity
+                        //     } else {
+                        //         return item
+                        //     }
+                        // })
+                        // setPromotionData([...list])
                         dispatch({
                             type: SET_ALERT,
                             payload: {
@@ -618,7 +620,7 @@ const Promotion = () => {
                             <CTableDataCell>{item.name}</CTableDataCell>
                             <CTableDataCell>{new Date(item.startDate).toLocaleDateString()}</CTableDataCell>
                             <CTableDataCell>{new Date(item.endDate).toLocaleDateString()}</CTableDataCell>
-                            <CTableDataCell>{item.status === true ? "Active" : "De active"}</CTableDataCell>
+                            <CTableDataCell>{item.status === true ? "Active" : "Deactive"}</CTableDataCell>
                             <CTableDataCell>
                                 <Link to={`/promotions/market/${item._id}`} >
                                     <CButton size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">

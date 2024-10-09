@@ -455,7 +455,7 @@ const Market = () => {
           {chainMarket.map((item, index) => (
             <CTableRow key={index}>
               <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-              <CTableDataCell>{item.chain.name}</CTableDataCell>
+              <CTableDataCell>{item.chain?.name}</CTableDataCell>
               <CTableDataCell>{item.address}</CTableDataCell>
               <CTableDataCell>{item.city}</CTableDataCell>
               <CTableDataCell>

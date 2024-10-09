@@ -1,5 +1,8 @@
 import React from 'react'
 
+const CreateMarketing = React.lazy(()=>import('./views/pages/marketing/CreateMarketing'))
+const Zeuler = React.lazy(()=>import('./views/pages/marketing/Zeuler'))
+
 const Products = React.lazy(()=>import('./views/pages/products/Products'))
 const Promotion = React.lazy(()=>import('./views/pages/promotions/Promotion'))
 const ManageProducts = React.lazy(()=>import('./views/pages/promotions/manageProducts'))
@@ -111,6 +114,9 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 // const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
+  { path: '/marketing/create/marketing', name: 'Create Marketing', element: CreateMarketing},
+  { path: '/marketing/all', name: 'Zeuler', element: Zeuler},
+  { path: '/marketing', name: 'Zeuler', element: Zeuler, exact: true },
   { path: '/promotions/products/:id', name: 'Manage Products', element: ManageProducts},
   { path: '/promotions/market/:id', name: 'Market', element: AddPromotionMarket},
   { path: '/promotions/add/promotion', name: 'Register Promotions ', element: AddPromotion},
