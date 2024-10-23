@@ -240,12 +240,17 @@ const Categories = () => {
     if (index === 'all') {
       setParamCMainCategoryData('')
       setSelectedMainCategory('All Main Categories')
+      setParamSubCategoryData('')
+      setSelectedSubCategory('Select Main Categories')
       setMainCID('')
+      setSearchQuery('')
+      setSubCategoriesData([])
     } else {
       setParamCMainCategoryData(index)
       loadDataSubCategories(index)
       setSelectedMainCategory(categoryName)
       setMainCID(index)
+      setSearchQuery('')
     }
   }
 
@@ -285,10 +290,12 @@ const Categories = () => {
       setSelectedMainCategory('All Main Categories')
       setSubCategoriesData([])
       setMainCID('')
+      setSearchQuery('')
     } else {
       console.log('index', index)
       setParamSubCategoryData(index)
       setSelectedSubCategory(subName)
+      setSearchQuery('')
     }
   }
 
@@ -299,12 +306,14 @@ const Categories = () => {
       setSelectedChian('All Chains')
       setParamMarketData('')
       setSelectedMarket('All Markets')
+      setSearchQuery('')
     } else {
       setParamChainData(chainId)
       loadDataMarkets(chainId)
       setSelectedChian(chianName)
       setParamMarketData('')
       setSelectedMarket('All Markets')
+      setSearchQuery('')
     }
   }
 
@@ -315,9 +324,11 @@ const Categories = () => {
       setParamChainData('')
       setSelectedChian('All Chains')
       setChainMarketData([])
+      setSearchQuery('')
     } else {
       setParamMarketData(mId)
       setSelectedMarket(marketName)
+      setSearchQuery('')
     }
   }
 
@@ -534,7 +545,37 @@ const Categories = () => {
     <CContainer>
 
       <CBadge style={{ marginLeft: '14%' }} color="secondary">Filter by</CBadge>
-      
+      <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d' }}>
+        <CDropdownToggle >{selectedChain}</CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
+          {chainData.map((item, index) => (
+            <CDropdownItem onClick={() => chain(item.id, item.name)} key={index}>
+              {item.name}
+            </CDropdownItem>
+          ))}
+        </CDropdownMenu>
+      </CDropdown>
+
+
+      <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d' }}>
+        <CDropdownToggle>
+          {selectedMarket.length > 15 ? `${selectedMarket.substring(0, 15)}...` : selectedMarket}
+        </CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => market('all')}>Select the Chain</CDropdownItem>
+          {chainMarket.map((item, index) => (
+
+            <CDropdownItem onClick={() => market(item._id, item.address)} key={index}>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span>{item.address.substring(0, item.address.length / 2)}</span>
+                <span>{item.address.substring(item.address.length / 2)}</span>
+              </div>
+            </CDropdownItem>
+          ))}
+        </CDropdownMenu>
+      </CDropdown>
+
       <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d' }}>
         <CDropdownToggle >{selectedMainCategory}</CDropdownToggle>
         <CDropdownMenu>
@@ -558,39 +599,7 @@ const Categories = () => {
           ))}
         </CDropdownMenu>
       </CDropdown>
-      <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle >{selectedChain}</CDropdownToggle>
-        <CDropdownMenu>
-          <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
-          {chainData.map((item, index) => (
-            <CDropdownItem onClick={() => chain(item.id, item.name)} key={index}>
-              {item.name}
-            </CDropdownItem>
-          ))}
-        </CDropdownMenu>
-      </CDropdown>
-
-
-      <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d' }}>
-        {/* <CDropdownToggle >{selectedMarket}</CDropdownToggle>
-           */}
-        <CDropdownToggle>
-          {selectedMarket.length > 15 ? `${selectedMarket.substring(0, 15)}...` : selectedMarket}
-        </CDropdownToggle>
-        <CDropdownMenu>
-          <CDropdownItem onClick={() => market('all')}>Select the Chain</CDropdownItem>
-          {chainMarket.map((item, index) => (
-
-            <CDropdownItem onClick={() => market(item._id, item.address)} key={index}>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span>{item.address.substring(0, item.address.length / 2)}</span>
-                <span>{item.address.substring(item.address.length / 2)}</span>
-              </div>
-            </CDropdownItem>
-          ))}
-        </CDropdownMenu>
-      </CDropdown>
-
+      
 
 
 

@@ -64,7 +64,7 @@ const CreateCategory = () => {
   const [productId, setProductId] = useState('')
 
   const [selectMarketIds, setSelectMarketIds] = useState([])
-  const [selectedMarketForID, setSelectedMarketForID] = useState('Selected markets')
+  const [selectedMarketForID, setSelectedMarketForID] = useState('Selected Market ')
   let [unMatchedCategories, setUnMatchedCategories] = useState([])
   let [unMatchedCategoriesAll, setUnMatchedCategoriesAll] = useState([])
   const [visible, setVisible] = useState(false)
@@ -248,10 +248,15 @@ const CreateCategory = () => {
     if (chainId === 'all') {
       setParamChainData('')
       setSelectedChian('All Chains')
+      setParamMarketData('')
+      setSelectedMarket('All Markets')
+      setChainMarketData([])
     } else {
       setParamChainData(chainId)
       loadDataMarkets(chainId)
       setSelectedChian(chianName)
+      setParamMarketData('')
+      setSelectedMarket('All Markets')
     }
   }
 
@@ -262,7 +267,10 @@ const CreateCategory = () => {
       setParamChainData('')
       setSelectedChian('All Chains')
       setChainMarketData([])
+     
+    }else if(mId === 'select'){
       setSelectMarketIds([])
+      setSelectedMarketForID('Selected Market ')
     } else {
       setParamMarketData(mId)
       setSelectedMarket(marketName)
@@ -272,70 +280,7 @@ const CreateCategory = () => {
   }
 
 
-  const nextPage = () => {
-    setCurrentPage(currentPage + 1)
-    const c = itemsPerPageCategory + 50
-    setItemsPerPageCategory(c)
-    loadData(c, itemData)
-  }
-
-  const previousPage = () => {
-    setCurrentPage(currentPage - 1)
-    const c = itemsPerPageCategory - 50
-    console.log(c)
-    setItemsPerPageCategory(c)
-    loadData(c, itemData)
-  }
-
-  const handleToggleName = (id, name) => {
-    setVisiblePriceModal(true)
-    setId(id)
-    setPriceDisplay(name)
-  }
-
-  // const updateName = () => {
-  //   console.log("called")
-  //   if (price == '') {
-  //     dispatch({
-  //       type: SET_ALERT,
-  //       payload: {
-  //         status: true,
-  //         title: 'Alert',
-  //         message: 'Please enter the price',
-  //         color: 'warning'
-  //       }
-  //     })
-  //   } else {
-  //     handleUpdate(id)
-  //   }
-  // }
-
-  const handlePages = (page) => {
-    setCurrentPage(page);
-    const c = (page - 1) * 50;
-    setItemsPerPageCategory(c);
-    loadData(c, true);
-  };
-
-  const renderPageNumbers = () => {
-    const totalPages = Math.ceil(resultCount / 50);
-    const pageNumbers = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pageNumbers.push(i);
-    }
-    const startIndex = Math.max(currentPage - 2, 1);
-    const endIndex = Math.min(startIndex + 4, totalPages);
-    const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
-    return displayedPageNumbers.map((number) => (
-      <CPaginationItem
-        key={number}
-        active={currentPage === number}
-        onClick={() => handlePages(number)}
-      >
-        {number}
-      </CPaginationItem>
-    ));
-  };
+  
 
 
   const handleToggleImageUploader = (id) => {
@@ -682,7 +627,7 @@ const CreateCategory = () => {
       .then((res) => {
         if (res.status === 200) {
           setProductData(res.data.list)
-          console.log(res.data.list.length)
+          // console.log(res.data.list.length)
           setResultCount(res.data.count)
           setLoadingProduct(false)
           if (res.data.list.length < 50) {
@@ -729,6 +674,54 @@ const CreateCategory = () => {
       })
   }
 
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1)
+    const c = itemsPerPageCategory + 50
+    setItemsPerPageCategory(c)
+    loadData(c, itemData)
+  }
+
+  const previousPage = () => {
+    setCurrentPage(currentPage - 1)
+    const c = itemsPerPageCategory - 50
+    console.log(c)
+    setItemsPerPageCategory(c)
+    loadData(c, itemData)
+  }
+
+  const handleToggleName = (id, name) => {
+    setVisiblePriceModal(true)
+    setId(id)
+    setPriceDisplay(name)
+  }
+
+
+  const handlePages = (page) => {
+    setCurrentPage(page);
+    const c = (page - 1) * 50;
+    setItemsPerPageCategory(c);
+    loadData(c, itemData);
+  };
+
+  const renderPageNumbers = () => {
+    const totalPages = Math.ceil(resultCount / 50);
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+    const startIndex = Math.max(currentPage - 2, 1);
+    const endIndex = Math.min(startIndex + 4, totalPages);
+    const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
+    return displayedPageNumbers.map((number) => (
+      <CPaginationItem
+        key={number}
+        active={currentPage === number}
+        onClick={() => handlePages(number)}
+      >
+        {number}
+      </CPaginationItem>
+    ));
+  };
 
   return (
     <CContainer>
@@ -768,7 +761,7 @@ const CreateCategory = () => {
           {selectedMarketForID.length > 15 ? `${selectedMarketForID.substring(0, 15)}...` : selectedMarketForID}
         </CDropdownToggle>
         <CDropdownMenu>
-          <CDropdownItem onClick={() => market('all')}>Select the Chain</CDropdownItem>
+          <CDropdownItem onClick={() => market('select')}>Select the Chain</CDropdownItem>
           {selectMarketIds.map((item, index) => (
             <CDropdownItem key={index}>
               <div style={{ display: 'flex', flexDirection: 'column' }}>

@@ -93,6 +93,11 @@ const Flayers = () => {
     const [assignMarkets, setAssignMarkets] = useState([])
     const [loadingMarketModal, setLoadingMarkerModal] = useState(false)
 
+    const [isDisableMarkets, setIsDisableMarkets] = useState(true)
+    const [itemsPerPageMarkets, setItemsPerPageMarkets] = useState(0)
+    const [resultCountMarkets, setResultCountMarkets] = useState(0)
+    const [currentPageMarkets, setCurrentPageMarkets] = useState(1);
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -119,18 +124,18 @@ const Flayers = () => {
 
     useEffect(() => {
         const handler = setTimeout(() => {
-          if (searchQuery.length >= 3) {
-            setDebouncedSearchQuery(searchQuery);
-        }else if(searchQuery.length === 0){
-          setDebouncedSearchQuery(searchQuery);
-        }
+            if (searchQuery.length >= 3) {
+                setDebouncedSearchQuery(searchQuery);
+            } else if (searchQuery.length === 0) {
+                setDebouncedSearchQuery(searchQuery);
+            }
         }, 500);
-    
+
         return () => {
-          clearTimeout(handler);
+            clearTimeout(handler);
         };
-      }, [searchQuery]);
-    
+    }, [searchQuery]);
+
 
     const loadData = (count, timer) => {
         setLoadingMain(true)
@@ -143,12 +148,12 @@ const Flayers = () => {
                 if (res.status === 200) {
                     setCategoryData(res.data.list)
                     setResultCount(res.data.count)
-                    console.log(res.data.list.length)
+                    // console.log(res.data.list.length)
                     setLoadingMain(false)
                     clearTimeout(timer);
                     if (res.data.list.length < 20) {
                         setIsDisable(true)
-                        console.log("ok")
+                        // console.log("ok")
                     } else if (res.data.list.length > 19) {
                         setIsDisable(false)
                     }
@@ -583,13 +588,12 @@ const Flayers = () => {
             .then((res) => {
                 if (res.status === 200) {
                     setChainMarketData(res.data.data)
-                    console.log('data market')
+                    setResultCountMarkets(res.data.count)
                     setLoadingModal(false)
                     if (res.data.data.length < 20) {
-                        setIsDisable(true)
-                        console.log("ok")
+                        setIsDisableMarkets(true)
                     } else if (res.data.data.length > 19) {
-                        setIsDisable(false)
+                        setIsDisableMarkets(false)
                     }
                 } else if (res.status === 500) {
                     dispatch({
@@ -605,6 +609,49 @@ const Flayers = () => {
                 console.error('Error: ', err)
             })
     }
+
+
+    const nextPageProducts = () => {
+        setCurrentPageMarkets(currentPageMarkets + 1);
+        const c = itemsPerPageMarkets + 20
+        setItemsPerPageMarkets(c)
+        loadDataMarket(c, true)
+    }
+
+    const previousPageProducts = () => {
+        setCurrentPageMarkets(currentPageMarkets - 1);
+        const c = itemsPerPageMarkets - 20
+        console.log(c)
+        setItemsPerPageMarkets(c)
+        loadDataMarket(c, true)
+    }
+
+    const handlePagesProducts = (page) => {
+        setCurrentPageMarkets(page);
+        const c = (page - 1) * 20;
+        setItemsPerPageMarkets(c);
+        loadDataMarket(c, true)
+    };
+
+    const renderPageNumbersProducts = () => {
+        const totalPages = Math.ceil(resultCountMarkets / 20);
+        const pageNumbers = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(i);
+        }
+        const startIndex = Math.max(currentPageMarkets - 2, 1);
+        const endIndex = Math.min(startIndex + 4, totalPages);
+        const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
+        return displayedPageNumbers.map((number) => (
+            <CPaginationItem
+                key={number}
+                active={currentPageMarkets === number}
+                onClick={() => handlePagesProducts(number)}
+            >
+                {number}
+            </CPaginationItem>
+        ));
+    };
 
     const handleMarketsView = (id, market) => {
         setVisibleMainSubModel(false)
@@ -721,11 +768,11 @@ const Flayers = () => {
             )
             .then((res) => {
                 if (res.status === 200) {
-                    if(res.data.length !== 0){
+                    if (res.data.length !== 0) {
                         setAssignMarkets(res.data)
                         console.log('data market')
                         setLoadingMarkerModal(false)
-                    }else{
+                    } else {
                         setLoadingMarkerModal(false)
                         dispatch({
                             type: SET_ALERT,
@@ -733,12 +780,12 @@ const Flayers = () => {
                                 status: true,
                                 title: 'Market Loading',
                                 message: 'No market assigned to this flayer',
-                                color:'info'
+                                color: 'info'
                             }
                         })
                     }
 
-                   
+
                 } else if (res.status === 500) {
                     dispatch({
                         type: SET_ALERT,
@@ -973,6 +1020,10 @@ const Flayers = () => {
             <CModal visible={visibleMarket} scrollable size='xl' onClose={() => {
                 setVisibleMarket(false)
                 setVisibleMainSubModel(true)
+                setSelectedChianModal('All Chains')
+                setSelectedCityModal('All Cities')
+                setParamChainDataModal('')
+                setParamCityDataModal('')
             }}>
                 <CModalHeader closeButton>
                     <CModalTitle>Market assign view</CModalTitle>
@@ -1018,7 +1069,7 @@ const Flayers = () => {
                         <CTableBody>
                             {chainMarket.map((item, index) => (
                                 <CTableRow key={index}>
-                                    <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                                    <CTableDataCell>{itemsPerPageMarkets + index + 1}</CTableDataCell>
                                     <CTableDataCell>{item.chain.name}</CTableDataCell>
                                     <CTableDataCell>{item.address}</CTableDataCell>
                                     <CTableDataCell>{item.city}</CTableDataCell>
@@ -1042,12 +1093,21 @@ const Flayers = () => {
 
 
                     <CModalFooter>
-                        {/* <CPagination aria-label="Page navigation example">
-                            <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
+                        <CPagination aria-label="Page navigation example">
+                            <CPaginationItem
+                                disabled={itemsPerPageMarkets <= 0 ? true : false}
+                                onClick={previousPageProducts}
+                            >
                                 Previous
                             </CPaginationItem>
-                            <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
-                        </CPagination> */}
+                            {renderPageNumbersProducts()}
+                            <CPaginationItem
+                                disabled={isDisableMarkets === true ? true : false}
+                                onClick={nextPageProducts}
+                            >
+                                Next
+                            </CPaginationItem>
+                        </CPagination>
                     </CModalFooter>
 
                 </CModalBody>

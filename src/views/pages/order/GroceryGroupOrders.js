@@ -72,7 +72,7 @@ const GroceryGroupOrders = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log(res.data)
+          console.log('data',res.data)
           setGroceryGroupOrdersData(res.data)
           setLoading(false)
           clearTimeout(timer);

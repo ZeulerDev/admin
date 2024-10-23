@@ -60,6 +60,12 @@ const AddMarket = () => {
 
     const [marketIds, setMarketIds] = useState([])
 
+    const [isDisableMarkets, setIsDisableMarkets] = useState(true)
+    const [itemsPerPageMarkets, setItemsPerPageMarkets] = useState(0)
+    const [resultCountMarkets, setResultCountMarkets] = useState(0)
+    const [currentPageMarkets, setCurrentPageMarkets] = useState(1);
+
+
     useEffect(() => {
         console.log('id', id)
         loadMarkets(id)
@@ -231,6 +237,7 @@ const AddMarket = () => {
             .then((res) => {
                 if (res.status === 200) {
                     setChainMarketData(res.data.data)
+                    setResultCountMarkets(res.data.count)
                     console.log('data market')
                     setLoadingModal(false)
                     if (res.data.data.length < 20) {
@@ -253,6 +260,48 @@ const AddMarket = () => {
                 console.error('Error: ', err)
             })
     }
+
+    const nextPageProducts = () => {
+        setCurrentPageMarkets(currentPageMarkets + 1);
+        const c = itemsPerPageMarkets + 20
+        setItemsPerPageMarkets(c)
+        loadDataMarket(c, true)
+    }
+
+    const previousPageProducts = () => {
+        setCurrentPageMarkets(currentPageMarkets - 1);
+        const c = itemsPerPageMarkets - 20
+        console.log(c)
+        setItemsPerPageMarkets(c)
+        loadDataMarket(c, true)
+    }
+
+    const handlePagesProducts = (page) => {
+        setCurrentPageMarkets(page);
+        const c = (page - 1) * 20;
+        setItemsPerPageMarkets(c);
+        loadDataMarket(c, true)
+    };
+
+    const renderPageNumbersProducts = () => {
+        const totalPages = Math.ceil(resultCountMarkets / 20);
+        const pageNumbers = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(i);
+        }
+        const startIndex = Math.max(currentPageMarkets - 2, 1);
+        const endIndex = Math.min(startIndex + 4, totalPages);
+        const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);
+        return displayedPageNumbers.map((number) => (
+            <CPaginationItem
+                key={number}
+                active={currentPageMarkets === number}
+                onClick={() => handlePagesProducts(number)}
+            >
+                {number}
+            </CPaginationItem>
+        ));
+    };
 
 
     const nextPage = () => {
@@ -485,7 +534,13 @@ const AddMarket = () => {
             }
 
 
-            <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
+            <CModal visible={visible} scrollable size='xl' onClose={() => 
+                {setVisible(false)
+                setSelectedChianModal('All Chains')
+                setSelectedCityModal('All Cities')
+                setParamChainDataModal('')
+                setParamCityDataModal('')}
+                }>
                 <CModalHeader closeButton>
                     <CModalTitle>Market assign view</CModalTitle>
 
@@ -531,7 +586,7 @@ const AddMarket = () => {
                         <CTableBody>
                             {chainMarket.map((item, index) => (
                                 <CTableRow key={index}>
-                                    <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                                    <CTableDataCell>{itemsPerPageMarkets + index + 1}</CTableDataCell>
                                     <CTableDataCell>{item.chain.name}</CTableDataCell>
                                     <CTableDataCell>{item.address}</CTableDataCell>
                                     <CTableDataCell>{item.city}</CTableDataCell>
@@ -555,11 +610,20 @@ const AddMarket = () => {
 
 
                     <CModalFooter>
-                        <CPagination aria-label="Page navigation example">
-                            <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
+                    <CPagination aria-label="Page navigation example">
+                            <CPaginationItem
+                                disabled={itemsPerPageMarkets <= 0 ? true : false}
+                                onClick={previousPageProducts}
+                            >
                                 Previous
                             </CPaginationItem>
-                            <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
+                            {renderPageNumbersProducts()}
+                            <CPaginationItem
+                                disabled={isDisableMarkets === true ? true : false}
+                                onClick={nextPageProducts}
+                            >
+                                Next
+                            </CPaginationItem>
                         </CPagination>
                     </CModalFooter>
 

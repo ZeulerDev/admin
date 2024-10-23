@@ -276,7 +276,7 @@ const VatManagement = () => {
         <CNavbar className="bg-body-tertiary">
          <CFormInput  
          type ="text" 
-         placeholder="Search" 
+         placeholder="Search by name" 
          style={{ width : 450, marginLeft: '0%' }}
          value={searchQuery}
          onChange={(e) => setSearchQuery(e.target.value)}

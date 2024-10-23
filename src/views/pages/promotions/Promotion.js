@@ -323,7 +323,7 @@ const Promotion = () => {
                                 setVisiblePromotion(false)
                                 const updatedEntity = res.data
                                 const list = promotionData.map((item) => {
-                                    if (item.id === updatedEntity.id) {
+                                    if (item._id === updatedEntity._id) {
                                         console.log('update obj')
                                         return updatedEntity
                                     } else {

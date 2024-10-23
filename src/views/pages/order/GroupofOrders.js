@@ -320,9 +320,11 @@ const GroupOfOrders = () => {
     if (status === 'all') {
       setParamStatusData('')
       setSelectedStatus('All Status')
+      setSearchQuery('')
     } else {
       setParamStatusData(status)
       setSelectedStatus(status)
+      setSearchQuery('')
     }
   }
 
@@ -594,7 +596,7 @@ const GroupOfOrders = () => {
 
 <CFormInput
   type="text"
-  placeholder="Search By Rider No"
+  placeholder="Search By Rider Assign No"
   style={{ width: 300, marginLeft: '5%' }}
   value={searchQuery}
   onChange={(e) => setSearchQuery(e.target.value)}
@@ -626,7 +628,9 @@ const GroupOfOrders = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {groceryGroupsData.map((item, index) => {
+            {groceryGroupsData.length === 0 ? <>
+            <span style={{textAlign:'center'}}>No date to show</span>
+            </> : groceryGroupsData.map((item, index) => {
               return (
                 <CTableRow key={index}>
                   <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>

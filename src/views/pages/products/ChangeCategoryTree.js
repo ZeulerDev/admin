@@ -79,7 +79,6 @@ const CreateCategoryTree = () => {
         selectMainCategory: '',
         selectMainSubCategory: '',
         moveMainCategory: '',
-        moveMainSubCategory: ''
     })
 
     const [newCategoryAdd2, setNewCategoryAdd2] = useState({
@@ -91,7 +90,7 @@ const CreateCategoryTree = () => {
     })
     const [selectedItem, setSelectedItem] = useState([])
 
-    const [selectedMainCategoryMove, setSelectedMainCategoryMove] = useState('All Main Categories')
+    const [selectedMainCategoryMove, setSelectedMainCategoryMove] = useState('Select Main Categories')
     const [paramMainCategoryMove, setParamCMainCategoryDataMove] = useState('')
     const [selectedSubCategoryMove, setSelectedSubCategoryMove] = useState('Select Sub Categories')
     const [paramSubCategoryMove, setParamSubCategoryDataMove] = useState('')
@@ -218,83 +217,96 @@ const CreateCategoryTree = () => {
     }
 
 
-    const searchNewCategories = (categories) => {
-        if (categories.length > 0) {
-            let formData = categories.map((item) => item.id)
+    // const searchNewCategories = (categories) => {
+    //     if (categories.length > 0) {
+    //         let formData = categories.map((item) => item.id)
 
-            console.log(formData)
+    //         console.log(formData)
 
-            if (user && token) {
-                setLoading(true)
-                axios
-                    .get(BASE_URL + `product/category/check?markets=${formData}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    })
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setUnMatchedCategories(res.data)
-                            setLoading(false)
-                            // dispatch({
-                            //   type: SET_ALERT,
-                            //   payload: {
-                            //     status: true,
-                            //     title: 'Unregistered Categories ',
-                            //     message: 'Unregistered Categories Loaded',
-                            //     color: 'success'
-                            //   }
-                            // })
-                        } else if (res.status === 204) {
-                            dispatch({
-                                type: SET_ALERT,
-                                payload: {
-                                    status: true,
-                                    title: 'Unregistered Categories error',
-                                    message: res.data.message,
-                                    color: 'danger'
-                                }
-                            })
-                            setLoading(false)
-                        } else if (res.status === 500) {
-                            dispatch({
-                                type: SET_ALERT,
-                                payload: {
-                                    status: true,
-                                    title: 'Unregistered Categories error',
-                                    message: res.data.message,
-                                    color: 'danger'
-                                }
-                            })
-                            setLoading(false)
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error)
-                        setLoading(false)
-                    })
+    //         if (user && token) {
+    //             setLoading(true)
+    //             axios
+    //                 .get(BASE_URL + `product/category/check?markets=${formData}`, {
+    //                     headers: {
+    //                         Authorization: `Bearer ${token}`,
+    //                     },
+    //                 })
+    //                 .then((res) => {
+    //                     if (res.status === 200) {
+    //                         setUnMatchedCategories(res.data)
+    //                         setLoading(false)
+    //                         // dispatch({
+    //                         //   type: SET_ALERT,
+    //                         //   payload: {
+    //                         //     status: true,
+    //                         //     title: 'Unregistered Categories ',
+    //                         //     message: 'Unregistered Categories Loaded',
+    //                         //     color: 'success'
+    //                         //   }
+    //                         // })
+    //                     } else if (res.status === 204) {
+    //                         dispatch({
+    //                             type: SET_ALERT,
+    //                             payload: {
+    //                                 status: true,
+    //                                 title: 'Unregistered Categories error',
+    //                                 message: res.data.message,
+    //                                 color: 'danger'
+    //                             }
+    //                         })
+    //                         setLoading(false)
+    //                     } else if (res.status === 500) {
+    //                         dispatch({
+    //                             type: SET_ALERT,
+    //                             payload: {
+    //                                 status: true,
+    //                                 title: 'Unregistered Categories error',
+    //                                 message: res.data.message,
+    //                                 color: 'danger'
+    //                             }
+    //                         })
+    //                         setLoading(false)
+    //                     }
+    //                 })
+    //                 .catch((error) => {
+    //                     console.error('Error:', error)
+    //                     setLoading(false)
+    //                 })
 
-            }
+    //         }
 
-        } else {
-            dispatch({
-                type: SET_ALERT,
-                payload: {
-                    status: true,
-                    title: 'Select Market',
-                    message: 'Please select the market to search',
-                    color: 'warning'
-                }
-            })
-            setLoading(false)
-        }
+    //     } else {
+    //         dispatch({
+    //             type: SET_ALERT,
+    //             payload: {
+    //                 status: true,
+    //                 title: 'Select Market',
+    //                 message: 'Please select the market to search',
+    //                 color: 'warning'
+    //             }
+    //         })
+    //         setLoading(false)
+    //     }
 
-    }
+    // }
 
 
     const handleCategoryUpdate = () => {
         console.log(newCategoryAdd)
+        if(newCategoryAdd.selectMainCategory !== '' && newCategoryAdd.selectMainSubCategory!== '' && newCategoryAdd.moveMainCategory!== '' ){
         handleUpdateCategory()
+        }else{
+            
+            dispatch({
+                type: SET_ALERT,
+                payload: {
+                    status: true,
+                    title: 'Category Update',
+                    message: 'Please Check the fields',
+                    color: 'warning'
+                }
+            })
+        }
     }
 
     const handleUpdateCategory = () => {
@@ -323,8 +335,18 @@ const CreateCategoryTree = () => {
                                     color: 'success'
                                 }
                             })
-
-
+                            setParamCMainCategoryDataMove('')
+                            setSelectedMainCategoryMove('Select Main Categories')
+                            setParamCMainCategoryData('')
+                            setSelectedMainCategory('All Main Categories')
+                            setParamSubCategoryData('')
+                            setSelectedSubCategory('Select Sub Categories')
+                            setSubCategoriesData([])
+                            setNewCategoryAdd({
+                                selectMainCategory: '',
+                                selectMainSubCategory: '',
+                                moveMainCategory: '',
+                            })
                         } else if (res.status === 204) {
                             dispatch({
                                 type: SET_ALERT,
@@ -371,7 +393,7 @@ const CreateCategoryTree = () => {
         if (type === 'move') {
             if (index === 'all') {
                 setParamCMainCategoryDataMove('')
-                setSelectedMainCategoryMove('All Main Categories')
+                setSelectedMainCategoryMove('Select Main Categories')
                 setMainCIDMove('')
             } else {
                 setParamCMainCategoryDataMove(index)
@@ -389,12 +411,16 @@ const CreateCategoryTree = () => {
             if (index === 'all') {
                 setParamCMainCategoryData('')
                 setSelectedMainCategory('All Main Categories')
+                setParamSubCategoryData('')
+                setSelectedSubCategory('Select Sub Categories')
                 setMainCID('')
             } else {
                 setParamCMainCategoryData(index)
                 loadDataSubCategories(index)
                 setSelectedMainCategory(categoryName)
                 setMainCID(index)
+                setParamSubCategoryData('')
+                setSelectedSubCategory('Select Sub Categories')
                 setNewCategoryAdd({
                     ...newCategoryAdd,
                     selectMainCategory: index
@@ -445,7 +471,7 @@ const CreateCategoryTree = () => {
                 setParamSubCategoryDataMove('')
                 setSelectedSubCategoryMove('Select Main Categories')
                 setParamCMainCategoryDataMove('')
-                setSelectedMainCategoryMove('All Main Categories')
+                setSelectedMainCategoryMove('Select Main Categories')
                 setSubCategoriesDataMove([])
                 setMainCIDMove('')
             } else {
@@ -453,16 +479,13 @@ const CreateCategoryTree = () => {
                 setParamSubCategoryDataMove(index)
                 setSelectedSubCategoryMove(subName)
 
-                setNewCategoryAdd({
-                    ...newCategoryAdd,
-                    moveMainSubCategory: index
-                })
+               
             }
 
         } else if (type === 'select') {
             if (index === 'all') {
                 setParamSubCategoryData('')
-                setSelectedSubCategory('Select Main Categories')
+                setSelectedSubCategory('Select Sub Categories')
                 setParamCMainCategoryData('')
                 setSelectedMainCategory('All Main Categories')
                 setSubCategoriesData([])
@@ -855,7 +878,7 @@ const CreateCategoryTree = () => {
                     <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
                         <CDropdownToggle >{selectedMainCategory}</CDropdownToggle>
                         <CDropdownMenu>
-                            <CDropdownItem onClick={() => mainCategory('all', null, 'select')}>All Main Category</CDropdownItem>
+                            <CDropdownItem onClick={() => mainCategory('all', null, 'select')}>Clear Main Category</CDropdownItem>
                             {mainCategoriesData.map((item, index) => (
                                 <CDropdownItem onClick={() => mainCategory(index, item, 'select')} key={index}>
                                     {item}
@@ -884,7 +907,7 @@ const CreateCategoryTree = () => {
                     <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
                         <CDropdownToggle >{selectedMainCategoryMove}</CDropdownToggle>
                         <CDropdownMenu>
-                            <CDropdownItem onClick={() => mainCategory('all', null, 'move')}>All Main Category</CDropdownItem>
+                            <CDropdownItem onClick={() => mainCategory('all', null, 'move')}>Clear Main Category</CDropdownItem>
                             {mainCategoriesDataMove.map((item, index) => (
                                 <CDropdownItem onClick={() => mainCategory(index, item, 'move')} key={index}>
                                     {item}

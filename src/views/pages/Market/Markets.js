@@ -392,7 +392,7 @@ const Market = () => {
     for (let i = 1; i <= totalPages; i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers,totalPages);
+    // console.log(pageNumbers,totalPages);
     const startIndex = Math.max(currentPage - 2, 1);
     const endIndex = Math.min(startIndex + 4, totalPages);
     const displayedPageNumbers = pageNumbers.slice(startIndex - 1, endIndex);

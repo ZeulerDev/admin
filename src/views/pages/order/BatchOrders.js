@@ -122,7 +122,7 @@ const BatchOrders = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get(BASE_URL+'assistant/grocery/order/' + id, {
+        .get(BASE_URL+'assistant/grocery/order/details/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -215,10 +215,10 @@ const BatchOrders = () => {
                 <CTableDataCell>{item.no}</CTableDataCell>
                 <CTableDataCell><CBadge style={{ width:80 }} color="info">{item.status}</CBadge></CTableDataCell>
                 <CTableDataCell>{item.address}</CTableDataCell>
-                <CTableDataCell>{item.deliveryFee}</CTableDataCell>
+                <CTableDataCell>{(item?.deliveryFee ?? 0).toFixed(2)}</CTableDataCell>
                 <CTableDataCell>{item.slot}</CTableDataCell>
                 <CTableDataCell>{item.date}</CTableDataCell>
-                <CTableDataCell>{item.total}</CTableDataCell>
+                <CTableDataCell>{(item?.total ?? 0).toFixed(2)}</CTableDataCell>
                 <CTableDataCell>{item.markup}</CTableDataCell>
                 <CTableDataCell>
                   <Link>

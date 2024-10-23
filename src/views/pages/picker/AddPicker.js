@@ -52,7 +52,7 @@ const CreatePicker = ()=>{
           gender: gender,
           address : address
         }
-
+        
         if(user,token){
             if(user && token){
                 axios

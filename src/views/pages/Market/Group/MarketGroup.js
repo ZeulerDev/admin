@@ -72,6 +72,7 @@ const MarketGroup = () => {
   const [visibleCenterPoint, setVisibleCenterPoint] = useState(false)
   const [lng, setLng] = useState('')
   const [lat, setLat] = useState('')
+  const [marketGid, setMarketGid] = useState('')
 
   const city = (city) => {
     if (city === 'all') {
@@ -115,14 +116,13 @@ const MarketGroup = () => {
         },
       })
       .then((res) => {
-        console.log(res.status)
+        // console.log(res.status)
         if (res.status === 200) {
           setMarketGroupData(res.data)
           setLoading(false)
           clearTimeout(timer)
           if (res.data.length < 20) {
             setIsDisable(true)
-            console.log('ok')
           } else if (res.data.length > 19) {
             setIsDisable(false)
           }
@@ -376,6 +376,7 @@ const MarketGroup = () => {
     console.log('markets group', id)
     setGid(id)
     setVisibleMarkets(true)
+    setMarketGid(id)
   }
 
   const cityMarket = (city, type) => {
@@ -463,13 +464,13 @@ const MarketGroup = () => {
     if (user && token) {
       loadDataMarket(0, true)
     }
-  }, [paramChainIdModal, paramCityModal, user])
+  }, [paramChainIdModal, paramCityModal, user, marketGid])
 
   const loadDataMarket = (count, moveNext) => {
     setLoadingModal(true)
     axios
       .get(
-        BASE_URL + `assistant/market/add/${count}?brand=${paramChainIdModal}&city=${paramCityModal}`,
+        BASE_URL + `assistant/market/add/group/${count}?brand=${paramChainIdModal}&city=${paramCityModal}&gid=${marketGid}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -480,11 +481,10 @@ const MarketGroup = () => {
         if (res.status === 200) {
           setChainMarketData(res.data.data)
 
-          console.log('data market')
+          // console.log('data market')
           setLoadingModal(false)
           if (res.data.data.length < 20) {
             setIsDisableMarket(true)
-            console.log("ok")
           } else if (res.data.data.length > 19) {
             setIsDisableMarket(false)
           }
@@ -962,6 +962,10 @@ const handleSubmitCenterPoint = () => {
         setVisibleMarkets(false)
         setItemsPerPageMarket(0)
         setGid('')
+        setParamCityDataModal('')
+        setParamChainDataModal('')
+        setSelectedCityModal('All Cities')
+        setSelectedChianModal('All Chains')
       }}>
         <CModalHeader closeButton>
           <CModalTitle>Market assign view</CModalTitle>
@@ -1001,7 +1005,7 @@ const handleSubmitCenterPoint = () => {
                 <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                 <CTableHeaderCell scope="col">Address</CTableHeaderCell>
                 <CTableHeaderCell scope="col">City</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Measurement</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Scraped</CTableHeaderCell>
                 <CTableHeaderCell scope="col"></CTableHeaderCell>
               </CTableRow>
             </CTableHead>

@@ -148,7 +148,7 @@ const GroupManagement = () => {
       setLoading(true)
       axios
         .get(
-          BASE_URL+`assistant/riders/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
+          BASE_URL+`assistant/riders/test/0?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -221,9 +221,9 @@ const GroupManagement = () => {
   }
 
   const handleToggle = (driverGroups, driverId) => {
+    setSelectedCityModal('All Cities')
+    setParamCityDataModal('')
     setVisible(!visible)
-    console.log('group',driverGroups,'driver ID', driverId)
-
     setDriverIdModal(driverId)
     setDriverGroupData(driverGroups)
   }
@@ -378,15 +378,11 @@ const GroupManagement = () => {
                     setDriverGroupData([])
                     console.log(res.data)
                     loadMakerGroup()
-                    const updatedEntity = res.data
-                    const list = driverData.map((ob) => {
-                     if(ob.id === updatedEntity._id){
-                        return updatedEntity
-                       } else {
-                      return ob
-                       }
-                       })
-                         setDriverData([...list])
+                    const timer = setTimeout(() => {
+                      setLoading(false);
+                    }, 20000);
+
+                    loadDriversData(timer)
                     dispatch({
                       type : SET_ALERT,
                       payload : {
@@ -526,7 +522,7 @@ const GroupManagement = () => {
 
   return (
     <CContainer>
-       <CBadge style={{ marginLeft: '34%'}} color="secondary">Filter by</CBadge>
+       <CBadge style={{ marginLeft: '54%'}} color="secondary">Filter by</CBadge>
         <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
           <CDropdownToggle style={{color:'white'}} >{selectedCity}</CDropdownToggle>
           <CDropdownMenu>
@@ -536,7 +532,7 @@ const GroupManagement = () => {
           </CDropdownMenu>
         </CDropdown>
 
-        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
+        {/* <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
           <CDropdownToggle style={{color:'white'}} >{selectedChain}</CDropdownToggle>
           <CDropdownMenu>
             <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
@@ -546,7 +542,7 @@ const GroupManagement = () => {
               </CDropdownItem>
             ))}
           </CDropdownMenu>
-        </CDropdown>
+        </CDropdown> */}
 
         <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
           <CDropdownToggle style={{color:'white'}} >{selectedMarketGroup}</CDropdownToggle>

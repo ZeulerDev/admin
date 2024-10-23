@@ -344,7 +344,7 @@ const GroceryList = () => {
                 <CCol sm={10}>
                   <CFormInput
                     type="text"
-                    defaultValue={customerData.name}
+                    defaultValue={customerData?.name}
                     readOnly
                     plainText
                   />
@@ -355,7 +355,7 @@ const GroceryList = () => {
                 <CCol sm={10}>
                   <CFormInput
                     type="text"
-                    defaultValue={customerData.email}
+                    defaultValue={customerData?.email}
                     readOnly
                     plainText
                   />
@@ -366,7 +366,7 @@ const GroceryList = () => {
                 <CCol sm={10}>
                   <CFormInput
                     type="text"
-                    defaultValue={customerData.contact}
+                    defaultValue={customerData?.contact}
                     readOnly
                     plainText
                   />

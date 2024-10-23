@@ -47,8 +47,8 @@ const Pickers = () => {
   const [paramCity, setParamCityData] = useState('')
   const [paramGroup, setParamGroupData] = useState('')
   const [paramChainId, setParamChainData] = useState('')
-  const [paramCode, setParamCodeData] = useState('')
-  const [debouncedParamCode, setDebouncedParamCodeData] = useState(paramCode)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedParamCode, setDebouncedParamCodeData] = useState(searchQuery)
   const [isActivate, setActivate] = useState(false)
   const [pickerId, setPickerId] = useState('')
   const [alert, setAlert] = useState(false)
@@ -157,23 +157,23 @@ const Pickers = () => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (paramCode.length >= 3) {
-        setDebouncedParamCodeData(paramCode);
-    }else if(paramCode.length === 0){
-      setDebouncedParamCodeData(paramCode)
+      if (searchQuery.length >= 3) {
+        setDebouncedParamCodeData(searchQuery);
+    }else if(searchQuery.length === 0){
+      setDebouncedParamCodeData(searchQuery)
     }
     }, 500);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [paramCode]);
+  }, [searchQuery]);
 
   const loadPickersData = (timer) => {
     if (user && token) {
       setLoading(true)
 
-      let url = BASE_URL + `assistant/shoppers/0?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}&code=${paramCode}`
+      let url = BASE_URL + `assistant/shoppers/0?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}&code=${searchQuery}`
 
       // if (paramCode) {
       //   url += ``
@@ -214,9 +214,11 @@ const Pickers = () => {
     if (city === 'all') {
       setParamCityData('')
       setSelectedCity('All Cities')
+      setSearchQuery('')
     } else {
       setParamCityData(city)
       setSelectedCity(city)
+      setSearchQuery('')
     }
   }
 
@@ -224,9 +226,11 @@ const Pickers = () => {
     if (gId === 'all') {
       setParamGroupData('')
       setSelectedMarketGroup('All Market Groups')
+      setSearchQuery('')
     } else {
       setParamGroupData(gId)
       setSelectedMarketGroup(groupName)
+      setSearchQuery('')
     }
   }
 
@@ -234,9 +238,11 @@ const Pickers = () => {
     if (chainId === 'all') {
       setParamChainData('')
       setSelectedChian('All Chains')
+      setSearchQuery('')
     } else {
       setParamChainData(chainId)
       setSelectedChian(chianName)
+      setSearchQuery('')
     }
   }
 
@@ -643,9 +649,9 @@ const Pickers = () => {
           type="text"
           placeholder="Search by Picker by picker Id, name, surname, email and contact"
           className="picker-input"
-          value={paramCode}
+          value={searchQuery}
           style={{ width: 480, marginLeft: '0%' }}
-          onChange={(e) => setParamCodeData(e.target.value)}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
 
       </CNavbar>

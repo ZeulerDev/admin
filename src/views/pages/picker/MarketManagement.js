@@ -241,6 +241,10 @@ const MarketManagement = () => {
   }
 
   const handleToggle = (pId,mId) => {
+    setParamCityDataModal('')
+    setParamChainDataModal('')
+    setSelectedCityModal('All Cities')
+    setSelectedChianModal('All Chains')
     setVisible(!visible)
     console.log(pId,mId)
 

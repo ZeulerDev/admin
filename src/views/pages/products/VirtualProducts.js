@@ -207,10 +207,16 @@ const VirtualMarket = () => {
         if (chainId === 'all') {
             setParamChainData('')
             setSelectedChian('All Chains')
+            setParamMarketData('')
+            setSelectedMarket('All Markets')
+            setSearchQuery('')
         } else {
             setParamChainData(chainId)
             loadDataMarkets(chainId)
             setSelectedChian(chianName)
+            setParamMarketData('')
+            setSelectedMarket('All Markets')
+            setSearchQuery('')
         }
     }
 
@@ -221,9 +227,11 @@ const VirtualMarket = () => {
             setParamChainData('')
             setSelectedChian('All Chains')
             setChainMarketData([])
+            setSearchQuery('')
         } else {
             setParamMarketData(mId)
             setSelectedMarket(marketName)
+            setSearchQuery('')
         }
     }
 

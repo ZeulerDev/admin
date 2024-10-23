@@ -204,7 +204,7 @@ const GroceryOrderLits = () => {
                 <CTableDataCell>{item.deliveryFee}</CTableDataCell>
                 <CTableDataCell>{item.slot}</CTableDataCell>
                 <CTableDataCell>{item.date}</CTableDataCell>
-                <CTableDataCell>{item.total}</CTableDataCell>
+                <CTableDataCell>{(item.total ?? 0).toFixed(2)}</CTableDataCell>
                 <CTableDataCell>{item.markup}</CTableDataCell>
                 <CTableDataCell>
                   <Link>
@@ -268,7 +268,7 @@ const GroceryOrderLits = () => {
                       />
                     </CTableDataCell>
                     <CTableDataCell>{items.name}</CTableDataCell>
-                    <CTableDataCell>{items.price}</CTableDataCell>
+                    <CTableDataCell>{(items.price ?? 0).toFixed(2)}</CTableDataCell>
                     <CTableDataCell>{items.qty}</CTableDataCell>
                     {/* <CTableDataCell>{items.measure}</CTableDataCell> */}
                     <CTableDataCell>

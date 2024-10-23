@@ -99,7 +99,7 @@ const CreateCategory = () => {
     const [subCategoriesDataMove, setSubCategoriesDataMove] = useState([])
     const [mainCIdMove, setMainCIDMove] = useState('')
 
-    const [selectedMainCategorySelect2, setSelectedMainCategorySelect2] = useState('All Main Categories')
+    const [selectedMainCategorySelect2, setSelectedMainCategorySelect2] = useState('Select Main Categories')
     const [paramMainCategorySelect2, setParamCMainCategoryDataSelect2] = useState('')
     const [selectedSubCategorySelect2, setSelectedSubCategorySelect2] = useState('Select Sub Categories')
     const [paramSubCategorySelect2, setParamSubCategoryDataSelect2] = useState('')
@@ -404,8 +404,12 @@ const CreateCategory = () => {
         } else if (type === 'select2') {
             if (index === 'all') {
                 setParamCMainCategoryDataSelect2('')
-                setSelectedMainCategorySelect2('All Main Categories')
+                setSelectedMainCategorySelect2('Select Main Categories')
                 setMainCIDSelect2('')
+                setParamSubCategoryDataSelect2('')
+                setSelectedSubCategorySelect2('Select Sub Categories')
+                setSubCategoriesDataSelect2([])
+                
             } else {
                 setParamCMainCategoryDataSelect2(index)
                 loadDataSubCategoriesMove(index, 'select2')
@@ -415,6 +419,8 @@ const CreateCategory = () => {
                     ...newCategoryAdd2,
                     selectMainCategory: index
                 })
+                setParamSubCategoryDataSelect2('')
+                setSelectedSubCategorySelect2('Select Sub Categories')
 
             }
 
@@ -482,10 +488,11 @@ const CreateCategory = () => {
                 setParamSubCategoryDataSelect2('')
                 setSelectedSubCategorySelect2('Select Main Categories')
                 setParamCMainCategoryDataSelect2('')
-                setSelectedMainCategorySelect2('All Main Categories')
+                setSelectedMainCategorySelect2('Select Main Categories')
                 setSubCategoriesDataMove([])
                 setMainCIDMove('')
                 setSelectSecondSubCategory('Select Second Sub Categories')
+                setSubCategoriesDataSelect2([])
             } else {
                 console.log('index', index)
                 setParamSubCategoryDataSelect2(index)
@@ -844,65 +851,11 @@ const CreateCategory = () => {
     };
     return (
         <CContainer>
-
-            
-
-            {/* <CRow >
-                <CCol style={{ marginTop: '2%' }} md={12}>
-                    <CBadge style={{ marginLeft: '0%', width: '7%' }} color="secondary">Select Category</CBadge>
-                    <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                        <CDropdownToggle >{selectedMainCategory}</CDropdownToggle>
-                        <CDropdownMenu>
-                            <CDropdownItem onClick={() => mainCategory('all', null, 'select')}>All Main Category</CDropdownItem>
-                            {mainCategoriesData.map((item, index) => (
-                                <CDropdownItem onClick={() => mainCategory(index, item, 'select')} key={index}>
-                                    {item}
-                                </CDropdownItem>
-                            ))}
-                        </CDropdownMenu>
-                    </CDropdown>
-                    <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                        <CDropdownToggle >{selectedSubCategory}</CDropdownToggle>
-                        <CDropdownMenu>
-                            <CDropdownItem onClick={() => subCategories('all', null, 'select')}>Clear Category</CDropdownItem>
-                            {subCategoriesData.map((item, index) => (
-                                <CDropdownItem onClick={() => subCategories(index, item, 'select')} key={index}>
-                                    {item}
-                                </CDropdownItem>
-                            ))}
-                        </CDropdownMenu>
-                    </CDropdown>
-                </CCol>
-
-            </CRow>
-
-            <CRow>
-                <CCol style={{ marginTop: '1%' }} md={12}>
-                    <CBadge style={{ marginLeft: '0%', width: '7%' }} color="secondary">Send To</CBadge>
-                    <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                        <CDropdownToggle >{selectedMainCategoryMove}</CDropdownToggle>
-                        <CDropdownMenu>
-                            <CDropdownItem onClick={() => mainCategory('all', null, 'move')}>All Main Category</CDropdownItem>
-                            {mainCategoriesDataMove.map((item, index) => (
-                                <CDropdownItem onClick={() => mainCategory(index, item, 'move')} key={index}>
-                                    {item}
-                                </CDropdownItem>
-                            ))}
-                        </CDropdownMenu>
-                    </CDropdown>
-
-                </CCol>
-            </CRow>
-            <CButton style={{ marginLeft: '1%', backgroundColor: '#ff4d4d', color: 'white', width: '19%', marginTop: '1%' }} onClick={() => { handleCategoryUpdate() }}>Update</CButton> */}
-
-
-            {/* <CRow>
-                <CCol style={{ marginTop: '1%', marginLeft: '0%' }} md={12}> */}
                     <CBadge style={{ marginLeft: '48%', width: '7%' }} color="secondary">Select Category</CBadge>
                     <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
                         <CDropdownToggle >{selectedMainCategorySelect2}</CDropdownToggle>
                         <CDropdownMenu>
-                            <CDropdownItem onClick={() => mainCategory('all', null, 'select2')}>All Main Category</CDropdownItem>
+                            <CDropdownItem onClick={() => mainCategory('all', null, 'select2')}>Clear Main Category</CDropdownItem>
                             {mainCategoriesDataSelect2.map((item, index) => (
                                 <CDropdownItem onClick={() => mainCategory(index, item, 'select2')} key={index}>
                                     {item}

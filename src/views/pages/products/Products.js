@@ -201,10 +201,16 @@ const Products = () => {
     if (chainId === 'all') {
       setParamChainData('')
       setSelectedChian('All Chains')
+      setParamMarketData('')
+      setSelectedMarket('All Markets')
+      setSearchQuery('')
     } else {
       setParamChainData(chainId)
       loadDataMarkets(chainId)
       setSelectedChian(chianName)
+      setSelectedMarket('All Markets')
+      setSearchQuery('')
+      setParamMarketData('')
     }
   }
 

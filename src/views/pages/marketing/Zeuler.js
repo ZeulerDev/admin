@@ -24,6 +24,10 @@ import {
   CCol,
   CFormInput,
   CBadge,
+  CDropdown,
+  CDropdownToggle,
+  CDropdownMenu,
+  CDropdownItem,
 } from '@coreui/react'
 
 import { cilClipboard, cilInfo, cilList, cilNotes } from '@coreui/icons'
@@ -41,14 +45,21 @@ const Zeuler = () => {
   const [LinksListData, setLinksListData] = useState([])
   const [orderCustomerDetails, setOrderCustomerDetails] = useState([])
   const [loading, setLoading] = useState(false)
+  const [loadingModel, setLoadingModel] = useState(false)
   const [loadingModal, setLoadingModal] = useState(false)
-  const [orderDataDetails, setOrderDataDetails] = useState([])
   const [customerData, setCustomerData] = useState([])
   const [itemsData, setItemsData] = useState([])
   const [itemsPerPage, setItemsPerPage] = useState(0)
   const [isDisable, setIsDisable] = useState(true)
   const [resultCount, setResultCount] = useState(0)
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [productData, setProductData] = useState([])
+  const [marketData, setMarketData] = useState([])
+  const [marketGroupData, setMarketGroupData] = useState([])
+
+  const [selectedType, setSelectedType] = useState('All');
+  const [paramType, setParamType] = useState('');
 
   useEffect(() => {
 
@@ -72,12 +83,12 @@ const Zeuler = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [user, token])
+  }, [user, token, paramType])
 
   const loadData = (count, timer) => {
     setLoading(true)
     axios
-      .get(BASE_URL + 'deepLinkUrls/all/' + count, {
+      .get(BASE_URL + `deepLinkUrls/all/${count}?type=${paramType}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -94,15 +105,18 @@ const Zeuler = () => {
             setIsDisable(false)
           }
         } else if (res.status === 204) {
+          setLoading(false)
           dispatch({
             type: SET_ALERT,
             payload: {
               status: true,
               title: 'Links loading error',
-              message: res.data.message,
+              message: 'No links found',
+              color:'info'
             },
           })
         } else if (res.status === 500) {
+          setLoading(false)
           dispatch({
             type: SET_ALERT,
             payload: {
@@ -115,6 +129,7 @@ const Zeuler = () => {
       })
       .catch((error) => {
         console.error('Error:', error)
+        setLoading(false)
         dispatch({
           type: SET_ALERT,
           payload: {
@@ -171,12 +186,78 @@ const Zeuler = () => {
   const handleToggle = (items) => {
     setVisible(!visible)
     setItemsData(items)
-    console.log("items", items)
+    if (items.market !== null) {
+      console.log("market")
+      setMarketData(items.market)
+    } else if (items.marketGroup !== null) {
+      console.log("marketGroup")
+      setMarketGroupData(items.marketGroup)
+    } else if (items.product !== null) {
+      console.log("product")
+      loadDataMarket(items.product._id)
+    }
+    // console.log("items", items)
   }
 
   const handleCustomerToggle = (customer) => {
     setVisibleCustomer(!loadingModal)
     setCustomerData(customer)
+  }
+
+  const loadDataMarket = (id) => {
+    setLoadingModel(true)
+    axios
+      .get(
+        BASE_URL + `product/view/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          setProductData(res.data.list)
+          // console.log('data product', res.data.list)
+          setLoadingModel(false)
+        } else if (res.status === 204) {
+          dispatch({
+            type: SET_ALERT,
+            payload: {
+              status: true,
+              title: 'Product Loading error',
+              message: res.data.message
+            }
+          })
+        } else if (res.status === 500) {
+          dispatch({
+            type: SET_ALERT,
+            payload: {
+              status: true,
+              title: 'Product Loading error',
+              message: res.data.message
+            }
+          })
+        }
+      }).catch((err) => {
+        console.error('Error: ', err)
+      })
+  }
+
+  const filter = (type) => {
+    if (type === 'all') {
+      setSelectedType('All')
+      setParamType('')
+    } else if (type === 'Product') {
+      setSelectedType(type)
+      setParamType('Product')
+    } else if (type === 'Market') {
+      setSelectedType(type)
+      setParamType('Market')
+    } else if (type === 'Market Group') {
+      setSelectedType(type)
+      setParamType('Market Group')
+    }
   }
 
   return (
@@ -186,6 +267,15 @@ const Zeuler = () => {
           Create URL
         </CButton>
       </Link>
+      <CDropdown style={{ marginLeft: '2%', width: '17%', backgroundColor: '#ff4d4d' }}>
+        <CDropdownToggle style={{ color: 'white' }}>{selectedType}</CDropdownToggle>
+        <CDropdownMenu >
+          <CDropdownItem onClick={() => { filter('all') }}>All</CDropdownItem>
+          <CDropdownItem onClick={() => { filter('Product') }}>Product</CDropdownItem>
+          <CDropdownItem onClick={() => { filter('Market') }}>Market</CDropdownItem>
+          <CDropdownItem onClick={() => { filter('Market Group') }}>Market Group</CDropdownItem>
+        </CDropdownMenu>
+      </CDropdown>
       <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
 
       </CNavbar>
@@ -239,7 +329,7 @@ const Zeuler = () => {
                       :
                       (
                         <Link>
-                          <CIcon icon={cilInfo} size="xl" onClick={() => handleToggle(item.market)} />
+                          <CIcon icon={cilInfo} size="xl" onClick={() => handleToggle(item)} />
                         </Link>
                       )
                   }
@@ -279,43 +369,85 @@ const Zeuler = () => {
             justifyContent: 'center',
           }}
         >
-          {/* 
+          {itemsData.market !== null ? <>
+
             <CTable>
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Price</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Saving</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Qty</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Measure</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Market</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Chain Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Address</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {itemsData.map((items, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{index + 1}</CTableDataCell>
-                    <CTableHeaderCell>
-                      <CCardImage
-                        style={{ width: 50, height: 50, borderRadius: 10 }}
-                        src={`https://api.zeuler.com/image/` + items.photo}
-                      />
-                    </CTableHeaderCell>
-                    <CTableDataCell>{items.name}</CTableDataCell>
-                    <CTableDataCell>{items.price}</CTableDataCell>
-                    <CTableDataCell>{items.saving ? items.saving.toFixed(2) : null}</CTableDataCell>
-                    <CTableDataCell>{items.qty}</CTableDataCell>
-                    <CTableDataCell>{items.um}</CTableDataCell>
-                    <CTableDataCell>
-                      {items.market?.chain?.name} - {items.market?.address}
-                    </CTableDataCell>
-                  </CTableRow>
-                ))}
+
+                <CTableRow>
+                  <CTableDataCell>#</CTableDataCell>
+                  <CTableDataCell>{marketData.chain?.name}</CTableDataCell>
+                  <CTableDataCell>{marketData.address}</CTableDataCell>
+                </CTableRow>
               </CTableBody>
             </CTable>
-          */}
+          </> : itemsData.marketGroup !== null ? <>
+
+            <CTable>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">City</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+
+                <CTableRow>
+                  <CTableDataCell>#</CTableDataCell>
+                  <CTableDataCell>{marketGroupData.name}</CTableDataCell>
+                  <CTableDataCell>{marketGroupData.city}</CTableDataCell>
+                </CTableRow>
+              </CTableBody>
+            </CTable>
+
+          </> : itemsData.product !== null ? <>
+
+            <CTable>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Product Id</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Base Price</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Tax</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Markup Percentage </CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Markup</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Total</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Brand</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Chain</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Market Address</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+
+                <CTableRow>
+                  <CTableDataCell>#</CTableDataCell>
+                  <CTableDataCell>{productData.pid}</CTableDataCell>
+                  <CTableHeaderCell><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + productData.image} /></CTableHeaderCell>
+                  <CTableDataCell>{productData.name}</CTableDataCell>
+                  <CTableDataCell>{(productData.price?.basePrice ?? 0).toFixed(2)}</CTableDataCell>
+                  <CTableDataCell>{(productData.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
+                  <CTableDataCell>{productData.price?.percentage}%</CTableDataCell>
+                  <CTableDataCell>{(productData.price?.markup ?? 0).toFixed(2)}</CTableDataCell>
+                  <CTableDataCell>{(productData.price?.total ?? 0).toFixed(2)}</CTableDataCell>
+                  <CTableDataCell>{productData.brand}</CTableDataCell>
+                  <CTableDataCell>{productData.chainName}</CTableDataCell>
+                  <CTableDataCell>{productData.marketAddress}</CTableDataCell>
+                </CTableRow>
+              </CTableBody>
+            </CTable>
+
+          </> : <></>}
+
         </CModalBody>
         <CModalFooter>
           {/* <CButton color="secondary" onClick={() => setVisible(false)}>

@@ -34,16 +34,19 @@ import { SET_ALERT, SET_TOKEN } from '../../../context/context_reducer'
 import CIcon from '@coreui/icons-react'
 import { BASE_URL } from '../../../context/config'
 
-const BatchMarketOrders = () => {
-  const [visible, setVisible] = useState(false)
+const SoloCourierMarkers = () => {
+
   const [{ user, token }, dispatch] = useAppContext()
-  const [batchMarketOrdersData, setBatchMarketOrdersData] = useState([])
-  const [batchItems, setItems] = useState([])
+  const navigate = useNavigate()
+  const [batchMarketsData, setBatchMarketsData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [loadingOrders, setLoadingOrders] = useState(false)
+  const { id } = useParams()
+  const [batchMarketOrdersData, setBatchMarketOrdersData] = useState([])
+  const [visible, setVisible] = useState(false)
+  const [visibleItems, setVisibleItems] = useState(false)
+  const [batchItems, setItems] = useState([])
   const [loadingModal, setLoadingModal] = useState(false)
-  const [orderCustomerDetails, setOrderCustomerDetails] = useState([])
-  const [orderDataDetails, setOrderDataDetails] = useState([])
-  const { id, market } = useParams()
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -60,7 +63,7 @@ const BatchMarketOrders = () => {
     }, 20000);
 
     if (user && token) {
-      loadData(id, market,timer)
+      loadData(id, timer)
     }
 
     return () => {
@@ -68,20 +71,18 @@ const BatchMarketOrders = () => {
     };
   }, [user, token])
 
-  const loadData = (id, market,timer) => {
+  const loadData = (id, timer) => {
     setLoading(true)
     axios
-      .get(BASE_URL+'assistant/batch/market/orders/' + id + '/' + market, {
+      .get(BASE_URL + 'assistant/solo/courier/markets/' + id, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
         if (res.status === 200) {
-             
-            setItems(res.data.orders.flatMap(order => order.items))
-      
-          setBatchMarketOrdersData(res.data.orders)
+          console.log(res.data)
+          setBatchMarketsData(res.data)
           setLoading(false)
           clearTimeout(timer);
         } else if (res.status === 203) {
@@ -118,14 +119,72 @@ const BatchMarketOrders = () => {
       })
   }
 
-  const handleToggle = () => {
-    setVisible(!visible)
+  const handleOrdersModal = (id) => {
+    setVisible(true)
+    console.log(id)
+    loadDataOrders(id)
   }
+
+  const loadDataOrders = (id) => {
+    setLoadingOrders(true)
+    axios
+      .get(BASE_URL+'assistant/solo/couriers/market/orders/670d25c339b74a4f1462d5fd', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setBatchMarketOrdersData(res.data)
+          setLoadingOrders(false)
+        } else if (res.status === 203) {
+          dispatch({
+            type: SET_ALERT,
+            payload: {
+              status: true,
+              title: 'Batch markets loading error',
+              message: res.data.message,
+            },
+          })
+        } else if (res.status === 204) {
+          dispatch({
+            type: SET_ALERT,
+            payload: {
+              status: true,
+              title: 'Batch markets loading error',
+              message: res.data.message,
+            },
+          })
+        } else if (res.status === 500) {
+          dispatch({
+            type: SET_ALERT,
+            payload: {
+              status: true,
+              title: 'Batch markets loading error',
+              message: res.data.message,
+            },
+          })
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
+  }
+
+  const handleItemsModel = (items) => {
+    setVisibleItems(true)
+    setItems(items)
+  }
+
 
   return (
     <CContainer>
       <CNavbar className="bg-body-tertiary">
-        
+        {/* <CForm>
+          <CButton type="submit" color="success" variant="outline">
+            Search
+          </CButton>
+        </CForm> */}
       </CNavbar>
 
       {loading ? (
@@ -135,36 +194,20 @@ const BatchMarketOrders = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">#</CTableHeaderCell>
-              <CTableHeaderCell scope="col">No</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Chain Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Address</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Delivery Fee</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Slot</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Date</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Total</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Markup</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Order Items</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Orders</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {batchMarketOrdersData.map((order, index) => (
+            {batchMarketsData.markets?.map((item, index) => (
               <CTableRow key={index}>
-                 <CTableDataCell>{index + 1}</CTableDataCell>
-                <CTableDataCell>{order.order.no}</CTableDataCell>
-                <CTableDataCell>
-                  <CBadge style={{ width: 80 }} color="info">
-                    {order.order.status}
-                  </CBadge>
-                </CTableDataCell>
-                <CTableDataCell>{order.order.address}</CTableDataCell>
-                <CTableDataCell>{(order.order?.deliveryFee ?? 0).toFixed(2)}</CTableDataCell>
-                <CTableDataCell>{order.order.slot}</CTableDataCell>
-                <CTableDataCell>{order.order.date}</CTableDataCell>
-                <CTableDataCell>{(order.order?.total ?? 0).toFixed(2)}</CTableDataCell>
-                <CTableDataCell>{order.order.markup}</CTableDataCell>
+                <CTableDataCell>{index + 1}</CTableDataCell>
+                <CTableDataCell>{item.chain}</CTableDataCell>
+                <CTableDataCell>{item.address}</CTableDataCell>
                 <CTableDataCell>
                   <Link>
-                    <CIcon icon={cilInfo} size="xl" onClick={() => handleToggle()} />
+                    <CIcon onClick={()=>{handleOrdersModal(batchMarketsData.id)}} icon={cilList} size="xl" />
                   </Link>
                 </CTableDataCell>
               </CTableRow>
@@ -173,9 +216,73 @@ const BatchMarketOrders = () => {
         </CTable>
       )}
 
+
       <CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Customer Order List Information</CModalTitle>
+          <CModalTitle>Market Order List Information</CModalTitle>
+        </CModalHeader>
+        <CModalBody
+          style={{
+            overflowY: 'auto',
+            maxHeight: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          {loadingOrders ? (
+            <CSpinner />
+          ) : (
+            <CTable>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">No</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Address</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Delivery Fee</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Slot</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Date</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Total</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Markup</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Order Items</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {batchMarketOrdersData.map((order, index) => (
+                  <CTableRow key={index}>
+                    <CTableDataCell>{index + 1}</CTableDataCell>
+                    <CTableDataCell>{order.no}</CTableDataCell>
+                    <CTableDataCell>
+                      <CBadge style={{ width: 80 }} color="info">
+                        {order.status}
+                      </CBadge>
+                    </CTableDataCell>
+                    <CTableDataCell>{order.address}</CTableDataCell>
+                    <CTableDataCell>{(order?.deliveryFee ?? 0).toFixed(2)}</CTableDataCell>
+                    <CTableDataCell>{order.slot}</CTableDataCell>
+                    <CTableDataCell>{order.date}</CTableDataCell>
+                    <CTableDataCell>{(order?.total ?? 0).toFixed(2)}</CTableDataCell>
+                    <CTableDataCell>{order.markup}</CTableDataCell>
+                    <CTableDataCell>
+                      <Link>
+                        <CIcon icon={cilInfo} size="xl" onClick={() => {handleItemsModel(order.items)}} />
+                      </Link>
+                    </CTableDataCell>
+                  </CTableRow>
+                ))}
+              </CTableBody>
+            </CTable>
+          )}
+        </CModalBody>
+        <CModalFooter>
+        </CModalFooter>
+      </CModal>
+
+      <CModal visible={visibleItems} scrollable size="xl" onClose={() => {
+        setItems([])
+        setVisibleItems(false)}}>
+        <CModalHeader closeButton>
+          <CModalTitle>Order Products List Information</CModalTitle>
         </CModalHeader>
         <CModalBody
           style={{
@@ -230,13 +337,11 @@ const BatchMarketOrders = () => {
           )}
         </CModalBody>
         <CModalFooter>
-          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton> */}
         </CModalFooter>
       </CModal>
+
     </CContainer>
   )
 }
 
-export default BatchMarketOrders
+export default SoloCourierMarkers

@@ -24,6 +24,7 @@ import {
   cilReportSlash,
   cilSchool,
   cilShareBoxed,
+  cilSignLanguage,
   cilSpeedometer,
   cilStar,
   cilStorage,
@@ -107,19 +108,19 @@ const _nav = [
       
     ],
   },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Marketing',
-  //   to: '/marketing',
-  //   icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Zeuler',
-  //       to: '/marketing/all',
-  //     }
-  //   ],
-  // },
+  {
+    component: CNavGroup,
+    name: 'Marketing',
+    to: '/marketing',
+    icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Zeuler',
+        to: '/marketing/all',
+      }
+    ],
+  },
   {
     component: CNavGroup,
     name: 'Virtual',
@@ -294,6 +295,24 @@ const _nav = [
       //   name: 'GroupManagement',
       //   to: '/driver/groupmanagement',
       // },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Solo Batchers',
+    to: '/solocouriers',
+    icon: <CIcon icon={cilSignLanguage} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Orders',
+        to: '/solocouriers/all',
+      },
+      {
+        component: CNavItem,
+        name: 'All locations',
+        to: '/solocouriers/map',
+      }
     ],
   }
   ,

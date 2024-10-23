@@ -269,10 +269,12 @@ const Payout = ()=>{
       if (status === 'all') {
         setStatusParam('')
         setStatus('All')
+        setSearchQuery('')
       } else {
         console.log(status)
         setStatusParam(status)
         setStatus(status)
+        setSearchQuery('')
       }
     }
 

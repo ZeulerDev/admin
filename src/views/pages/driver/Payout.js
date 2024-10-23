@@ -256,10 +256,12 @@ const DriverPayout = ()=>{
       if (status === 'all') {
         setStatusParam('')
         setStatus('All')
+        setSearchQuery('')
       } else {
         console.log(status)
         setStatusParam(status)
         setStatus(status)
+        setSearchQuery('')
       }
     }
 
@@ -303,7 +305,7 @@ const DriverPayout = ()=>{
             <CDropdownItem onClick={() => status('sent')}>Sent</CDropdownItem>
             <CDropdownItem onClick={() => status('ready')}>Ready</CDropdownItem>
             <CDropdownItem onClick={() => status('waiting')}>Waiting</CDropdownItem>
-            <CDropdownItem onClick={() => status('done')}>Done</CDropdownItem>
+            <CDropdownItem onClick={() => status('done')}>Paid</CDropdownItem>
           </CDropdownMenu>
         </CDropdown>
        <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">

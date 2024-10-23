@@ -46,8 +46,8 @@ const Drivers = () => {
   const [paramCity, setParamCityData] = useState('')
   const [paramGroup, setParamGroupData] = useState('')
   const [paramChainId, setParamChainData] = useState('')
-  const [paramCode, setParamCodeData] = useState('')
-  const [debouncedParamCode, setDebouncedParamCodeData] = useState(paramCode)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedParamCode, setDebouncedParamCodeData] = useState(searchQuery)
   const [isActivate, setActivate] = useState(false)
   const [driverId, setDriverId] = useState('')
   const navigate = useNavigate()
@@ -159,22 +159,22 @@ const Drivers = () => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (paramCode.length >= 3) {
-        setDebouncedParamCodeData(paramCode);
-    }else if(paramCode.length === 0){
-      setDebouncedParamCodeData(paramCode)
+      if (searchQuery.length >= 3) {
+        setDebouncedParamCodeData(searchQuery);
+    }else if(searchQuery.length === 0){
+      setDebouncedParamCodeData(searchQuery)
     }
     }, 500);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [paramCode]);
+  }, [searchQuery]);
 
   const loadDriversData = (timer) => {
     if (user && token) {
       setLoading(true)
-      let url = BASE_URL+`assistant/riders/0?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}&code=${paramCode}`
+      let url = BASE_URL+`assistant/riders/main/0?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}&code=${searchQuery}`
   
       axios
         .get(url,
@@ -211,9 +211,11 @@ const Drivers = () => {
     if (city === 'all') {
       setParamCityData('')
       setSelectedCity('All Cities')
+      setSearchQuery('')
     } else {
       setParamCityData(city)
       setSelectedCity(city)
+      setSearchQuery('')
     }
   }
 
@@ -221,9 +223,11 @@ const Drivers = () => {
     if (gId === 'all') {
       setParamGroupData('')
       setSelectedMarketGroup('All Market Groups')
+      setSearchQuery('')
     } else {
       setParamGroupData(gId)
       setSelectedMarketGroup(groupName)
+      setSearchQuery('')
     }
   }
 
@@ -231,9 +235,11 @@ const Drivers = () => {
     if (chainId === 'all') {
       setParamChainData('')
       setSelectedChian('All Chains')
+      setSearchQuery('')
     } else {
       setParamChainData(chainId)
       setSelectedChian(chianName)
+      setSearchQuery('')
     }
   }
 
@@ -608,7 +614,7 @@ const Drivers = () => {
           Add Driver
         </CButton>
       </Link>
-      <CBadge style={{ marginLeft: '20%'}} color="secondary">Filter by</CBadge>
+      <CBadge style={{ marginLeft: '39%'}} color="secondary">Filter by</CBadge>
       <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
         <CDropdownToggle style={{color:'white'}}>{selectedCity}</CDropdownToggle>
         <CDropdownMenu>
@@ -617,7 +623,7 @@ const Drivers = () => {
           <CDropdownItem onClick={() => city('Napoli')}>Napoli</CDropdownItem>
         </CDropdownMenu>
       </CDropdown>
-      <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
+      {/* <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
         <CDropdownToggle style={{color:'white'}}>{selectedChain}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
@@ -627,7 +633,7 @@ const Drivers = () => {
             </CDropdownItem>
           ))}
         </CDropdownMenu>
-      </CDropdown>
+      </CDropdown> */}
       <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
         <CDropdownToggle style={{color:'white'}}>{selectedMarketGroup}</CDropdownToggle>
         <CDropdownMenu>
@@ -644,8 +650,8 @@ const Drivers = () => {
         type="text"
         placeholder="Search by Driver id, name, surname, email and contact"
         style={{ width : 450, marginLeft: '0%' }}
-        value={paramCode}
-        onChange={(e) => setParamCodeData(e.target.value)}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
     </CNavbar>
       {/* <CNavbar className="bg-body-tertiary">

@@ -580,7 +580,7 @@ const ManageProducts = () => {
                 })
                 .then((res) => {
                     if (res.status === 200) {
-                        // console.log('market', res.data.list)
+                        console.log('market', res.data.list)
                         
                         setProductsModal(res.data.list)
                         setResultCount(res.data.count)

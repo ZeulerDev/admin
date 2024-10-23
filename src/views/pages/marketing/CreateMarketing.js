@@ -7,6 +7,7 @@ import { cilTrash } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import { useNavigate } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer';
+import { set } from 'rsuite/esm/utils/dateUtils';
 
 const CreateMarketing = () => {
 
@@ -34,6 +35,11 @@ const CreateMarketing = () => {
     const [status, setStatus] = useState(false)
     const [paramId, setParamId] = useState('')
 
+    const [marketGroup, setMarketGroup] = useState([])
+    const [selectedMarketGroups, setSelectedMarketGroups] = useState('All MarketGroups')
+    const [selectedMarketGroup, setSelectedMarketGroup] = useState('All Markets in Group')
+    const [group, setGroup] = useState([])
+
     // market section
     const [paramCity, setParamCityData] = useState('')
     const [selectedCity, setSelectedCity] = useState('All Cities')
@@ -43,7 +49,7 @@ const CreateMarketing = () => {
 
     useEffect(() => {
         if (status) {
-           if (selectedType === 'Market') {
+            if (selectedType === 'Market') {
                 loadDataMarket(0)
             } else if (selectedType === 'Market Group') {
                 loadDataMarketGroup(0)
@@ -53,28 +59,32 @@ const CreateMarketing = () => {
 
     useEffect(() => {
         if (selectedType === 'Product' && user && token) {
-                loadData(0, true)
+            loadData(0, true)
         }
-     
-      }, [user, token, paramMId, debouncedSearchQuery])
-    
-      useEffect(() => {
+
+    }, [user, token, paramMId, debouncedSearchQuery])
+
+    useEffect(() => {
         if (selectedType === 'Product') {
             const handler = setTimeout(() => {
                 if (searchQuery.length >= 3) {
-                  setDebouncedSearchQuery(searchQuery);
-              }else if(searchQuery.length === 0){
-                setDebouncedSearchQuery(searchQuery);
-              }
-              }, 500);
-          
-              return () => {
+                    setDebouncedSearchQuery(searchQuery);
+                } else if (searchQuery.length === 0) {
+                    setDebouncedSearchQuery(searchQuery);
+                }
+            }, 500);
+
+            return () => {
                 clearTimeout(handler);
-              };
+            };
         }
-      }, [searchQuery]);
+    }, [searchQuery]);
 
     const filter = (type) => {
+        setParamChainData('')
+        setSelectedChian('All Chains')
+        setParamMarketData('')
+        setSelectedMarket('All Markets')
         if (type === 'all') {
             setSelectedType('All')
             setStatus(false)
@@ -82,6 +92,7 @@ const CreateMarketing = () => {
             loadData(0, true)
             loadDataChains()
             setSelectedType(type)
+            loadDataMarketGroups()
             setStatus(true)
         } else if (type === 'Market') {
             loadDataMarket(0)
@@ -183,7 +194,13 @@ const CreateMarketing = () => {
         if (chainId === 'all') {
             setParamChainData('')
             setSelectedChian('All Chains')
+            setParamMarketData('')
+            setSelectedMarket('All Markets')
+            setSearchQuery('')
         } else {
+            setSearchQuery('')
+            setParamMarketData('')
+            setSelectedMarket('All Markets')
             setParamChainData(chainId)
             if (selectedType === 'Product') {
                 loadDataMarkets(chainId)
@@ -233,7 +250,12 @@ const CreateMarketing = () => {
             setSelectedChian('All Chains')
             setChainMarketData([])
             setSearchQuery('')
-        } else {
+        } else if(mId === 'group'){
+            setParamMarketData(marketName.marketId)
+            setSelectedMarketGroup(`${marketName.chainName}- ${marketName.marketAddress}`)
+            setSearchQuery('')
+        }
+        else {
             setParamMarketData(mId)
             setSelectedMarket(marketName)
             setSearchQuery('')
@@ -318,6 +340,63 @@ const CreateMarketing = () => {
             loadDataMarket(c)
         } else if (selectedType === 'Market Group') {
             loadDataMarketGroup(c)
+        }
+    }
+
+    const loadDataMarketGroups = () => {
+        axios
+            .get(
+                BASE_URL + `market/group/all`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            )
+            .then((res) => {
+                if (res.status === 200) {
+                    setMarketGroup(res.data)
+                } else if (res.status === 500) {
+                    dispatch({
+                        type: SET_ALERT,
+                        payload: {
+                            status: true,
+                            title: 'MarketGroup Loading error',
+                            message: res.data.message
+                        }
+                    })
+                }
+            }).catch((err) => {
+                console.error('Error: ', err)
+                dispatch({
+                    type: SET_ALERT,
+                    payload: {
+                        status: true,
+                        title: 'MarketGroup Loading error',
+                        message: res.data.message
+                    }
+                })
+            })
+    }
+
+    const marketGroups = (mId, item) => {
+        if (mId === 'all') {
+            setParamMarketData('')
+            setSelectedMarket('All Markets')
+            setParamChainData('')
+            setSelectedChian('All Chains')
+            setChainMarketData([])
+            setSearchQuery('')
+
+            setGroup([])
+            setSelectedMarketGroups('All MarketGroups')
+            setSelectedMarketGroup('All Markets in Group')
+        } else {
+            setParamMarketData('')
+            setSelectedMarketGroup('All Markets in Group')
+            setSearchQuery('')
+            setSelectedMarketGroups(item.name)
+            setGroup(item.market)
         }
     }
 
@@ -409,66 +488,66 @@ const CreateMarketing = () => {
     // core components
 
     const handleSubmit = (id) => {
-        console.log(selectedType,paramId)
-    
-        if(selectedType && id){
-          const formData = {
-            type: selectedType,
-            id: id,
-          }
-        console.log(formData)
-    
-        if(user && token){
-          axios
-            .post(BASE_URL+'deepLink/urls/create', formData, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            })
-            .then((res) => {
-              if (res.status === 200) {
-                dispatch({
-                  type : SET_ALERT,
-                  payload : {
-                    status : true,
-                    title : 'Link Registration',
-                    message : 'Link Registration Success',
-                    color : 'success'
-                  }
-                })
-                navigate('/marketing/all')
-              } else if (res.status === 400) {
-                dispatch({
-                  type : SET_ALERT,
-                  payload : {
-                    status : true,
-                    title : 'Link Registration error',
-                    message : 'Link Registration Failed',
-                    color: 'info'
-                  }
-                })
-              } else if (res.status === 500) {
-                dispatch({
-                  type : SET_ALERT,
-                  payload : {
-                    status : true,
-                    title : 'Link Registration error',
-                    message : res.data.message
-                  }
-                })
-              }
-              
-            })
-            .catch((error) => {
-              console.error('Error:', error)
-            })
-    
+        console.log(selectedType, paramId)
+
+        if (selectedType && id) {
+            const formData = {
+                type: selectedType,
+                id: id,
+            }
+            console.log(formData)
+
+            if (user && token) {
+                axios
+                    .post(BASE_URL + 'deepLink/urls/create', formData, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
+                    .then((res) => {
+                        if (res.status === 200) {
+                            dispatch({
+                                type: SET_ALERT,
+                                payload: {
+                                    status: true,
+                                    title: 'Link Registration',
+                                    message: 'Link Registration Success',
+                                    color: 'success'
+                                }
+                            })
+                            navigate('/marketing/all')
+                        } else if (res.status === 400) {
+                            dispatch({
+                                type: SET_ALERT,
+                                payload: {
+                                    status: true,
+                                    title: 'Link Registration error',
+                                    message: 'Link Registration Failed',
+                                    color: 'info'
+                                }
+                            })
+                        } else if (res.status === 500) {
+                            dispatch({
+                                type: SET_ALERT,
+                                payload: {
+                                    status: true,
+                                    title: 'Link Registration error',
+                                    message: res.data.message
+                                }
+                            })
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error)
+                    })
+
+            }
+        } else {
+            alert('Please Check the Fields!')
         }
-       }else{
-        alert('Please Check the Fields!')
-       }
-        
-      }    
+
+    }
 
     return (
         <CContainer>
@@ -487,7 +566,30 @@ const CreateMarketing = () => {
             {selectedType === 'all' && <h1></h1>}
             {selectedType === 'Product' &&
                 <>
-                    <CBadge style={{ marginLeft: '57%' }} color="secondary">Filter by</CBadge>
+                    <CBadge style={{ marginLeft: '40%' }} color="secondary">Filter by</CBadge>
+                    <CDropdown style={{ marginLeft: '2%', width: '17%', backgroundColor: '#ff4d4d' }}>
+                        <CDropdownToggle >{selectedMarketGroups}</CDropdownToggle>
+                        <CDropdownMenu>
+                            <CDropdownItem onClick={() => marketGroups('all')}>All</CDropdownItem>
+                            {marketGroup.map((item, index) => (
+                                <CDropdownItem onClick={() => { marketGroups(item.id, item) }} key={index}>
+                                    {item.name}
+                                </CDropdownItem>
+                            ))}
+                        </CDropdownMenu>
+                    </CDropdown>
+                    <CDropdown style={{ marginLeft: '2%', width: '21%', backgroundColor: '#ff4d4d' }}>
+                        <CDropdownToggle >   {selectedMarketGroup.length > 20 ? `${selectedMarketGroup.substring(0, 20)}...` : selectedMarketGroup}</CDropdownToggle>
+                        <CDropdownMenu>
+                            <CDropdownItem onClick={() => marketGroups('all')}>All</CDropdownItem>
+                            {group.map((item, index) => (
+                                    <CDropdownItem onClick={() => {market('group', item)}} key={index}>
+                                        {item.chainName} - {item.marketAddress}
+                                    </CDropdownItem>
+                            ))}
+
+                        </CDropdownMenu>
+                    </CDropdown>
                     <CDropdown style={{ marginLeft: '2%', width: '17%', backgroundColor: '#ff4d4d' }}>
                         <CDropdownToggle >{selectedChain}</CDropdownToggle>
                         <CDropdownMenu>
@@ -520,15 +622,7 @@ const CreateMarketing = () => {
                         </CDropdownMenu>
                     </CDropdown>
                     <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
-                        {/* <CBadge style={{ marginLeft: '0.2%'}} color="secondary">Select the seatch type</CBadge> */}
-                        {/* <CDropdown style={{ marginRight: '0%', width:'17%',backgroundColor: '#ff4d4d' }}>
-           <CDropdownToggle >{searchType} </CDropdownToggle>
-               <CDropdownMenu>
-                 <CDropdownItem onClick={() => setSearchType('NAME')}>By Name</CDropdownItem>
-                 <CDropdownItem onClick={() => setSearchType('ID')}>By Product Id</CDropdownItem>
-                 <CDropdownItem onClick={() => setSearchType('BRAND')}>By BRAND NAME</CDropdownItem>
-               </CDropdownMenu>
-             </CDropdown> */}
+                  
                         <CFormInput
                             type="text"
                             placeholder="Search products by name, brand name and product id"
@@ -566,7 +660,7 @@ const CreateMarketing = () => {
                                         <CTableDataCell>{item.pid}</CTableDataCell>
                                         <CTableHeaderCell><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
                                         <CTableDataCell>{item.name}</CTableDataCell>
-                                        <CTableDataCell>{(item.price?.basePrice ?? 0).toFixed(2)}\</CTableDataCell>
+                                        <CTableDataCell>{(item.price?.basePrice ?? 0).toFixed(2)}</CTableDataCell>
                                         <CTableDataCell>{(item.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
                                         <CTableDataCell>{item.price.percentage}%</CTableDataCell>
                                         <CTableDataCell>{(item.price?.markup ?? 0).toFixed(2)}</CTableDataCell>
@@ -575,10 +669,10 @@ const CreateMarketing = () => {
                                         <CTableDataCell>{item.chainName}</CTableDataCell>
                                         <CTableDataCell>{item.marketAddress}</CTableDataCell>
                                         <CTableDataCell>
-                                        <CButton size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }} variant="outline" onClick={() => {handleSubmit(item.productId) }}>
-                                            Add
-                                        </CButton>
-                                    </CTableDataCell>
+                                            <CButton size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }} variant="outline" onClick={() => { handleSubmit(item.productId) }}>
+                                                Add
+                                            </CButton>
+                                        </CTableDataCell>
                                     </CTableRow>
                                 )
                             })}
@@ -651,7 +745,7 @@ const CreateMarketing = () => {
                                     <CTableDataCell>{item.city}</CTableDataCell>
                                     <CTableDataCell>{item.scraped}</CTableDataCell>
                                     <CTableDataCell>
-                                        <CButton size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }} variant="outline" onClick={() => {handleSubmit(item._id) }}>
+                                        <CButton size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }} variant="outline" onClick={() => { handleSubmit(item._id) }}>
                                             Add
                                         </CButton>
                                     </CTableDataCell>
@@ -712,7 +806,7 @@ const CreateMarketing = () => {
                                     </CTableDataCell>
                                     <CTableDataCell>{item.city}</CTableDataCell>
                                     <CTableDataCell>
-                                        <CButton onClick={() => { handleSubmit(item._id)}} size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }}>
+                                        <CButton onClick={() => { handleSubmit(item._id) }} size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }}>
                                             Add
                                         </CButton>
                                     </CTableDataCell>

@@ -1,4 +1,10 @@
 import React from 'react'
+import SoloCourierMarkers from './views/pages/soloBatchers/SoloCouriersMarket'
+
+const SoloCouriersOrders = React.lazy(()=>import('./views/pages/soloBatchers/SoloCouriersOrders'))
+const SoloCouriersMap = React.lazy(()=>import('./views/pages/soloBatchers/Map'))
+const SoloCouriersMarkets = React.lazy(()=>import('./views/pages/soloBatchers/SoloCouriersMarket'))
+const SoloCouriers = React.lazy(()=>import('./views/pages/soloBatchers/SoloCouriers'))
 
 const CreateMarketing = React.lazy(()=>import('./views/pages/marketing/CreateMarketing'))
 const Zeuler = React.lazy(()=>import('./views/pages/marketing/Zeuler'))
@@ -114,6 +120,11 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 // const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
+  { path: '/solocouriers/map', name: 'Solo Courier locations', element: SoloCouriersMap},
+  { path: '/solocouriers/batches/orders/:id', name: 'Solo Courier Orders', element: SoloCouriersOrders},
+  { path: '/solocouriers/order/market/:id', name: 'Solo Courier Markets', element: SoloCouriersMarkets},
+  { path: '/solocouriers/all', name: 'Solo Couriers', element: SoloCouriers},
+  { path: '/solocouriers', name: 'Solo Couriers', element: SoloCouriers,exact: true},
   { path: '/marketing/create/marketing', name: 'Create Marketing', element: CreateMarketing},
   { path: '/marketing/all', name: 'Zeuler', element: Zeuler},
   { path: '/marketing', name: 'Zeuler', element: Zeuler, exact: true },

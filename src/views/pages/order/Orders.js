@@ -135,7 +135,7 @@ const Orders = () => {
     if (token && user) {
       setLoadingModal(true)
       axios
-        .get(BASE_URL+'assistant/grocery/order/' + id, {
+        .get(BASE_URL+'assistant/grocery/order/details/' + id, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -143,6 +143,7 @@ const Orders = () => {
         .then((res) => {
           if (res.status === 200) {
             setOrderDataDetails(res.data)
+            console.log('data',res.data)
             setLoadingModal(false)
           } else if (res.status === 500) {
             dispatch({
@@ -239,10 +240,10 @@ const Orders = () => {
                 <CTableDataCell>{item.customer}</CTableDataCell>
                 <CTableDataCell><CBadge style={{ width:80 }} color="info">{item.status}</CBadge></CTableDataCell>
                 <CTableDataCell>{item.address}</CTableDataCell>
-                <CTableDataCell>{item.deliveryFee}</CTableDataCell>
+                <CTableDataCell>{(item?.deliveryFee ?? 0).toFixed(2)}</CTableDataCell>
                 <CTableDataCell>{item.slot}</CTableDataCell>
                 <CTableDataCell>{item.date}</CTableDataCell>
-                <CTableDataCell>{item.total}</CTableDataCell>
+                <CTableDataCell>{(item?.total ?? 0).toFixed(2)}</CTableDataCell>
                 <CTableDataCell>{item.markup}</CTableDataCell>
                 <CTableDataCell>
                   <Link>
