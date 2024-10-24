@@ -80,7 +80,8 @@ const ProductList = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {ProductData.map((item, index) => (
+          {ProductData.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
+          ProductData.map((item, index) => (
             <CTableRow key={index}>
               <CTableHeaderCell scope="row"><CCardImage style={{ width :'50px', height:'50px' }} src={`https://api.zeuler.com/image/`+item.photo} /></CTableHeaderCell>
               <CTableDataCell>{item.name}</CTableDataCell>

@@ -128,7 +128,9 @@ const Orders = () => {
                     } else if (res.data.list.length > 49) {
                         setIsDisable(false)
                     }
-                } else if (res.status === 204) {
+                } else if (res.status === 203) {
+                    setOrdersData([])
+                }else if (res.status === 204) {
                     dispatch({
                         type: SET_ALERT,
                         payload: {
@@ -316,7 +318,8 @@ const Orders = () => {
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                        {ordersData.map((item, index) => (
+                        {ordersData.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
+                        ordersData.map((item, index) => (
                             <CTableRow key={index}>
                                 <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                                 <CTableHeaderCell><CCardImage style={{ width: 50, height: 50, borderRadius: 10 }} src={`https://api.zeuler.com/image/` + item.photo} /></CTableHeaderCell>
@@ -326,11 +329,6 @@ const Orders = () => {
                                 <CTableDataCell>{item.contact}</CTableDataCell>
                                 <CTableDataCell>{item.country === "it" || item.country === 'Italy' ? 'Italy' : item.country}</CTableDataCell>
                                 <CTableDataCell>{item.language === 'en' ? 'English' : item.language === 'it' ? 'Italy' : item.language}</CTableDataCell>
-                                {/* <CTableDataCell>
-              <Link to={`/customers/items`}>
-                 <CIcon icon={cilList} size='xl'/>
-                </Link>
-              </CTableDataCell> */}
                             </CTableRow>
                         ))}
                     </CTableBody>

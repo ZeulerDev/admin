@@ -141,7 +141,8 @@ const Orders = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {OrderData.map((item,index) => (
+          {OrderData.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
+          OrderData.map((item,index) => (
             <CTableRow key={index}>
               <CTableDataCell>{index + 1}</CTableDataCell>
               <CTableDataCell scope="row">{item.name}</CTableDataCell>

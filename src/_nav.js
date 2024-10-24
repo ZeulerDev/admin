@@ -299,7 +299,7 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Solo Batchers',
+    name: 'Solo Batches',
     to: '/solocouriers',
     icon: <CIcon icon={cilSignLanguage} customClassName="nav-icon" />,
     items: [

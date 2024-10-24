@@ -194,7 +194,8 @@ const GroceryOrderLits = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {ordersData.map((item,index) => (
+            {ordersData.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
+            ordersData.map((item,index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                 <CTableDataCell>{item.no}</CTableDataCell>

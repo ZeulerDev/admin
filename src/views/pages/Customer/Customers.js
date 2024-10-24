@@ -592,7 +592,8 @@ const Customer = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {customerData.map((item, index) => (
+          {customerData.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
+          customerData.map((item, index) => (
             <CTableRow key={index}>
               <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
               <CTableHeaderCell onClick={() => { handleToggleImageUploader(item._id) }}><CCardImage style={{ width: 50, height: 50, borderRadius: 10 }} src={`https://api.zeuler.com/image/` + item.photo} /></CTableHeaderCell>

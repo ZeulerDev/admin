@@ -350,7 +350,8 @@ const Payout = ()=>{
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {payout.map((item, index) => {
+            {payout.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
+            payout.map((item, index) => {
                 let color = 'info'
                 let status = ''
                 if(item?.status === 'pending'){
