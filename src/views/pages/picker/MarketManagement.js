@@ -47,7 +47,7 @@ const MarketManagement = () => {
   const [paramChainId, setParamChainData] = useState('')
   const [isActivate, setActivate] = useState(false)
   const [pickerId, setPickerId] = useState('')
-  const[alert, setAlert] = useState(false)
+  const [alert, setAlert] = useState(false)
 
   const [selectedCity, setSelectedCity] = useState('All Cities')
   const [selectedMarketGroup, setSelectedMarketGroup] = useState('All Market Groups')
@@ -66,17 +66,17 @@ const MarketManagement = () => {
   const [pickerIdModal, setPickerIdModal] = useState('')
   const [marketIdModal, setMarketIdModal] = useState('')
   const [isDisable, setIsDisable] = useState(true)
-  
-  
+
+
   useEffect(() => {
     loadMakerGroup()
     loadChain()
   }, [])
 
-  const loadMakerGroup = () =>{
+  const loadMakerGroup = () => {
     if (token) {
       axios
-        .get(BASE_URL+'market/groups/dropdown/fetch', {
+        .get(BASE_URL + 'market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -86,11 +86,11 @@ const MarketManagement = () => {
             setMGroupData(res.data)
           } else if (res.status === 500) {
             dispatch({
-              type : SET_ALERT,
-              payload : {
-                status : true,
-                title : 'Market Group Loading error',
-                message : res.data.message
+              type: SET_ALERT,
+              payload: {
+                status: true,
+                title: 'Market Group Loading error',
+                message: res.data.message
               }
             })
           }
@@ -100,10 +100,10 @@ const MarketManagement = () => {
     }
   }
 
-  const loadChain = ()=>{
+  const loadChain = () => {
     if (token) {
       axios
-        .get(BASE_URL+'assistant/market/chains/all', {
+        .get(BASE_URL + 'assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -114,11 +114,11 @@ const MarketManagement = () => {
             setChainDataModal(res.data)
           } else if (res.status === 500) {
             dispatch({
-              type : SET_ALERT,
-              payload : {
-                status : true,
-                title : 'Chain Loading error',
-                message : res.data.message
+              type: SET_ALERT,
+              payload: {
+                status: true,
+                title: 'Chain Loading error',
+                message: res.data.message
               }
             })
           }
@@ -145,31 +145,31 @@ const MarketManagement = () => {
     return () => {
       clearTimeout(timer);
     };
-  },[paramCity, paramGroup, paramChainId,alert])
-  
+  }, [paramCity, paramGroup, paramChainId, alert])
+
   const loadPickersData = (timer) => {
-    if(user && token){
+    if (user && token) {
       setLoading(true)
       axios
-        .get(BASE_URL+`assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`, {
+        .get(BASE_URL + `assistant/shoppers/:skip?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
         .then((res) => {
           if (res.status === 200) {
-            setPickerData(res.data)  
+            setPickerData(res.data)
             setLoading(false)
             setAlert(false)
             clearTimeout(timer)
           } else if (res.status === 500) {
             dispatch({
-              type : SET_ALERT,
-              payload : {
-                status : true,
-                title : 'Error',
-                message : res.data.message,
-                color:'warning'
+              type: SET_ALERT,
+              payload: {
+                status: true,
+                title: 'Error',
+                message: res.data.message,
+                color: 'warning'
               }
             })
           }
@@ -181,9 +181,9 @@ const MarketManagement = () => {
     }
   }
 
-  const city = (city,type) => {
+  const city = (city, type) => {
 
-    if(type === 'view'){
+    if (type === 'view') {
       if (city === 'all') {
         setParamCityData('')
         setSelectedCity('All Cities')
@@ -192,7 +192,7 @@ const MarketManagement = () => {
         setSelectedCity(city)
       }
 
-    }else if(type === 'modal'){
+    } else if (type === 'modal') {
       if (city === 'all') {
         setParamCityDataModal('')
         setSelectedCityModal('All Cities')
@@ -213,40 +213,40 @@ const MarketManagement = () => {
     }
   }
 
-  const chain = (chainId, chianName,type) => {
+  const chain = (chainId, chianName, type) => {
 
-    if(type === 'view'){
+    if (type === 'view') {
 
       if (chainId === 'all') {
         setParamChainData('')
         setSelectedChian('All Chains')
-        
+
       } else {
         setParamChainData(chainId)
         setSelectedChian(chianName)
       }
 
-    }else if(type === 'modal'){
+    } else if (type === 'modal') {
       if (chainId === 'all') {
         setParamChainDataModal('')
         setSelectedChianModal('All Chains')
-        
+
       } else {
         setParamChainDataModal(chainId)
         setSelectedChianModal(chianName)
       }
     }
 
-    
+
   }
 
-  const handleToggle = (pId,mId) => {
+  const handleToggle = (pId, mId) => {
     setParamCityDataModal('')
     setParamChainDataModal('')
     setSelectedCityModal('All Cities')
     setSelectedChianModal('All Chains')
     setVisible(!visible)
-    console.log(pId,mId)
+    console.log(pId, mId)
 
     setPickerIdModal(pId)
     setMarketIdModal(mId)
@@ -261,9 +261,9 @@ const MarketManagement = () => {
 
     console.log(pickerId, data)
 
-    if(user && token){
-       axios
-        .patch(BASE_URL+'assistant/shopper/status/'+pickerId,data, {
+    if (user && token) {
+      axios
+        .patch(BASE_URL + 'assistant/shopper/status/' + pickerId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -275,41 +275,41 @@ const MarketManagement = () => {
             setActivate('')
             setPickerId('')
             setAlert(true)
-            
+
           } else if (res.status === 203) {
             dispatch({
-              type : SET_ALERT,
-              payload : {
-                status : true,
-                title : 'Picker status update error',
-                message : res.data.message
+              type: SET_ALERT,
+              payload: {
+                status: true,
+                title: 'Picker status update error',
+                message: res.data.message
               }
             })
-             
-          }else if (res.status === 204) {
+
+          } else if (res.status === 204) {
             dispatch({
-              type : SET_ALERT,
-              payload : {
-                status : true,
-                title : 'Picker status update error',
-                message : res.data.message
+              type: SET_ALERT,
+              payload: {
+                status: true,
+                title: 'Picker status update error',
+                message: res.data.message
               }
             })
-             
-          }else if (res.status === 500) {
+
+          } else if (res.status === 500) {
             dispatch({
-              type : SET_ALERT,
-              payload : {
-                status : true,
-                title : 'Picker status update error',
-                message : res.data.message
+              type: SET_ALERT,
+              payload: {
+                status: true,
+                title: 'Picker status update error',
+                message: res.data.message
               }
             })
-             
+
           }
         }).catch((error) => {
-          console.error( error)
-          
+          console.error(error)
+
         })
     }
   }
@@ -326,7 +326,7 @@ const MarketManagement = () => {
     setLoadingModal(true)
     axios
       .get(
-        BASE_URL+`assistant/market/locations/${count}?brand=${paramChainIdModal}&city=${paramCityModal}`,
+        BASE_URL + `assistant/market/locations/${count}?brand=${paramChainIdModal}&city=${paramCityModal}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -357,11 +357,11 @@ const MarketManagement = () => {
           // }
         } else if (res.status === 500) {
           dispatch({
-            type : SET_ALERT,
-            payload : {
-              status : true,
-              title : 'Market Loading error',
-              message : res.data.message
+            type: SET_ALERT,
+            payload: {
+              status: true,
+              title: 'Market Loading error',
+              message: res.data.message
             }
           })
         }
@@ -383,339 +383,347 @@ const MarketManagement = () => {
     loadData(c, false)
   }
 
-  const addMarket = (pickerId, marketId, ) => {
-    if(marketId && pickerId ){
+  const addMarket = (pickerId, marketId,) => {
+    if (marketId && pickerId) {
       const formData = {
         market: marketId,
         shopper: pickerId,
       }
 
-      if(user,token){
-          if(user && token){
-              axios
-                .post(BASE_URL+'assistant/picker/assign/market', formData, {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                .then((res) => {
-                  if (res.status === 200) {
-                    setVisible(false)
-                    setPickerIdModal('')
-                    setMarketIdModal('')
+      if (user, token) {
+        if (user && token) {
+          axios
+            .post(BASE_URL + 'assistant/picker/assign/market', formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              if (res.status === 200) {
+                setVisible(false)
+                setPickerIdModal('')
+                setMarketIdModal('')
 
-                    const updatedEntity = res.data
-                    const list = pickerData.map((ob) => {
-                     if(ob.id === updatedEntity.id){
-                        return updatedEntity
-                       } else {
-                      return ob
-                       }
-                       })
-                         setPickerData([...list])
-
-                         dispatch({
-                          type : SET_ALERT,
-                          payload : {
-                            status : true,
-                            title : 'Market Assign',
-                            message : 'successfully Market assigned to the picker ',
-                            color:'success'
-                          }
-                        })
-
-                  } else if (res.status === 204) {
-                    dispatch({
-                      type : SET_ALERT,
-                      payload : {
-                        status : true,
-                        title : 'Market Assign error',
-                        message : res.data.message,
-                        color:'warning'
-                      }
-                    })
-                  } else if (res.status === 500) {
-                    dispatch({
-                      type : SET_ALERT,
-                      payload : {
-                        status : true,
-                        title : 'Market Assign error',
-                        message : res.data.message,
-                        color:'warning'
-                      }
-                    })
+                const updatedEntity = res.data
+                const list = pickerData.map((ob) => {
+                  if (ob.id === updatedEntity.id) {
+                    return updatedEntity
+                  } else {
+                    return ob
                   }
                 })
-                .catch((error) => {
-                  console.error('Error:', error)
+                setPickerData([...list])
+
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Market Assign',
+                    message: 'successfully Market assigned to the picker ',
+                    color: 'success'
+                  }
                 })
-        
-            }
+
+              } else if (res.status === 204) {
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Market Assign error',
+                    message: res.data.message,
+                    color: 'warning'
+                  }
+                })
+              } else if (res.status === 500) {
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Market Assign error',
+                    message: res.data.message,
+                    color: 'warning'
+                  }
+                })
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error)
+            })
+
+        }
       }
-    }else{
+    } else {
 
       dispatch({
-        type : SET_ALERT,
-        payload : {
-          status : true,
-          title : 'Error!',
-          message : 'Picker Registration error, Please Check the input fields',
-          color:'warning'
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Error!',
+          message: 'Picker Registration error, Please Check the input fields',
+          color: 'warning'
         }
       })
 
     }
   }
 
-  const removeMarket =(pickerId, marketId) =>{
-    if(marketId && pickerId ){
+  const removeMarket = (pickerId, marketId) => {
+    if (marketId && pickerId) {
       const formData = {
         market: marketId,
         shopper: pickerId,
       }
 
-      if(user,token){
-          if(user && token){
-              axios
-                .post(BASE_URL+'assistant/picker/remove/market', formData, {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                .then((res) => {
-                  if (res.status === 200) {
-                    setVisible(false)
-                    setPickerIdModal('')
-                    setMarketIdModal('')
+      if (user, token) {
+        if (user && token) {
+          axios
+            .post(BASE_URL + 'assistant/picker/remove/market', formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              if (res.status === 200) {
+                setVisible(false)
+                setPickerIdModal('')
+                setMarketIdModal('')
 
-                    const updatedEntity = res.data
-                    const list = pickerData.map((ob) => {
-                     if(ob.id === updatedEntity.id){
-                        return updatedEntity
-                       } else {
-                      return ob
-                       }
-                       })
-                         setPickerData([...list])
-                         dispatch({
-                          type : SET_ALERT,
-                          payload : {
-                            status : true,
-                            title : 'Market Assign',
-                            message : 'successfully Market removed from the picker ',
-                            color:'success'
-                          }
-                        })
-
-
-                  } else if (res.status === 204) {
-                    dispatch({
-                      type : SET_ALERT,
-                      payload : {
-                        status : true,
-                        title : 'Market remove error',
-                        message : res.data.message,
-                        color:'warning'
-                      }
-                    })
-                  } else if (res.status === 500) {
-                    dispatch({
-                      type : SET_ALERT,
-                      payload : {
-                        status : true,
-                        title : 'Market remove error',
-                        message : res.data.message,
-                        color:'warning'
-                      }
-                    })
+                const updatedEntity = res.data
+                const list = pickerData.map((ob) => {
+                  if (ob.id === updatedEntity.id) {
+                    return updatedEntity
+                  } else {
+                    return ob
                   }
                 })
-                .catch((error) => {
-                  console.error('Error:', error)
+                setPickerData([...list])
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Market Assign',
+                    message: 'successfully Market removed from the picker ',
+                    color: 'success'
+                  }
                 })
-        
-            }
+
+
+              } else if (res.status === 204) {
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Market remove error',
+                    message: res.data.message,
+                    color: 'warning'
+                  }
+                })
+              } else if (res.status === 500) {
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Market remove error',
+                    message: res.data.message,
+                    color: 'warning'
+                  }
+                })
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error)
+            })
+
+        }
       }
-    }else{
+    } else {
 
       dispatch({
-        type : SET_ALERT,
-        payload : {
-          status : true,
-          title : 'Error!',
-          message : 'Picker Registration error, Please Check the input fields',
-          color:'warning'
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Error!',
+          message: 'Picker Registration error, Please Check the input fields',
+          color: 'warning'
         }
       })
 
     }
   }
-  
+
 
   return (
     <CContainer>
-      <CBadge style={{ marginLeft: '34%'}} color="secondary">Filter by</CBadge>
-        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
-          <CDropdownToggle style={{color:'white'}} >{selectedCity}</CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem onClick={() => city('all','view')}>All</CDropdownItem>
-            <CDropdownItem onClick={() => city('Milan','view')}>Milan</CDropdownItem>
-            <CDropdownItem onClick={() => city('Napoli','view')}>Napoli</CDropdownItem>
-          </CDropdownMenu>
-        </CDropdown>
+      <CBadge style={{ marginLeft: '34%' }} color="secondary">Filter by</CBadge>
+      <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d', color: 'white' }}>
+        <CDropdownToggle style={{ color: 'white' }} >{selectedCity}</CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => city('all', 'view')}>All</CDropdownItem>
+          <CDropdownItem onClick={() => city('Milan', 'view')}>Milan</CDropdownItem>
+          <CDropdownItem onClick={() => city('Napoli', 'view')}>Napoli</CDropdownItem>
+        </CDropdownMenu>
+      </CDropdown>
 
-        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
-          <CDropdownToggle style={{color:'white'}}>{selectedChain}</CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem onClick={() => chain('all',null,'view')}>All</CDropdownItem>
-            {chainData.map((item, index) => (
-              <CDropdownItem onClick={() => chain(item.id, item.name, 'view')} key={index}>
-                {item.name}
-              </CDropdownItem>
-            ))}
-          </CDropdownMenu>
-        </CDropdown>
+      <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d', color: 'white' }}>
+        <CDropdownToggle style={{ color: 'white' }}>{selectedChain}</CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => chain('all', null, 'view')}>All</CDropdownItem>
+          {chainData.map((item, index) => (
+            <CDropdownItem onClick={() => chain(item.id, item.name, 'view')} key={index}>
+              {item.name}
+            </CDropdownItem>
+          ))}
+        </CDropdownMenu>
+      </CDropdown>
 
-        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
-          <CDropdownToggle style={{color:'white'}} >{selectedMarketGroup}</CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
-            {mGroupData.map((item, index) => (
-              <CDropdownItem onClick={() => marketGroup(item._id, item.name)} key={index}>
-                {item.name}
-              </CDropdownItem>
-            ))}
-          </CDropdownMenu>
-        </CDropdown>
+      <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d', color: 'white' }}>
+        <CDropdownToggle style={{ color: 'white' }} >{selectedMarketGroup}</CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
+          {mGroupData.map((item, index) => (
+            <CDropdownItem onClick={() => marketGroup(item._id, item.name)} key={index}>
+              {item.name}
+            </CDropdownItem>
+          ))}
+        </CDropdownMenu>
+      </CDropdown>
 
-     <CNavbar style={{marginTop:'1%'}}  className="bg-body-tertiary">
+      <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
 
-    </CNavbar>
+      </CNavbar>
 
-    {loading ? <CSpinner/> : <CTable>
-      <CTableHead>
-        <CTableRow>
-          <CTableHeaderCell scope="col">#</CTableHeaderCell>
-          <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
-          <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
-          <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-          <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
-          <CTableHeaderCell scope="col">Country</CTableHeaderCell>
-          <CTableHeaderCell scope="col">City</CTableHeaderCell>
-          <CTableHeaderCell scope="col">Language</CTableHeaderCell>
-          <CTableHeaderCell scope="col">Market</CTableHeaderCell>
-          <CTableHeaderCell scope="col">Add Market</CTableHeaderCell>
-        </CTableRow>
-      </CTableHead>
-      <CTableBody>
-       { pickerData.map((item, index) =>(
-      <CTableRow key={index}>
-              <CTableDataCell>{index + 1}</CTableDataCell>
-              <CTableDataCell>{item.name}</CTableDataCell>
-              <CTableDataCell>{item.surname}</CTableDataCell>
-              <CTableDataCell>{item.email}</CTableDataCell>
-              <CTableDataCell>{item.contact}</CTableDataCell>
-              <CTableDataCell>{item.country === "it" || item.country === 'Italy' ? 'Italy' : item.country }</CTableDataCell>
-              <CTableDataCell>{item.city}</CTableDataCell>
-              <CTableDataCell>{item.language === 'en' ? 'English' : item.language === 'it' ? 'Italy' : item.language === 'es' ? 'Spanish' : item.language}</CTableDataCell>
-              <CTableDataCell>{item.market?.chain?.name} - {item.market.address}</CTableDataCell>
-              <CTableDataCell>
-                 {item.market?.id ? (
-                     <CButton size='sm' onClick={() => handleToggle(item.id,item.market?.id)} style={{ backgroundColor:'#ff4d4d',width: 90,color:'white' }} >Assign</CButton>
-                 ) : (
-                     <CButton size='sm' onClick={() => handleToggle(item.id,item.market?.id)} style={{ backgroundColor:'#ff4d4d',width: 90,color:'white' }} >Add</CButton>
-                 )}
-             </CTableDataCell>
-            </CTableRow>
-))}
-      </CTableBody>
-    </CTable>
-
-    }
-
-
-      <CModal  visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
-        <CModalHeader closeButton>
-          <CModalTitle>Market assign view</CModalTitle>
-          
-        </CModalHeader>
-        
-        
-        <CModalBody>
-        <CBadge style={{ marginLeft: '54%'}} color="secondary">Filter by</CBadge>
-        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
-          <CDropdownToggle style={{color:'white'}} >{selectedCityModal}</CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem onClick={() => city('all','modal')}>All</CDropdownItem>
-            <CDropdownItem onClick={() => city('Milano','modal')}>Milano</CDropdownItem>
-            <CDropdownItem onClick={() => city('Napoli','modal')}>Napoli</CDropdownItem>
-          </CDropdownMenu>
-        </CDropdown>
-
-        <CDropdown style={{ marginLeft: '2%',width:'18%',backgroundColor: '#ff4d4d', color:'white' }}>
-          <CDropdownToggle style={{color:'white'}}>{selectedChainModal}</CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem onClick={() => chain('all',null,'modal')}>All</CDropdownItem>
-            {chainDataModal.map((item, index) => (
-              <CDropdownItem onClick={() => chain(item.id, item.name,'modal')} key={index}>
-                {item.name}
-              </CDropdownItem>
-            ))}
-          </CDropdownMenu>
-        </CDropdown>
-        <CNavbar style={{marginTop:'1%'}}  className="bg-body-tertiary">
-
-        </CNavbar>
-        { loadingModal ? <CSpinner/> : <CTable>
+      {loading ? <CSpinner /> : <CTable>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Address</CTableHeaderCell>
+            <CTableHeaderCell scope="col">First Name</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Last Name</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Email</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Country</CTableHeaderCell>
             <CTableHeaderCell scope="col">City</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Measurement</CTableHeaderCell>
-            <CTableHeaderCell scope="col"></CTableHeaderCell>
+            <CTableHeaderCell scope="col">Language</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Market</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Add Market</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {chainMarket.map((item, index) => (
-            <CTableRow key={index}>
-              <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-              <CTableDataCell>{item.chain.name}</CTableDataCell>
-              <CTableDataCell>{item.address}</CTableDataCell>
-              <CTableDataCell>{item.city}</CTableDataCell>
-              <CTableDataCell>{item.scraped}</CTableDataCell>
-              <CTableDataCell>{
-              marketIdModal === item._id ? 
-              (
-                <CButton size='sm' onClick={() => removeMarket(pickerIdModal, item._id)} style={{ backgroundColor:'#ff4d4d',width: 90,color:'white' }} >Remove</CButton>
-              ):(
-                <CButton size='sm' onClick={() => addMarket(pickerIdModal, item._id)} style={{ backgroundColor:'#ff4d4d',width: 90,color:'white' }} >Add</CButton>
-              )
-            }</CTableDataCell>
-              
+          {pickerData.length === 0 ? (
+            <CTableRow>
+              <CTableDataCell colSpan="10" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                <h6 style={{ marginTop: "1%" }}>No Data</h6>
+              </CTableDataCell>
             </CTableRow>
-          ))}
+          ) : (
+            pickerData.map((item, index) => (
+              <CTableRow key={index}>
+                <CTableDataCell>{index + 1}</CTableDataCell>
+                <CTableDataCell>{item.name}</CTableDataCell>
+                <CTableDataCell>{item.surname}</CTableDataCell>
+                <CTableDataCell>{item.email}</CTableDataCell>
+                <CTableDataCell>{item.contact}</CTableDataCell>
+                <CTableDataCell>{item.country === "it" || item.country === 'Italy' ? 'Italy' : item.country}</CTableDataCell>
+                <CTableDataCell>{item.city}</CTableDataCell>
+                <CTableDataCell>{item.language === 'en' ? 'English' : item.language === 'it' ? 'Italy' : item.language === 'es' ? 'Spanish' : item.language}</CTableDataCell>
+                <CTableDataCell>{item.market?.chain?.name} - {item.market.address}</CTableDataCell>
+                <CTableDataCell>
+                  {item.market?.id ? (
+                    <CButton size='sm' onClick={() => handleToggle(item.id, item.market?.id)} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Assign</CButton>
+                  ) : (
+                    <CButton size='sm' onClick={() => handleToggle(item.id, item.market?.id)} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Add</CButton>
+                  )}
+                </CTableDataCell>
+              </CTableRow>
+            ))
+          )}
         </CTableBody>
       </CTable>
 
       }
-            
 
-        <CModalFooter>
-        <CPagination aria-label="Page navigation example">
-        <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
-          Previous
-        </CPaginationItem>
-        <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
-      </CPagination>
-        </CModalFooter>
+
+      <CModal visible={visible} scrollable size='xl' onClose={() => setVisible(false)}>
+        <CModalHeader closeButton>
+          <CModalTitle>Market assign view</CModalTitle>
+
+        </CModalHeader>
+
+
+        <CModalBody>
+          <CBadge style={{ marginLeft: '54%' }} color="secondary">Filter by</CBadge>
+          <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d', color: 'white' }}>
+            <CDropdownToggle style={{ color: 'white' }} >{selectedCityModal}</CDropdownToggle>
+            <CDropdownMenu>
+              <CDropdownItem onClick={() => city('all', 'modal')}>All</CDropdownItem>
+              <CDropdownItem onClick={() => city('Milano', 'modal')}>Milano</CDropdownItem>
+              <CDropdownItem onClick={() => city('Napoli', 'modal')}>Napoli</CDropdownItem>
+            </CDropdownMenu>
+          </CDropdown>
+
+          <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d', color: 'white' }}>
+            <CDropdownToggle style={{ color: 'white' }}>{selectedChainModal}</CDropdownToggle>
+            <CDropdownMenu>
+              <CDropdownItem onClick={() => chain('all', null, 'modal')}>All</CDropdownItem>
+              {chainDataModal.map((item, index) => (
+                <CDropdownItem onClick={() => chain(item.id, item.name, 'modal')} key={index}>
+                  {item.name}
+                </CDropdownItem>
+              ))}
+            </CDropdownMenu>
+          </CDropdown>
+          <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
+
+          </CNavbar>
+          {loadingModal ? <CSpinner /> : <CTable>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Address</CTableHeaderCell>
+                <CTableHeaderCell scope="col">City</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Measurement</CTableHeaderCell>
+                <CTableHeaderCell scope="col"></CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {chainMarket.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                  <CTableDataCell>{item.chain.name}</CTableDataCell>
+                  <CTableDataCell>{item.address}</CTableDataCell>
+                  <CTableDataCell>{item.city}</CTableDataCell>
+                  <CTableDataCell>{item.scraped}</CTableDataCell>
+                  <CTableDataCell>{
+                    marketIdModal === item._id ?
+                      (
+                        <CButton size='sm' onClick={() => removeMarket(pickerIdModal, item._id)} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Remove</CButton>
+                      ) : (
+                        <CButton size='sm' onClick={() => addMarket(pickerIdModal, item._id)} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Add</CButton>
+                      )
+                  }</CTableDataCell>
+
+                </CTableRow>
+              ))}
+            </CTableBody>
+          </CTable>
+
+          }
+
+
+          <CModalFooter>
+            <CPagination aria-label="Page navigation example">
+              <CPaginationItem disabled={itemsPerPage <= 0 ? true : false} onClick={previousPage}>
+                Previous
+              </CPaginationItem>
+              <CPaginationItem disabled={isDisable === true ? true : false} onClick={nextPage}>Next</CPaginationItem>
+            </CPagination>
+          </CModalFooter>
 
         </CModalBody>
       </CModal>
 
-    
-  </CContainer>
+
+    </CContainer>
   )
 }
 

@@ -147,7 +147,14 @@ const BatchMarketOrders = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {batchMarketOrdersData.map((order, index) => (
+            {batchMarketOrdersData.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="10" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
+            batchMarketOrdersData.map((order, index) => (
               <CTableRow key={index}>
                  <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{order.order.no}</CTableDataCell>
@@ -168,7 +175,8 @@ const BatchMarketOrders = () => {
                   </Link>
                 </CTableDataCell>
               </CTableRow>
-            ))}
+            ))
+          )}
           </CTableBody>
         </CTable>
       )}
@@ -202,7 +210,14 @@ const BatchMarketOrders = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {batchItems.map((product, index) => (
+                {batchItems.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="8" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
+                batchItems.map((product, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>
@@ -224,7 +239,8 @@ const BatchMarketOrders = () => {
                       </CBadge>
                     </CTableDataCell>
                   </CTableRow>
-                ))}
+                ))
+              )}
               </CTableBody>
             </CTable>
           )}

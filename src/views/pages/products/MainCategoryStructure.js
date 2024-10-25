@@ -498,7 +498,14 @@ const MainCategoryStructure = () => {
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                    {category.map((item, index) => {
+                    {category.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="3" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                    category.map((item, index) => {
                         return (
                             <CTableRow key={index}>
                                 <CTableDataCell>{index + 1}</CTableDataCell>
@@ -511,7 +518,8 @@ const MainCategoryStructure = () => {
 
                             </CTableRow>
                         )
-                    })}
+                    })
+                )}
                 </CTableBody>
             </CTable>
             }
@@ -538,12 +546,20 @@ const MainCategoryStructure = () => {
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {subCategoryData?.map((items, index) => (
+                            {subCategoryData.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="2" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                            subCategoryData?.map((items, index) => (
                                 <CTableRow key={index}>
                                     <CTableDataCell>{index + 1}</CTableDataCell>
                                     <CTableDataCell>{items}</CTableDataCell>
                                 </CTableRow>
-                            ))}
+                            ))
+                        )}
                         </CTableBody>
                     </CTable>
                 </CModalBody>

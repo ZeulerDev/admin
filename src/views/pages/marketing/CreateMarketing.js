@@ -137,15 +137,15 @@ const CreateMarketing = () => {
                     })
                 } else if (res.status === 204) {
                     setLoading(false)
-                    dispatch({
-                        type: SET_ALERT,
-                        payload: {
-                            status: true,
-                            title: 'No Products',
-                            message: "No products found in this market address",
-                            color: 'info'
-                        }
-                    })
+                    // dispatch({
+                    //     type: SET_ALERT,
+                    //     payload: {
+                    //         status: true,
+                    //         title: 'No Products',
+                    //         message: "No products found in this market address",
+                    //         color: 'info'
+                    //     }
+                    // })
                 } else if (res.status === 500) {
                     setLoading(false)
                     dispatch({
@@ -653,7 +653,14 @@ const CreateMarketing = () => {
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {productData.map((item, index) => {
+                            {productData.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="13" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                            productData.map((item, index) => {
                                 return (
                                     <CTableRow key={index}>
                                         <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
@@ -675,7 +682,8 @@ const CreateMarketing = () => {
                                         </CTableDataCell>
                                     </CTableRow>
                                 )
-                            })}
+                            })
+                        )}
                         </CTableBody>
                     </CTable>
 
@@ -737,7 +745,14 @@ const CreateMarketing = () => {
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {chainMarket.map((item, index) => (
+                            {chainMarket.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="6" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                            chainMarket.map((item, index) => (
                                 <CTableRow key={index}>
                                     <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                                     <CTableDataCell>{item.chain?.name}</CTableDataCell>
@@ -750,7 +765,8 @@ const CreateMarketing = () => {
                                         </CButton>
                                     </CTableDataCell>
                                 </CTableRow>
-                            ))}
+                            ))
+                        )}
                         </CTableBody>
                     </CTable>
 
@@ -798,7 +814,14 @@ const CreateMarketing = () => {
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {marketGroupData.map((item, index) => (
+                            {marketGroupData.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                            marketGroupData.map((item, index) => (
                                 <CTableRow key={index}>
                                     <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                                     <CTableDataCell>
@@ -811,7 +834,8 @@ const CreateMarketing = () => {
                                         </CButton>
                                     </CTableDataCell>
                                 </CTableRow>
-                            ))}
+                            ))
+                        )}
                         </CTableBody>
                     </CTable>
 

@@ -628,9 +628,14 @@ const GroupOfOrders = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {groceryGroupsData.length === 0 ? <>
-            <span style={{textAlign:'center'}}>No date to show</span>
-            </> : groceryGroupsData.map((item, index) => {
+            {groceryGroupsData.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="16" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
+             groceryGroupsData.map((item, index) => {
               return (
                 <CTableRow key={index}>
                   <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
@@ -710,7 +715,8 @@ const GroupOfOrders = () => {
                   </CTableDataCell>
                 </CTableRow>
               )
-            })}
+            })
+          )}
           </CTableBody>
         </CTable>
       )}
@@ -871,7 +877,14 @@ const GroupOfOrders = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {pickerData.map((item, index) => (
+                {pickerData.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="10" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
+                pickerData.map((item, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>{item.name}</CTableDataCell>
@@ -914,7 +927,8 @@ const GroupOfOrders = () => {
                       )}
                     </CTableDataCell>
                   </CTableRow>
-                ))}
+                ))
+              )}
               </CTableBody>
             </CTable>
           )}

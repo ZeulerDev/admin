@@ -200,7 +200,14 @@ const SoloCourierMarkers = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {batchMarketsData.markets?.map((item, index) => (
+            {batchMarketsData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="4" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+            batchMarketsData.markets?.map((item, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{item.chain}</CTableDataCell>
@@ -211,7 +218,8 @@ const SoloCourierMarkers = () => {
                   </Link>
                 </CTableDataCell>
               </CTableRow>
-            ))}
+            ))
+          )}
           </CTableBody>
         </CTable>
       )}
@@ -248,7 +256,14 @@ const SoloCourierMarkers = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {batchMarketOrdersData.map((order, index) => (
+                {batchMarketOrdersData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="10" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+                batchMarketOrdersData.map((order, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>{order.no}</CTableDataCell>
@@ -269,7 +284,8 @@ const SoloCourierMarkers = () => {
                       </Link>
                     </CTableDataCell>
                   </CTableRow>
-                ))}
+                ))
+              )}
               </CTableBody>
             </CTable>
           )}
@@ -309,7 +325,14 @@ const SoloCourierMarkers = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {batchItems.map((product, index) => (
+                {batchItems.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="8" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+                batchItems.map((product, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>
@@ -331,7 +354,8 @@ const SoloCourierMarkers = () => {
                       </CBadge>
                     </CTableDataCell>
                   </CTableRow>
-                ))}
+                ))
+              )}
               </CTableBody>
             </CTable>
           )}

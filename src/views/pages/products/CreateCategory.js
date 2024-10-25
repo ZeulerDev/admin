@@ -96,7 +96,7 @@ const CreateCategory = () => {
     if (user && token) {
       if (paramMId === '') {
         setLoadingAllCon(true)
-      searchNewCategoriesAll()
+        searchNewCategoriesAll()
 
         console.log('ok')
       } else {
@@ -110,7 +110,7 @@ const CreateCategory = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get(BASE_URL+'assistant/market/chains/all', {
+        .get(BASE_URL + 'assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -177,6 +177,7 @@ const CreateCategory = () => {
             setLoadingAll(false)
             console.log(res.data.length)
           } else if (res.status === 204) {
+            setLoadingAll(false)
             dispatch({
               type: SET_ALERT,
               payload: {
@@ -188,6 +189,7 @@ const CreateCategory = () => {
             })
             setLoading(false)
           } else if (res.status === 500) {
+            setLoadingAll(false)
             dispatch({
               type: SET_ALERT,
               payload: {
@@ -201,6 +203,7 @@ const CreateCategory = () => {
           }
         })
         .catch((error) => {
+          setLoadingAll(false)
           console.error('Error:', error)
           setLoading(false)
         })
@@ -211,7 +214,7 @@ const CreateCategory = () => {
   const loadDataMarkets = (chainId) => {
     axios
       .get(
-        BASE_URL+`assistant/market/locations?brand=${chainId}`,
+        BASE_URL + `assistant/market/locations?brand=${chainId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -267,8 +270,8 @@ const CreateCategory = () => {
       setParamChainData('')
       setSelectedChian('All Chains')
       setChainMarketData([])
-     
-    }else if(mId === 'select'){
+
+    } else if (mId === 'select') {
       setSelectMarketIds([])
       setSelectedMarketForID('Selected Market ')
     } else {
@@ -280,7 +283,7 @@ const CreateCategory = () => {
   }
 
 
-  
+
 
 
   const handleToggleImageUploader = (id) => {
@@ -648,15 +651,15 @@ const CreateCategory = () => {
           })
         } else if (res.status === 204) {
           setLoadingProduct(false)
-          dispatch({
-            type: SET_ALERT,
-            payload: {
-              status: true,
-              title: 'No Products',
-              message: "No products found in this market address",
-              color: 'info'
-            }
-          })
+          // dispatch({
+          //   type: SET_ALERT,
+          //   payload: {
+          //     status: true,
+          //     title: 'No Products',
+          //     message: "No products found in this market address",
+          //     color: 'info'
+          //   }
+          // })
         } else if (res.status === 500) {
           setLoadingProduct(false)
           dispatch({
@@ -791,7 +794,14 @@ const CreateCategory = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {unMatchedCategoriesAll.map((item, index) => {
+              {unMatchedCategoriesAll.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="5" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+              unMatchedCategoriesAll.map((item, index) => {
                 return (
                   <CTableRow key={index}>
                     <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
@@ -813,7 +823,8 @@ const CreateCategory = () => {
                     </CTableDataCell>
                   </CTableRow>
                 )
-              })}
+              })
+            )}
             </CTableBody>
           </CTable>
 
@@ -829,7 +840,14 @@ const CreateCategory = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {unMatchedCategories.map((item, index) => {
+              {unMatchedCategories.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="5" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+              unMatchedCategories.map((item, index) => {
                 return (
                   <CTableRow key={index}>
                     <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
@@ -851,7 +869,8 @@ const CreateCategory = () => {
                     </CTableDataCell>
                   </CTableRow>
                 )
-              })}
+              })
+            )}
             </CTableBody>
           </CTable>
 
@@ -941,20 +960,28 @@ const CreateCategory = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {productData.map((item, index) => {
-                return (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{itemsPerPageCategory + index + 1}</CTableDataCell>
-                    <CTableDataCell>{item.pid}</CTableDataCell>
-                    <CTableHeaderCell onClick={() => { }}><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
-                    <CTableDataCell>{item.name}</CTableDataCell>
-                    <CTableDataCell>{item.price}<Link to={``}></Link></CTableDataCell>
-                    <CTableDataCell>{item.brand}</CTableDataCell>
-                    <CTableDataCell>{item.chainName}</CTableDataCell>
-                    <CTableDataCell>{item.marketAddress}</CTableDataCell>
-                  </CTableRow>
-                )
-              })}
+              {productData.length === 0 ? (
+                <CTableRow>
+                  <CTableDataCell colSpan="8" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                    <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                  </CTableDataCell>
+                </CTableRow>
+              ) : (
+                productData.map((item, index) => {
+                  return (
+                    <CTableRow key={index}>
+                      <CTableDataCell>{itemsPerPageCategory + index + 1}</CTableDataCell>
+                      <CTableDataCell>{item.pid}</CTableDataCell>
+                      <CTableHeaderCell onClick={() => { }}><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
+                      <CTableDataCell>{item.name}</CTableDataCell>
+                      <CTableDataCell>{item.price}<Link to={``}></Link></CTableDataCell>
+                      <CTableDataCell>{item.brand}</CTableDataCell>
+                      <CTableDataCell>{item.chainName}</CTableDataCell>
+                      <CTableDataCell>{item.marketAddress}</CTableDataCell>
+                    </CTableRow>
+                  )
+                })
+              )}
             </CTableBody>
           </CTable>
 

@@ -336,7 +336,14 @@ const DriverPayout = ()=>{
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {payout.map((item, index) => {
+            {payout.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="11" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+            payout.map((item, index) => {
                 let color = 'info'
                 let status = ''
                 if(item?.status === 'pending'){
@@ -378,7 +385,8 @@ const DriverPayout = ()=>{
                       {/* <CTableDataCell>{item.type === 'flat_rate' ? <CButton style={{ backgroundColor:'#ff4d4d' }} onClick={() => handleToggle(item.type, item)} >View</CButton> : item.type === 'occasional' ? <CButton style={{ backgroundColor:'#ff4d4d' }}>View</CButton> : <CButton disabled={true} style={{ backgroundColor:'#ff4d4d' }}>View</CButton>}</CTableDataCell> */}
                     </CTableRow>
                   )
-            })}
+            })
+          )}
           </CTableBody>
         </CTable>}
        

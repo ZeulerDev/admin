@@ -150,17 +150,17 @@ const ManageProducts = () => {
                                 },
                             })
                         } else if (res.status === 204) {
-                            console.log('products 204')
+                            // console.log('products 204')
                             setLoading(false)
-                            dispatch({
-                                type: SET_ALERT,
-                                payload: {
-                                    status: true,
-                                    title: ' Products loading error',
-                                    message: 'No products found',
-                                    color: 'info'
-                                },
-                            })
+                            // dispatch({
+                            //     type: SET_ALERT,
+                            //     payload: {
+                            //         status: true,
+                            //         title: ' Products loading error',
+                            //         message: 'No products found',
+                            //         color: 'info'
+                            //     },
+                            // })
                         } else if (res.status === 500) {
                             console.log('products 500')
                             setLoading(false)
@@ -940,7 +940,14 @@ const ManageProducts = () => {
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                    {products.map((item, index) => (
+                    {products.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="14" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                    products.map((item, index) => (
                         <CTableRow key={index}>
                             <CTableDataCell>{itemsPerPageProducts + index + 1}</CTableDataCell>
                             <CTableDataCell>{item.pid}</CTableDataCell>
@@ -963,7 +970,8 @@ const ManageProducts = () => {
                             {/* <CTableDataCell></CTableDataCell> */}
 
                         </CTableRow>
-                    ))}
+                    ))
+                )}
                 </CTableBody>
             </CTable>
 
@@ -1042,7 +1050,14 @@ const ManageProducts = () => {
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {productsModal.map((item, index) => {
+                            {productsModal.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="13" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                            productsModal.map((item, index) => {
                                 return (
                                     <CTableRow key={index}>
                                         <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
@@ -1068,7 +1083,8 @@ const ManageProducts = () => {
                                         </CTableDataCell>
                                     </CTableRow>
                                 )
-                            })}
+                            })
+                        )}
                         </CTableBody>
                     </CTable>
 

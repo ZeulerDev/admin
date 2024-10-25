@@ -613,7 +613,14 @@ const Promotion = () => {
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                    {promotionData.map((item, index) => (
+                    {promotionData.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="11" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                    promotionData.map((item, index) => (
                         <CTableRow key={index}>
                             <CTableDataCell>{index + 1}</CTableDataCell>
                             <CTableDataCell>{item.promo_id}</CTableDataCell>
@@ -650,7 +657,8 @@ const Promotion = () => {
                                 </CButton>
                             </CTableDataCell>
                         </CTableRow>
-                    ))}
+                    ))
+                )}
                 </CTableBody>
             </CTable>
             }

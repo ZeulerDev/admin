@@ -419,7 +419,14 @@ const PickupAreas = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {pickupAreasData.map((item, index) => (
+          {pickupAreasData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="6" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+          pickupAreasData.map((item, index) => (
             <CTableRow key={index}>
                <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
               {/* <CTableDataCell>{item.name} <Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item._id, item.name)}  /></Link> </CTableDataCell> */}
@@ -448,7 +455,8 @@ const PickupAreas = () => {
            
               </CTableDataCell>
             </CTableRow>
-          ))}
+          ))
+        )}
         </CTableBody>
       </CTable>
 

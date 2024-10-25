@@ -687,7 +687,14 @@ const SoloCouriers = () => {
           </CTableHead>
 
           <CTableBody>
-            {courierData.map((item, index) => (
+            {courierData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="16" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+            courierData.map((item, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                 <CTableDataCell>{item.no}</CTableDataCell>
@@ -723,7 +730,8 @@ const SoloCouriers = () => {
                 </CTableDataCell>
                 <CTableDataCell>{item.status === 'complete' ? <CButton  size="sm" disabled={true} style={{ width:80 }}>Cancel</CButton> : item.status === 'canceled' ? <CButton  size="sm" disabled={true} style={{ width:80,backgroundColor:'#ff4d4d',color:'white' }} color="danger">Cancel</CButton> : <CButton onClick={() => handleToggleStatus(item._id)} size="sm" style={{ width:80,backgroundColor:'#ff4d4d',color:'white' }}>Cancel</CButton>}</CTableDataCell>
               </CTableRow>
-            ))}
+            ))
+          )}
           </CTableBody>
         </CTable>
       )}
@@ -811,7 +819,14 @@ const SoloCouriers = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {driverData.map((item, index) => (
+            {driverData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="10" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+            driverData.map((item, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{item.name}</CTableDataCell>
@@ -858,7 +873,8 @@ const SoloCouriers = () => {
                   )}
                 </CTableDataCell>
               </CTableRow>
-            ))}
+            ))
+          )}
           </CTableBody>
         </CTable>
       )}
@@ -969,7 +985,14 @@ const SoloCouriers = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {customerAllData?.map((items, index) => (
+                {customerAllData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="9" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+                customerAllData?.map((items, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>{items?.order?.no}</CTableDataCell>
@@ -981,7 +1004,7 @@ const SoloCouriers = () => {
                     <CTableDataCell>{items?.lat}</CTableDataCell>
                     <CTableDataCell>{items?.lng}</CTableDataCell>
                   </CTableRow>
-                ))}
+                )))}
               </CTableBody>
             </CTable>
           )}

@@ -513,7 +513,14 @@ const AddMarket = () => {
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                    {marketData.map((item, index) => (
+                    {marketData.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="5" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                    marketData.map((item, index) => (
                         <CTableRow key={index}>
                             <CTableDataCell>{index + 1}</CTableDataCell>
                             <CTableDataCell>{item.chain.name}</CTableDataCell>
@@ -527,7 +534,8 @@ const AddMarket = () => {
                             {/* <CTableDataCell></CTableDataCell> */}
 
                         </CTableRow>
-                    ))}
+                    ))
+                )}
                 </CTableBody>
             </CTable>
 
@@ -584,7 +592,14 @@ const AddMarket = () => {
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {chainMarket.map((item, index) => (
+                            {chainMarket.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="6" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                            chainMarket.map((item, index) => (
                                 <CTableRow key={index}>
                                     <CTableDataCell>{itemsPerPageMarkets + index + 1}</CTableDataCell>
                                     <CTableDataCell>{item.chain.name}</CTableDataCell>
@@ -602,7 +617,8 @@ const AddMarket = () => {
                                     </CTableDataCell>
 
                                 </CTableRow>
-                            ))}
+                            ))
+                        )}
                         </CTableBody>
                     </CTable>
 

@@ -112,7 +112,7 @@ const Zeuler = () => {
               status: true,
               title: 'Links loading error',
               message: 'No links found',
-              color:'info'
+              color: 'info'
             },
           })
         } else if (res.status === 500) {
@@ -221,6 +221,7 @@ const Zeuler = () => {
           // console.log('data product', res.data.list)
           setLoadingModel(false)
         } else if (res.status === 204) {
+          setLoadingModel(false)
           dispatch({
             type: SET_ALERT,
             payload: {
@@ -230,6 +231,7 @@ const Zeuler = () => {
             }
           })
         } else if (res.status === 500) {
+          setLoadingModel(false)
           dispatch({
             type: SET_ALERT,
             payload: {
@@ -293,50 +295,58 @@ const Zeuler = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {LinksListData.map((item, index) => (
-              <CTableRow key={index}>
-                <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-                <CTableDataCell>{item.type}</CTableDataCell>
-                <CTableDataCell>{
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div>{item.url}</div>
-                    <div><CIcon
-                      icon={cilClipboard}
-                      onClick={() => {
-                        navigator.clipboard.writeText(item.url);
-                        dispatch({
-                          type: SET_ALERT,
-                          payload: {
-                            status: true,
-                            title: 'Copy Success',
-                            message: 'URL copied to clipboard',
-                            color: 'success',
-                          },
-                        });
-                      }}
-                    />
-
-                    </div>
-                  </div>
-
-                }</CTableDataCell>
-                <CTableDataCell>
-                  {
-                    item.items === null ?
-                      (
-                        <CIcon icon={cilInfo} size="xl" />
-                      )
-                      :
-                      (
-                        <Link>
-                          <CIcon icon={cilInfo} size="xl" onClick={() => handleToggle(item)} />
-                        </Link>
-                      )
-                  }
-
+            {LinksListData.length === 0 ? (
+              <CTableRow>
+                <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                  <h6 style={{ marginTop: "1%" }}>No Data</h6>
                 </CTableDataCell>
               </CTableRow>
-            ))}
+            ) : (
+              LinksListData.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                  <CTableDataCell>{item.type}</CTableDataCell>
+                  <CTableDataCell>{
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <div>{item.url}</div>
+                      <div><CIcon
+                        icon={cilClipboard}
+                        onClick={() => {
+                          navigator.clipboard.writeText(item.url);
+                          dispatch({
+                            type: SET_ALERT,
+                            payload: {
+                              status: true,
+                              title: 'Copy Success',
+                              message: 'URL copied to clipboard',
+                              color: 'success',
+                            },
+                          });
+                        }}
+                      />
+
+                      </div>
+                    </div>
+
+                  }</CTableDataCell>
+                  <CTableDataCell>
+                    {
+                      item.items === null ?
+                        (
+                          <CIcon icon={cilInfo} size="xl" />
+                        )
+                        :
+                        (
+                          <Link>
+                            <CIcon icon={cilInfo} size="xl" onClick={() => handleToggle(item)} />
+                          </Link>
+                        )
+                    }
+
+                  </CTableDataCell>
+                </CTableRow>
+              ))
+            )}
           </CTableBody>
         </CTable>
       )}

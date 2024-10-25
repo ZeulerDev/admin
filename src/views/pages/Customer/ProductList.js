@@ -80,7 +80,14 @@ const ProductList = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {ProductData.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
+          {
+            ProductData.length === 0 ? (
+              <CTableRow>
+                <CTableDataCell colSpan="9" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                  <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                </CTableDataCell>
+              </CTableRow>
+            ) : (
           ProductData.map((item, index) => (
             <CTableRow key={index}>
               <CTableHeaderCell scope="row"><CCardImage style={{ width :'50px', height:'50px' }} src={`https://api.zeuler.com/image/`+item.photo} /></CTableHeaderCell>
@@ -93,7 +100,8 @@ const ProductList = () => {
               <CTableDataCell>{item.chain}</CTableDataCell>
               <CTableDataCell>{item.market}</CTableDataCell>
             </CTableRow>
-          ))}
+          ))
+          )}
         </CTableBody>
       </CTable>
 

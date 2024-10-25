@@ -122,7 +122,7 @@ const VirtualMarkets = () => {
                 if (res.status === 200) {
                     setChainMarketData(res.data.data)
                     setResultCount(res.data.count)
-                    console.log('count',res.data.count)
+                    console.log('count', res.data.count)
                     setLoading(false)
                     clearTimeout(timer)
                     if (res.data.data.length < 20) {
@@ -395,55 +395,55 @@ const VirtualMarkets = () => {
 
     const deleteMarketProducts = (id) => {
         if (user && token) {
-        setLoadingDeleteProducts(true)
-        console.log('id', id)
-        axios
-            .delete(
-                BASE_URL + `product/delete/all/` + id,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
+            setLoadingDeleteProducts(true)
+            console.log('id', id)
+            axios
+                .delete(
+                    BASE_URL + `product/delete/all/` + id,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                     },
-                },
-            )
-            .then((res) => {
-                if (res.status === 200) {
-                    dispatch({
-                        type: SET_ALERT,
-                        payload: {
-                            status: true,
-                            title: 'Market Products Delete',
-                            message: 'Market Products Remove Success',
-                            color: 'success'
-                        }
-                    })
-                    setLoadingDeleteProducts(false)
-                    setVisibleEmpty(false)
-                    loadData(0, true)
-                    console.log('Remove Market Products')
+                )
+                .then((res) => {
+                    if (res.status === 200) {
+                        dispatch({
+                            type: SET_ALERT,
+                            payload: {
+                                status: true,
+                                title: 'Market Products Delete',
+                                message: 'Market Products Remove Success',
+                                color: 'success'
+                            }
+                        })
+                        setLoadingDeleteProducts(false)
+                        setVisibleEmpty(false)
+                        loadData(0, true)
+                        console.log('Remove Market Products')
 
-                } else if (res.status === 404) {
-                    dispatch({
-                        type: SET_ALERT,
-                        payload: {
-                            status: true,
-                            title: 'Market Products remove error',
-                            message: res.data.message
-                        }
-                    })
-                } else if (res.status === 500) {
-                    dispatch({
-                        type: SET_ALERT,
-                        payload: {
-                            status: true,
-                            title: 'Market Products remove error',
-                            message: res.data.message
-                        }
-                    })
-                }
-            }).catch((err) => {
-                console.error('Error:', err)
-            })
+                    } else if (res.status === 404) {
+                        dispatch({
+                            type: SET_ALERT,
+                            payload: {
+                                status: true,
+                                title: 'Market Products remove error',
+                                message: res.data.message
+                            }
+                        })
+                    } else if (res.status === 500) {
+                        dispatch({
+                            type: SET_ALERT,
+                            payload: {
+                                status: true,
+                                title: 'Market Products remove error',
+                                message: res.data.message
+                            }
+                        })
+                    }
+                }).catch((err) => {
+                    console.error('Error:', err)
+                })
         }
 
     }
@@ -517,13 +517,20 @@ const VirtualMarkets = () => {
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                    {chainMarket.map((item, index) => (
-                        <CTableRow key={index}>
-                            <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-                            <CTableDataCell>{item.chain.name}</CTableDataCell>
-                            <CTableDataCell>{item.address}</CTableDataCell>
-                            <CTableDataCell>{item.city}</CTableDataCell>
-                            {/* <CTableDataCell>
+                    {chainMarket.length === 0 ? (
+                        <CTableRow>
+                            <CTableDataCell colSpan="7" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                            </CTableDataCell>
+                        </CTableRow>
+                    ) : (
+                        chainMarket.map((item, index) => (
+                            <CTableRow key={index}>
+                                <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                                <CTableDataCell>{item.chain.name}</CTableDataCell>
+                                <CTableDataCell>{item.address}</CTableDataCell>
+                                <CTableDataCell>{item.city}</CTableDataCell>
+                                {/* <CTableDataCell>
                                 {item.services.includes('delivery') ? (
                                     <CFormCheck
                                         id="flexCheckChecked"
@@ -555,19 +562,20 @@ const VirtualMarkets = () => {
                                     />
                                 )}
                             </CTableDataCell> */}
-                            <CTableDataCell>{item.scraped}</CTableDataCell>
-                            <CTableDataCell>
-                                <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => handleToggle(item._id)}>
-                                    <CIcon icon={cilTrash} size='lg' style={{ color: 'white' }} />
-                                </CButton>
-                            </CTableDataCell>
-                            <CTableDataCell>
-                                <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => handleMarketProductsToggle(item._id)}>
-                                    <CIcon icon={cilBan} size='lg' style={{ color: 'white' }} />
-                                </CButton>
-                            </CTableDataCell>
-                        </CTableRow>
-                    ))}
+                                <CTableDataCell>{item.scraped}</CTableDataCell>
+                                <CTableDataCell>
+                                    <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => handleToggle(item._id)}>
+                                        <CIcon icon={cilTrash} size='lg' style={{ color: 'white' }} />
+                                    </CButton>
+                                </CTableDataCell>
+                                <CTableDataCell>
+                                    <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => handleMarketProductsToggle(item._id)}>
+                                        <CIcon icon={cilBan} size='lg' style={{ color: 'white' }} />
+                                    </CButton>
+                                </CTableDataCell>
+                            </CTableRow>
+                        ))
+                    )}
                 </CTableBody>
             </CTable>
 

@@ -779,7 +779,14 @@ const Batch = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {batchesData.map((item, index) => (
+            {batchesData.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="17" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
+            batchesData.map((item, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                 <CTableHeaderCell scope="row">{item.no}</CTableHeaderCell>
@@ -815,7 +822,8 @@ const Batch = () => {
                 </CTableDataCell>
                 <CTableDataCell>{item.status === 'complete' ? <CButton  size="sm" disabled={true} style={{ width:80 }}>Cancel</CButton> : item.status === 'canceled' ? <CButton  size="sm" disabled={true} style={{ width:80,backgroundColor:'#ff4d4d',color:'white' }} color="danger">Cancel</CButton> : <CButton onClick={() => handleToggleStatus(item.id)} size="sm" style={{ width:80,backgroundColor:'#ff4d4d',color:'white' }}>Cancel</CButton>}</CTableDataCell>
               </CTableRow>
-            ))}
+            ))
+          )}
           </CTableBody>
         </CTable>
       )}
@@ -857,7 +865,14 @@ const Batch = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {batchCustomersDetails.customers?.map((items, index) => (
+                {batchCustomersDetails.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="9" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
+                batchCustomersDetails.customers?.map((items, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>{items.orderNo}</CTableDataCell>
@@ -869,7 +884,8 @@ const Batch = () => {
                     <CTableDataCell>{items.lat}</CTableDataCell>
                     <CTableDataCell>{items.lng}</CTableDataCell>
                   </CTableRow>
-                ))}
+                ))
+              )}
               </CTableBody>
             </CTable>
           )}
@@ -954,7 +970,14 @@ const Batch = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {driverData.map((item, index) => (
+            {driverData.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="10" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
+            driverData.map((item, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{item.name}</CTableDataCell>
@@ -1001,7 +1024,8 @@ const Batch = () => {
                   )}
                 </CTableDataCell>
               </CTableRow>
-            ))}
+            ))
+          )}
           </CTableBody>
         </CTable>
       )}
@@ -1098,6 +1122,61 @@ const Batch = () => {
         <CButton onClick={() => setVisibleStatusModel(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
         </div>
         </CModalBody>
+      </CModal>
+
+      <CModal alignment="center" visible={visibleMap} scrollable size='xl' onClose={() => setVisibleMap(false)}>
+        <CModalHeader closeButton>
+          <CModalTitle>Location Information</CModalTitle>
+          <CModalTitle></CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+        <CNavbar className="bg-body-tertiary">
+          <a style={{ fontSize:19, marginLeft:760 }}>Distance : {durationData.distance}m</a>  <a style={{ fontSize:19, marginRight:20 }}>Duration : {durationData.duration}min</a>
+        </CNavbar>
+        <MapContainer dragging={true} center={[40.85631, 14.24641]} zoom={13} scrollWheelZoom={true} style={{ height: '500px', width: '100%' }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {batchCustomersDetails.customers?.map((item, index) => (
+          <Marker  key={index} position={[item.lat, item.lng]} icon={greenIcon} onClick={handleToggle}>
+            <Popup>
+             
+              <CIcon
+                icon={cilInfo}
+                size="lg"
+                style={{ marginLeft: '10px' }}
+              />{' '}
+              <span>{item.address}</span>
+             
+            </Popup>
+          </Marker>
+        ))}
+         
+         {batchMarketsData.markets?.map((item, index) => (
+          <Marker  key={index} position={[item.lat, item.lng]} icon={redIcon} onClick={handleToggle}>
+            <Popup>
+             
+              <CIcon
+                icon={cilInfo}
+                size="lg"
+                style={{ marginLeft: '10px' }}
+              />{' '}
+              <span>{item.address}</span>
+             
+            </Popup>
+          </Marker>
+        ))}
+   
+      </MapContainer>
+       
+        </CModalBody>
+        <CModalFooter>
+          {/* <CButton color="secondary" onClick={() => setVisibleMap(false)}>
+            Close
+          </CButton> */}
+        </CModalFooter>
       </CModal>
      
     </CContainer>

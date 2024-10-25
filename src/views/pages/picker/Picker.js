@@ -675,7 +675,14 @@ const Pickers = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {pickerData.map((item, index) => (
+          {pickerData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="13" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+          pickerData.map((item, index) => (
             <CTableRow key={index}>
               <CTableDataCell>{index + 1}</CTableDataCell>
               <CTableDataCell>{item.code}</CTableDataCell>
@@ -702,7 +709,8 @@ const Pickers = () => {
                 </CButton>
               </CTableDataCell>
             </CTableRow>
-          ))}
+          ))
+          )}
         </CTableBody>
       </CTable>
       }

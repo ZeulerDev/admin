@@ -157,7 +157,7 @@ const CreateCategory = () => {
     const loadDataMarkets = (chainId) => {
         axios
             .get(
-                BASE_URL+`assistant/market/locations?brand=${chainId}`,
+                BASE_URL + `assistant/market/locations?brand=${chainId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -409,7 +409,7 @@ const CreateCategory = () => {
                 setParamSubCategoryDataSelect2('')
                 setSelectedSubCategorySelect2('Select Sub Categories')
                 setSubCategoriesDataSelect2([])
-                
+
             } else {
                 setParamCMainCategoryDataSelect2(index)
                 loadDataSubCategoriesMove(index, 'select2')
@@ -782,15 +782,15 @@ const CreateCategory = () => {
                     })
                 } else if (res.status === 204) {
                     setLoadingProduct(false)
-                    dispatch({
-                        type: SET_ALERT,
-                        payload: {
-                            status: true,
-                            title: 'No Products',
-                            message: "No products found in this market address",
-                            color: 'info'
-                        }
-                    })
+                    // dispatch({
+                    //     type: SET_ALERT,
+                    //     payload: {
+                    //         status: true,
+                    //         title: 'No Products',
+                    //         message: "No products found in this market address",
+                    //         color: 'info'
+                    //     }
+                    // })
                 } else if (res.status === 500) {
                     setLoadingProduct(false)
                     dispatch({
@@ -851,30 +851,30 @@ const CreateCategory = () => {
     };
     return (
         <CContainer>
-                    <CBadge style={{ marginLeft: '48%', width: '7%' }} color="secondary">Select Category</CBadge>
-                    <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                        <CDropdownToggle >{selectedMainCategorySelect2}</CDropdownToggle>
-                        <CDropdownMenu>
-                            <CDropdownItem onClick={() => mainCategory('all', null, 'select2')}>Clear Main Category</CDropdownItem>
-                            {mainCategoriesDataSelect2.map((item, index) => (
-                                <CDropdownItem onClick={() => mainCategory(index, item, 'select2')} key={index}>
-                                    {item}
-                                </CDropdownItem>
-                            ))}
-                        </CDropdownMenu>
-                    </CDropdown>
-                    <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                        <CDropdownToggle >{selectedSubCategorySelect2}</CDropdownToggle>
-                        <CDropdownMenu>
-                            <CDropdownItem onClick={() => subCategories('all', null, 'select2')}>Clear Category</CDropdownItem>
-                            {subCategoriesDataSelect2.map((item, index) => (
-                                <CDropdownItem onClick={() => subCategories(index, item, 'select2')} key={index}>
-                                    {item}
-                                </CDropdownItem>
-                            ))}
-                        </CDropdownMenu>
-                    </CDropdown>
-                    {/* <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
+            <CBadge style={{ marginLeft: '48%', width: '7%' }} color="secondary">Select Category</CBadge>
+            <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
+                <CDropdownToggle >{selectedMainCategorySelect2}</CDropdownToggle>
+                <CDropdownMenu>
+                    <CDropdownItem onClick={() => mainCategory('all', null, 'select2')}>Clear Main Category</CDropdownItem>
+                    {mainCategoriesDataSelect2.map((item, index) => (
+                        <CDropdownItem onClick={() => mainCategory(index, item, 'select2')} key={index}>
+                            {item}
+                        </CDropdownItem>
+                    ))}
+                </CDropdownMenu>
+            </CDropdown>
+            <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
+                <CDropdownToggle >{selectedSubCategorySelect2}</CDropdownToggle>
+                <CDropdownMenu>
+                    <CDropdownItem onClick={() => subCategories('all', null, 'select2')}>Clear Category</CDropdownItem>
+                    {subCategoriesDataSelect2.map((item, index) => (
+                        <CDropdownItem onClick={() => subCategories(index, item, 'select2')} key={index}>
+                            {item}
+                        </CDropdownItem>
+                    ))}
+                </CDropdownMenu>
+            </CDropdown>
+            {/* <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
                         <CDropdownToggle >{selectSecondSubCategory}</CDropdownToggle>
                         <CDropdownMenu>
                             <CDropdownItem onClick={() => subCategories('all', null, 'select2')}>Clear Category</CDropdownItem>
@@ -885,7 +885,7 @@ const CreateCategory = () => {
                             ))}
                         </CDropdownMenu>
                     </CDropdown> */}
-                {/* </CCol>
+            {/* </CCol>
 
             </CRow> */}
             {/* <CRow>
@@ -917,9 +917,9 @@ const CreateCategory = () => {
             </CRow>
             <CButton style={{ marginLeft: '1%', backgroundColor: '#ff4d4d', color: 'white', width: '19%', marginTop: '1%' }} onClick={() => { handleCategorySecondUpdate() }}>Update</CButton> */}
 
-<CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
+            <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
 
-</CNavbar>
+            </CNavbar>
             {loadingCategories ? <CSpinner /> : <CTable>
                 <CTableHead>
                     <CTableRow>
@@ -931,7 +931,14 @@ const CreateCategory = () => {
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                    {secondCategoryData.map((item, index) => {
+                    {secondCategoryData.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="5" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                    secondCategoryData.map((item, index) => {
                         return (
                             <CTableRow key={index}>
                                 <CTableDataCell>{itemsPerPageCategory + index + 1}</CTableDataCell>
@@ -954,7 +961,8 @@ const CreateCategory = () => {
 
                             </CTableRow>
                         )
-                    })}
+                    })
+                )}
                 </CTableBody>
             </CTable>
             }
@@ -1028,7 +1036,14 @@ const CreateCategory = () => {
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {productData.map((item, index) => {
+                            {productData.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="8" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                            productData.map((item, index) => {
                                 return (
                                     <CTableRow key={index}>
                                         <CTableDataCell>{itemsPerPageCategory + index + 1}</CTableDataCell>
@@ -1041,7 +1056,8 @@ const CreateCategory = () => {
                                         <CTableDataCell>{item.marketAddress}</CTableDataCell>
                                     </CTableRow>
                                 )
-                            })}
+                            })
+                        )}
                         </CTableBody>
                     </CTable>
 

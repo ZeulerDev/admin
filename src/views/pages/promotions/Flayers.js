@@ -835,7 +835,14 @@ const Flayers = () => {
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                    {categoryData.map((item, index) => {
+                    {categoryData.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="8" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                    categoryData.map((item, index) => {
                         return (
                             <CTableRow key={index}>
                                 <CTableDataCell>{itemsPerPageCategory + index + 1}</CTableDataCell>
@@ -862,7 +869,8 @@ const Flayers = () => {
                                 </CTableDataCell>
                             </CTableRow>
                         )
-                    })}
+                    })
+                )}
                 </CTableBody>
             </CTable>
             }
@@ -899,14 +907,22 @@ const Flayers = () => {
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {assignMarkets.map((item, index) => (
+                            {assignMarkets.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                            assignMarkets.map((item, index) => (
                                 <CTableRow key={index}>
                                     <CTableDataCell>{index + 1}</CTableDataCell>
                                     <CTableDataCell>{item.chain.name}</CTableDataCell>
                                     <CTableDataCell>{item.address}</CTableDataCell>
                                     <CTableDataCell>{item.city}</CTableDataCell>
                                 </CTableRow>
-                            ))}
+                            ))
+                        )}
                         </CTableBody>
                     </CTable>
 
@@ -982,7 +998,14 @@ const Flayers = () => {
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
-                                {products?.map((items, index) => (
+                                {products.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="5" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                                products?.map((items, index) => (
                                     <CTableRow key={index}>
                                         <CTableDataCell>{index + 1}</CTableDataCell>
                                         <CTableDataCell>
@@ -995,7 +1018,8 @@ const Flayers = () => {
                                         <CTableDataCell>{items.price}</CTableDataCell>
                                         <CTableDataCell>{items.description}</CTableDataCell>
                                     </CTableRow>
-                                ))}
+                                ))
+                            )}
                             </CTableBody>
                         </CTable>
                     )}
@@ -1067,7 +1091,14 @@ const Flayers = () => {
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {chainMarket.map((item, index) => (
+                            {chainMarket.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="5" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                            chainMarket.map((item, index) => (
                                 <CTableRow key={index}>
                                     <CTableDataCell>{itemsPerPageMarkets + index + 1}</CTableDataCell>
                                     <CTableDataCell>{item.chain.name}</CTableDataCell>
@@ -1085,7 +1116,8 @@ const Flayers = () => {
                                     </CTableDataCell>
 
                                 </CTableRow>
-                            ))}
+                            ))
+                        )}
                         </CTableBody>
                     </CTable>
 

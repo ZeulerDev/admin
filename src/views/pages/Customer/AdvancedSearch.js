@@ -129,7 +129,15 @@ const Orders = () => {
                         setIsDisable(false)
                     }
                 } else if (res.status === 203) {
-                    setOrdersData([])
+                    dispatch({
+                        type: SET_ALERT,
+                        payload: {
+                            status: true,
+                            title: 'Orders loading error',
+                            message: res.data.message,
+                        },
+                    })
+                    // setOrdersData([])
                 }else if (res.status === 204) {
                     dispatch({
                         type: SET_ALERT,
@@ -317,9 +325,15 @@ const Orders = () => {
 
                         </CTableRow>
                     </CTableHead>
+                    {ordersData.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="8" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
                     <CTableBody>
-                        {ordersData.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
-                        ordersData.map((item, index) => (
+                        {ordersData.map((item, index) => (
                             <CTableRow key={index}>
                                 <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                                 <CTableHeaderCell><CCardImage style={{ width: 50, height: 50, borderRadius: 10 }} src={`https://api.zeuler.com/image/` + item.photo} /></CTableHeaderCell>
@@ -332,6 +346,7 @@ const Orders = () => {
                             </CTableRow>
                         ))}
                     </CTableBody>
+                    )}
                 </CTable>
             )}
             <CPagination aria-label="Page navigation example">

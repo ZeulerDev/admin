@@ -452,7 +452,14 @@ const Market = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {chainMarket.map((item, index) => (
+          {chainMarket.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="8" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
+          chainMarket.map((item, index) => (
             <CTableRow key={index}>
               <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
               <CTableDataCell>{item.chain?.name}</CTableDataCell>
@@ -497,7 +504,8 @@ const Market = () => {
                 </CButton>
               </CTableDataCell>
             </CTableRow>
-          ))}
+          ))
+        )}
         </CTableBody>
       </CTable>
 

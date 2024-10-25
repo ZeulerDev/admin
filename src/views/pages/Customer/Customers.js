@@ -592,41 +592,49 @@ const Customer = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {customerData.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
-          customerData.map((item, index) => (
-            <CTableRow key={index}>
-              <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-              <CTableHeaderCell onClick={() => { handleToggleImageUploader(item._id) }}><CCardImage style={{ width: 50, height: 50, borderRadius: 10 }} src={`https://api.zeuler.com/image/` + item.photo} /></CTableHeaderCell>
-              <CTableDataCell>{item.name}</CTableDataCell>
-              <CTableDataCell>{item.surname}</CTableDataCell>
-              <CTableDataCell>{item.email}</CTableDataCell>
-              <CTableDataCell>{item.contact}</CTableDataCell>
-              <CTableDataCell>{item.country === "it" || item.country === 'Italy' ? 'Italy' : item.country}</CTableDataCell>
-              <CTableDataCell>{item.language === 'en' ? 'English' : item.language === 'it' ? 'Italy' : item.language}</CTableDataCell>
-              <CTableDataCell>
-                <Link>
-                  <CIcon icon={cilPencil} size='xl' onClick={() => handleToggleCustomer(item)} />
-                </Link>
-              </CTableDataCell>
-              <CTableDataCell>
-                <Link>
-                  <CIcon icon={cilInfo} size='xl' onClick={() => mangeAddressModal(item._id)} />
-                </Link>
+          {
+            customerData.length === 0 ? (
+              <CTableRow>
+                <CTableDataCell colSpan="12" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                  <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                </CTableDataCell>
+              </CTableRow>
+            ) : (
+              customerData.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                  <CTableHeaderCell onClick={() => { handleToggleImageUploader(item._id) }}><CCardImage style={{ width: 50, height: 50, borderRadius: 10 }} src={`https://api.zeuler.com/image/` + item.photo} /></CTableHeaderCell>
+                  <CTableDataCell>{item.name}</CTableDataCell>
+                  <CTableDataCell>{item.surname}</CTableDataCell>
+                  <CTableDataCell>{item.email}</CTableDataCell>
+                  <CTableDataCell>{item.contact}</CTableDataCell>
+                  <CTableDataCell>{item.country === "it" || item.country === 'Italy' ? 'Italy' : item.country}</CTableDataCell>
+                  <CTableDataCell>{item.language === 'en' ? 'English' : item.language === 'it' ? 'Italy' : item.language}</CTableDataCell>
+                  <CTableDataCell>
+                    <Link>
+                      <CIcon icon={cilPencil} size='xl' onClick={() => handleToggleCustomer(item)} />
+                    </Link>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <Link>
+                      <CIcon icon={cilInfo} size='xl' onClick={() => mangeAddressModal(item._id)} />
+                    </Link>
 
 
-              </CTableDataCell>
-              <CTableDataCell>
-                <Link to={`/customers/list/${item._id}`}>
-                  <CIcon icon={cilNotes} size='xl' />
-                </Link>
-              </CTableDataCell>
-              <CTableDataCell>
-                <Link to={`/customers/items/${item._id}`}>
-                  <CIcon icon={cilList} size='xl' />
-                </Link>
-              </CTableDataCell>
-            </CTableRow>
-          ))}
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <Link to={`/customers/list/${item._id}`}>
+                      <CIcon icon={cilNotes} size='xl' />
+                    </Link>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <Link to={`/customers/items/${item._id}`}>
+                      <CIcon icon={cilList} size='xl' />
+                    </Link>
+                  </CTableDataCell>
+                </CTableRow>
+              ))
+            )}
         </CTableBody>
       </CTable>
 
@@ -744,16 +752,25 @@ const Customer = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {customerAddressData.map((items, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{itemsPerPageAddress + index + 1}</CTableDataCell>
-                    <CTableDataCell>{items.name}</CTableDataCell>
-                    <CTableDataCell>{items.intercom}</CTableDataCell>
-                    <CTableDataCell>{items.flat}</CTableDataCell>
-                    <CTableDataCell>{items.street}</CTableDataCell>
-                    <CTableDataCell>{items.houseNumber}</CTableDataCell>
-                  </CTableRow>
-                ))}
+                {
+                  customerAddressData.length === 0 ? (
+                    <CTableRow>
+                      <CTableDataCell colSpan="6" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                        <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ) : (
+                    customerAddressData.map((items, index) => (
+                      <CTableRow key={index}>
+                        <CTableDataCell>{itemsPerPageAddress + index + 1}</CTableDataCell>
+                        <CTableDataCell>{items.name}</CTableDataCell>
+                        <CTableDataCell>{items.intercom}</CTableDataCell>
+                        <CTableDataCell>{items.flat}</CTableDataCell>
+                        <CTableDataCell>{items.street}</CTableDataCell>
+                        <CTableDataCell>{items.houseNumber}</CTableDataCell>
+                      </CTableRow>
+                    ))
+                  )}
               </CTableBody>
             </CTable>
           }

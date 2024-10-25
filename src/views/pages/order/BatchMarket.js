@@ -140,7 +140,14 @@ const BatchMarkets = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {batchMarketsData.markets?.map((item, index) => (
+            {batchMarketsData.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="4" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
+            batchMarketsData.markets?.map((item, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{index+1}</CTableDataCell>
                 <CTableDataCell>{item.chain}</CTableDataCell>
@@ -151,7 +158,8 @@ const BatchMarkets = () => {
                 </Link>
                 </CTableDataCell>
               </CTableRow>
-            ))}
+            ))
+          )}
           </CTableBody>
         </CTable>
       )}

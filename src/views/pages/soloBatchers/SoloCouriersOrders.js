@@ -150,7 +150,7 @@ const SoloCourierBatchOrders = () => {
                 })
         }
     }
-   
+
     const handleCustomerToggle = (id) => {
         setVisibleCustomer(!loadingModal)
         console.log(id)
@@ -221,33 +221,41 @@ const SoloCourierBatchOrders = () => {
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                        {batchOrdersData.map((order, index) => (
-                            <CTableRow key={index}>
-                                <CTableDataCell>{index + 1}</CTableDataCell>
-                                <CTableDataCell>{order.no}</CTableDataCell>
-                                <CTableDataCell>
-                                    <CBadge style={{ width: 80 }} color="info">
-                                        {order.status}
-                                    </CBadge>
-                                </CTableDataCell>
-                                <CTableDataCell>{order.address}</CTableDataCell>
-                                <CTableDataCell>{(order?.deliveryFee ?? 0).toFixed(2)}</CTableDataCell>
-                                <CTableDataCell>{order.slot}</CTableDataCell>
-                                <CTableDataCell>{order.date}</CTableDataCell>
-                                <CTableDataCell>{(order?.total ?? 0).toFixed(2)}</CTableDataCell>
-                                <CTableDataCell>{order?.markup}</CTableDataCell>
-                                <CTableDataCell>
-                                    <Link>
-                                        <CIcon icon={cilInfo} size="xl" onClick={() => { handleItemsModel(order.items) }} />
-                                    </Link>
-                                </CTableDataCell>
-                                <CTableDataCell>
-                                    <Link>
-                                        <CIcon icon={cilList} size="xl" onClick={() => handleCustomerInfoToggle(order.customers)} />
-                                    </Link>
+                        {batchOrdersData.length === 0 ? (
+                            <CTableRow>
+                                <CTableDataCell colSpan="11" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                    <h6 style={{ marginTop: "1%" }}>No Data</h6>
                                 </CTableDataCell>
                             </CTableRow>
-                        ))}
+                        ) : (
+                            batchOrdersData.map((order, index) => (
+                                <CTableRow key={index}>
+                                    <CTableDataCell>{index + 1}</CTableDataCell>
+                                    <CTableDataCell>{order.no}</CTableDataCell>
+                                    <CTableDataCell>
+                                        <CBadge style={{ width: 80 }} color="info">
+                                            {order.status}
+                                        </CBadge>
+                                    </CTableDataCell>
+                                    <CTableDataCell>{order.address}</CTableDataCell>
+                                    <CTableDataCell>{(order?.deliveryFee ?? 0).toFixed(2)}</CTableDataCell>
+                                    <CTableDataCell>{order.slot}</CTableDataCell>
+                                    <CTableDataCell>{order.date}</CTableDataCell>
+                                    <CTableDataCell>{(order?.total ?? 0).toFixed(2)}</CTableDataCell>
+                                    <CTableDataCell>{order?.markup}</CTableDataCell>
+                                    <CTableDataCell>
+                                        <Link>
+                                            <CIcon icon={cilInfo} size="xl" onClick={() => { handleItemsModel(order.items) }} />
+                                        </Link>
+                                    </CTableDataCell>
+                                    <CTableDataCell>
+                                        <Link>
+                                            <CIcon icon={cilList} size="xl" onClick={() => handleCustomerInfoToggle(order.customers)} />
+                                        </Link>
+                                    </CTableDataCell>
+                                </CTableRow>
+                            ))
+                        )}
                     </CTableBody>
                 </CTable>
             )}
@@ -281,25 +289,33 @@ const SoloCourierBatchOrders = () => {
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
-                                {orderDataDetails.items?.map((items, index) => (
-                                    <CTableRow key={index}>
-                                        <CTableDataCell>{index + 1}</CTableDataCell>
-                                        <CTableDataCell>
-                                            <CCardImage
-                                                style={{ width: 50, height: 50, borderRadius: 10 }}
-                                                src={`https://api.zeuler.com/image/` + items.photo}
-                                            />
+                                {orderDataDetails.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="8" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
                                         </CTableDataCell>
-                                        <CTableDataCell>{items.name}</CTableDataCell>
-                                        <CTableDataCell>{items.price}</CTableDataCell>
-                                        <CTableDataCell>{items.qty}</CTableDataCell>
-                                        <CTableDataCell>{items.measure}</CTableDataCell>
-                                        <CTableDataCell>
-                                            {items.chain} - {items.market}
-                                        </CTableDataCell>
-                                        <CTableDataCell><CBadge style={{ width: 80 }} color="info">{items.status}</CBadge></CTableDataCell>
                                     </CTableRow>
-                                ))}
+                                ) : (
+                                    orderDataDetails.items?.map((items, index) => (
+                                        <CTableRow key={index}>
+                                            <CTableDataCell>{index + 1}</CTableDataCell>
+                                            <CTableDataCell>
+                                                <CCardImage
+                                                    style={{ width: 50, height: 50, borderRadius: 10 }}
+                                                    src={`https://api.zeuler.com/image/` + items.photo}
+                                                />
+                                            </CTableDataCell>
+                                            <CTableDataCell>{items.name}</CTableDataCell>
+                                            <CTableDataCell>{items.price}</CTableDataCell>
+                                            <CTableDataCell>{items.qty}</CTableDataCell>
+                                            <CTableDataCell>{items.measure}</CTableDataCell>
+                                            <CTableDataCell>
+                                                {items.chain} - {items.market}
+                                            </CTableDataCell>
+                                            <CTableDataCell><CBadge style={{ width: 80 }} color="info">{items.status}</CBadge></CTableDataCell>
+                                        </CTableRow>
+                                    ))
+                                )}
                             </CTableBody>
                         </CTable>
                     )}
@@ -466,29 +482,37 @@ const SoloCourierBatchOrders = () => {
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
-                                {batchItems.map((product, index) => (
-                                    <CTableRow key={index}>
-                                        <CTableDataCell>{index + 1}</CTableDataCell>
-                                        <CTableDataCell>
-                                            <CCardImage
-                                                style={{ width: 50, height: 50, borderRadius: 10 }}
-                                                src={`https://api.zeuler.com/image/` + product.photo}
-                                            />
-                                        </CTableDataCell>
-                                        <CTableDataCell>{product.name}</CTableDataCell>
-                                        <CTableDataCell>{product.price}</CTableDataCell>
-                                        <CTableDataCell>{product.qty}</CTableDataCell>
-                                        <CTableDataCell>{product.measure}</CTableDataCell>
-                                        <CTableDataCell>
-                                            {product.chain} - {product.market}
-                                        </CTableDataCell>
-                                        <CTableDataCell>
-                                            <CBadge style={{ width: 80 }} color="info">
-                                                {product.status}
-                                            </CBadge>
+                                {batchItems.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="8" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
                                         </CTableDataCell>
                                     </CTableRow>
-                                ))}
+                                ) : (
+                                    batchItems.map((product, index) => (
+                                        <CTableRow key={index}>
+                                            <CTableDataCell>{index + 1}</CTableDataCell>
+                                            <CTableDataCell>
+                                                <CCardImage
+                                                    style={{ width: 50, height: 50, borderRadius: 10 }}
+                                                    src={`https://api.zeuler.com/image/` + product.photo}
+                                                />
+                                            </CTableDataCell>
+                                            <CTableDataCell>{product.name}</CTableDataCell>
+                                            <CTableDataCell>{product.price}</CTableDataCell>
+                                            <CTableDataCell>{product.qty}</CTableDataCell>
+                                            <CTableDataCell>{product.measure}</CTableDataCell>
+                                            <CTableDataCell>
+                                                {product.chain} - {product.market}
+                                            </CTableDataCell>
+                                            <CTableDataCell>
+                                                <CBadge style={{ width: 80 }} color="info">
+                                                    {product.status}
+                                                </CBadge>
+                                            </CTableDataCell>
+                                        </CTableRow>
+                                    ))
+                                )}
                             </CTableBody>
                         </CTable>
                     )}

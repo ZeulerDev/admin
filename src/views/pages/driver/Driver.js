@@ -51,7 +51,7 @@ const Drivers = () => {
   const [isActivate, setActivate] = useState(false)
   const [driverId, setDriverId] = useState('')
   const navigate = useNavigate()
-  const[alert, setAlert] = useState(false)
+  const [alert, setAlert] = useState(false)
 
   const [selectedCity, setSelectedCity] = useState('All Cities')
   const [selectedMarketGroup, setSelectedMarketGroup] = useState('All Market Groups')
@@ -61,7 +61,7 @@ const Drivers = () => {
   const [chainData, setChainData] = useState([])
 
   const [visibleRider, setVisibleRider] = useState(false)
-  const [riderEditObj, setRiderEditObj] =useState([])
+  const [riderEditObj, setRiderEditObj] = useState([])
   const [name, setName] = useState()
   const [surname, setSurname] = useState()
   const [email, setEmail] = useState()
@@ -84,7 +84,7 @@ const Drivers = () => {
   const loadMakerGroup = () => {
     if (token) {
       axios
-        .get(BASE_URL+'market/groups/dropdown/fetch', {
+        .get(BASE_URL + 'market/groups/dropdown/fetch', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -112,7 +112,7 @@ const Drivers = () => {
   const loadChain = () => {
     if (token) {
       axios
-        .get(BASE_URL+'assistant/market/chains/all', {
+        .get(BASE_URL + 'assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -155,15 +155,15 @@ const Drivers = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [paramCity, paramGroup, paramChainId,debouncedParamCode, alert])
+  }, [paramCity, paramGroup, paramChainId, debouncedParamCode, alert])
 
   useEffect(() => {
     const handler = setTimeout(() => {
       if (searchQuery.length >= 3) {
         setDebouncedParamCodeData(searchQuery);
-    }else if(searchQuery.length === 0){
-      setDebouncedParamCodeData(searchQuery)
-    }
+      } else if (searchQuery.length === 0) {
+        setDebouncedParamCodeData(searchQuery)
+      }
     }, 500);
 
     return () => {
@@ -174,8 +174,8 @@ const Drivers = () => {
   const loadDriversData = (timer) => {
     if (user && token) {
       setLoading(true)
-      let url = BASE_URL+`assistant/riders/main/0?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}&code=${searchQuery}`
-  
+      let url = BASE_URL + `assistant/riders/main/0?city=${paramCity}&group=${paramGroup}&chain=${paramChainId}&code=${searchQuery}`
+
       axios
         .get(url,
           {
@@ -259,7 +259,7 @@ const Drivers = () => {
 
     if (user && token) {
       axios
-        .patch(BASE_URL+'assistant/rider/status/' + driverId, data, {
+        .patch(BASE_URL + 'assistant/rider/status/' + driverId, data, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -272,22 +272,22 @@ const Drivers = () => {
             setDriverId('')
             const updatedEntity = res.data
             const list = driverData.map((ob) => {
-             if(ob.id === updatedEntity.id){
+              if (ob.id === updatedEntity.id) {
                 return updatedEntity
-               } else {
-              return ob
-               }
-               })
-                 setDriverData([...list])
-                 dispatch({
-                  type : SET_ALERT,
-                  payload : {
-                    status : true,
-                    title : 'Driver status update',
-                    message : "Driver status updated successfully",
-                    color:'success'
-                  }
-                })
+              } else {
+                return ob
+              }
+            })
+            setDriverData([...list])
+            dispatch({
+              type: SET_ALERT,
+              payload: {
+                status: true,
+                title: 'Driver status update',
+                message: "Driver status updated successfully",
+                color: 'success'
+              }
+            })
 
           } else if (res.status === 203) {
             dispatch({
@@ -324,7 +324,7 @@ const Drivers = () => {
     }
   }
 
-  const handleTogglePicker = (riderObj) =>{
+  const handleTogglePicker = (riderObj) => {
     setVisibleRider(!visibleRider)
     setRiderEditObj(riderObj)
     setName(riderObj.name)
@@ -338,7 +338,7 @@ const Drivers = () => {
   }
 
   const handleSubmit = () => {
-    if(name && surname && email && phone && iban && cityEdit  && address){
+    if (name && surname && email && phone && iban && cityEdit && address) {
 
       const formData = {
         name: name,
@@ -347,108 +347,108 @@ const Drivers = () => {
         contact: phone,
         iban: iban,
         city: cityEdit,
-        vat:vat,
-        address : address
+        vat: vat,
+        address: address
       }
 
       const id = riderEditObj.id
 
-      if(user,token){
-          if(user && token){
-              axios
-                .patch(BASE_URL+'assistant/rider/update/'+id, formData, {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                .then((res) => {
-                  if (res.status === 200) {
-                    setVisibleRider(false)
-                    const updatedEntity = res.data
-                    const list = driverData.map((item) => {
-                      if (item.id === updatedEntity.id) {
-                        return updatedEntity
-                      } else {
-                        return item
-                      }
-                    })
-                    setDriverData([...list])
-                    loadDriversData()
-                    dispatch({
-                      type : SET_ALERT,
-                      payload : {
-                        status : true,
-                        title : 'Driver update',
-                        message : 'Driver updated successfully',
-                        color:'success'
-                      }
-                    })
-
-                  } else if (res.status === 203) {
-                    dispatch({
-                      type : SET_ALERT,
-                      payload : {
-                        status : true,
-                        title : 'Driver update error',
-                        message : 'Email already exist',
-                        color:'warning'
-                      }
-                    })
-                  } else if (res.status === 204) {
-                    console.log(res.message)
-                    dispatch({
-                      type : SET_ALERT,
-                      payload : {
-                        status : true,
-                        title : 'Driver update error',
-                        message : "Something is missing",
-                        color:'warning'
-                      }
-                    })
-                  } else if (res.status === 404) {
-                    console.log(res.message)
-                    dispatch({
-                      type : SET_ALERT,
-                      payload : {
-                        status : true,
-                        title : 'Driver update error',
-                        message : "Driver not found",
-                        color:'warning'
-                      }
-                    })
-                  }else if (res.status === 500) {
-                    dispatch({
-                      type : SET_ALERT,
-                      payload : {
-                        status : true,
-                        title : 'Driver update error',
-                        message : res.data.message,
-                        color:'warning'
-                      }
-                    })
+      if (user, token) {
+        if (user && token) {
+          axios
+            .patch(BASE_URL + 'assistant/rider/update/' + id, formData, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then((res) => {
+              if (res.status === 200) {
+                setVisibleRider(false)
+                const updatedEntity = res.data
+                const list = driverData.map((item) => {
+                  if (item.id === updatedEntity.id) {
+                    return updatedEntity
+                  } else {
+                    return item
                   }
                 })
-                .catch((error) => {
-                  console.error('Error:', error)
+                setDriverData([...list])
+                loadDriversData()
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Driver update',
+                    message: 'Driver updated successfully',
+                    color: 'success'
+                  }
                 })
-        
-            }
+
+              } else if (res.status === 203) {
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Driver update error',
+                    message: 'Email already exist',
+                    color: 'warning'
+                  }
+                })
+              } else if (res.status === 204) {
+                console.log(res.message)
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Driver update error',
+                    message: "Something is missing",
+                    color: 'warning'
+                  }
+                })
+              } else if (res.status === 404) {
+                console.log(res.message)
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Driver update error',
+                    message: "Driver not found",
+                    color: 'warning'
+                  }
+                })
+              } else if (res.status === 500) {
+                dispatch({
+                  type: SET_ALERT,
+                  payload: {
+                    status: true,
+                    title: 'Driver update error',
+                    message: res.data.message,
+                    color: 'warning'
+                  }
+                })
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error)
+            })
+
+        }
       }
-    }else{
+    } else {
 
       dispatch({
-        type : SET_ALERT,
-        payload : {
-          status : true,
-          title : 'Error!',
-          message : 'Picker update error, Please Check the input fields',
-          color:'warning'
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Error!',
+          message: 'Picker update error, Please Check the input fields',
+          color: 'warning'
         }
       })
 
     }
-    
-      
+
+
   }
 
   const handleToggleDelete = (id) => {
@@ -456,10 +456,10 @@ const Drivers = () => {
     setDId(id)
   }
 
-  const deleteDriver =(id)=>{
+  const deleteDriver = (id) => {
     axios
       .delete(
-        BASE_URL+`assistant/rider/delete/`+id,
+        BASE_URL + `assistant/rider/delete/` + id,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -469,12 +469,12 @@ const Drivers = () => {
       .then((res) => {
         if (res.status === 200) {
           dispatch({
-            type : SET_ALERT,
-            payload : {
-              status : true,
-              title : 'Driver Delete',
-              message : 'Driver deleted successfully',
-              color : 'success'
+            type: SET_ALERT,
+            payload: {
+              status: true,
+              title: 'Driver Delete',
+              message: 'Driver deleted successfully',
+              color: 'success'
             }
           })
           setVisibleDelete(false)
@@ -482,20 +482,20 @@ const Drivers = () => {
 
         } else if (res.status === 404) {
           dispatch({
-            type : SET_ALERT,
-            payload : {
-              status : true,
-              title : 'Driver remove error',
-              message : res.data.message
+            type: SET_ALERT,
+            payload: {
+              status: true,
+              title: 'Driver remove error',
+              message: res.data.message
             }
           })
         } else if (res.status === 500) {
           dispatch({
-            type : SET_ALERT,
-            payload : {
-              status : true,
-              title : 'Driver remove error',
-              message : res.data.message
+            type: SET_ALERT,
+            payload: {
+              status: true,
+              title: 'Driver remove error',
+              message: res.data.message
             }
           })
         }
@@ -512,7 +512,7 @@ const Drivers = () => {
   }
 
   const updatePassword = (id) => {
-    if(passCode === '' || passCodeReEnter === ''){
+    if (passCode === '' || passCodeReEnter === '') {
       dispatch({
         type: SET_ALERT,
         payload: {
@@ -523,11 +523,11 @@ const Drivers = () => {
         }
       })
 
-    }else if (passCode === passCodeReEnter) {
+    } else if (passCode === passCodeReEnter) {
       const data = {
         passcode: passCode
       }
-      
+
       console.log(data, id)
       if (user && token) {
         axios
@@ -581,7 +581,7 @@ const Drivers = () => {
             console.error(error)
           })
       }
-    } else if(passCode !== passCodeReEnter){ 
+    } else if (passCode !== passCodeReEnter) {
 
       dispatch({
         type: SET_ALERT,
@@ -592,31 +592,31 @@ const Drivers = () => {
           color: 'warning'
         }
       })
-    
-  }else{
-    dispatch({
-      type: SET_ALERT,
-      payload: {
-        status: true,
-        title: 'Password update error',
-        message: 'Password update error or check the input fields',
-        color: 'warning'
-      }
-    })
+
+    } else {
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Password update error',
+          message: 'Password update error or check the input fields',
+          color: 'warning'
+        }
+      })
+    }
   }
-}
 
   return (
     <CContainer>
-      
+
       <Link to={`/driver/adddriver`} className="picker-link">
-        <CButton style={{ marginLeft: '0%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
+        <CButton style={{ marginLeft: '0%', width: '17%', backgroundColor: '#ff4d4d', color: 'white' }}>
           Add Driver
         </CButton>
       </Link>
-      <CBadge style={{ marginLeft: '39%'}} color="secondary">Filter by</CBadge>
-      <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
-        <CDropdownToggle style={{color:'white'}}>{selectedCity}</CDropdownToggle>
+      <CBadge style={{ marginLeft: '39%' }} color="secondary">Filter by</CBadge>
+      <CDropdown style={{ marginLeft: '2%', width: '17%', backgroundColor: '#ff4d4d', color: 'white' }}>
+        <CDropdownToggle style={{ color: 'white' }}>{selectedCity}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => city('all')}>All</CDropdownItem>
           <CDropdownItem onClick={() => city('Milan')}>Milan</CDropdownItem>
@@ -634,8 +634,8 @@ const Drivers = () => {
           ))}
         </CDropdownMenu>
       </CDropdown> */}
-      <CDropdown style={{ marginLeft: '2%',width:'17%',backgroundColor: '#ff4d4d', color:'white' }}>
-        <CDropdownToggle style={{color:'white'}}>{selectedMarketGroup}</CDropdownToggle>
+      <CDropdown style={{ marginLeft: '2%', width: '17%', backgroundColor: '#ff4d4d', color: 'white' }}>
+        <CDropdownToggle style={{ color: 'white' }}>{selectedMarketGroup}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => marketGroup('all')}>All</CDropdownItem>
           {mGroupData.map((item, index) => (
@@ -645,15 +645,15 @@ const Drivers = () => {
           ))}
         </CDropdownMenu>
       </CDropdown>
-      <CNavbar style={{marginTop:'1%'}} className="bg-body-tertiary">
-      <CFormInput
-        type="text"
-        placeholder="Search by Driver id, name, surname, email and contact"
-        style={{ width : 450, marginLeft: '0%' }}
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-    </CNavbar>
+      <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
+        <CFormInput
+          type="text"
+          placeholder="Search by Driver id, name, surname, email and contact"
+          style={{ width: 450, marginLeft: '0%' }}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </CNavbar>
       {/* <CNavbar className="bg-body-tertiary">
       <CFormInput  
          type ="text" 
@@ -724,99 +724,107 @@ const Drivers = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {driverData.map((item, index) => (
-              <CTableRow key={index}>
-                <CTableDataCell>{index + 1}</CTableDataCell>
-                <CTableDataCell>{item.code}</CTableDataCell>
-                <CTableDataCell>{item.name}</CTableDataCell>
-                <CTableDataCell>{item.surname}</CTableDataCell>
-                <CTableDataCell>{item.email}</CTableDataCell>
-                <CTableDataCell>{item.contact}</CTableDataCell>
-                <CTableDataCell>{item.city}</CTableDataCell>
-                <CTableDataCell>
-                  {item.country === 'it' || item.country === 'Italy' ? 'Italy' : item.country}
+            {driverData.length === 0 ? (
+              <CTableRow>
+                <CTableDataCell colSpan="14" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                  <h6 style={{ marginTop: "1%" }}>No Data</h6>
                 </CTableDataCell>
-                <CTableDataCell>
-                  {item.employeeId ? item.employeeId : <CBadge color="warning">Not Provide</CBadge>}
-                </CTableDataCell>
-                <CTableDataCell>
-                  {item.language === 'en'
-                    ? 'English'
-                    : item.language === 'it'
-                      ? 'Italy'
-                      : item.language === 'es'
-                        ? 'Spanish'
-                        : item.language}
-                </CTableDataCell>
-                <CTableDataCell>
-                  {item.groups.map((mar, index) => (
-                    <div key={index}>{mar.name}</div>
-                  ))}
-                </CTableDataCell>
-                <CTableDataCell>
-                <Link>
-                <CIcon icon={cilPencil} size='xl'  onClick={() => handleTogglePicker(item)}/>
-                </Link>
-              </CTableDataCell>
-                <CTableDataCell>
-                  {item.activate ? (
-                    <CButton
-                      size="sm"
-                      onClick={() => handleToggle(item.id, false)}
-                      style={{ backgroundColor: '#ff4d4d', width: 90 ,color:'white'}}
-                    >
-                      Deactivate
-                    </CButton>
-                  ) : (
-                    <CButton
-                      size="sm"
-                      onClick={() => handleToggle(item.id, true)}
-                      style={{ backgroundColor: '#ff4d4d', width: 90 ,color:'white'}}
-                    >
-                      Activate
-                    </CButton>
-                  )}
-                </CTableDataCell>
-                <CTableDataCell>
-              <CButton size='sm' style={{backgroundColor: '#ff4d4d'}} variant="outline" onClick={() => handleToggleDelete(item.id)}>
-              <CIcon icon={cilTrash} size='lg' style={{color:'white'}}/>
-                </CButton>
-              </CTableDataCell>
               </CTableRow>
-            ))}
+            ) : (
+              driverData.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{index + 1}</CTableDataCell>
+                  <CTableDataCell>{item.code}</CTableDataCell>
+                  <CTableDataCell>{item.name}</CTableDataCell>
+                  <CTableDataCell>{item.surname}</CTableDataCell>
+                  <CTableDataCell>{item.email}</CTableDataCell>
+                  <CTableDataCell>{item.contact}</CTableDataCell>
+                  <CTableDataCell>{item.city}</CTableDataCell>
+                  <CTableDataCell>
+                    {item.country === 'it' || item.country === 'Italy' ? 'Italy' : item.country}
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    {item.employeeId ? item.employeeId : <CBadge color="warning">Not Provide</CBadge>}
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    {item.language === 'en'
+                      ? 'English'
+                      : item.language === 'it'
+                        ? 'Italy'
+                        : item.language === 'es'
+                          ? 'Spanish'
+                          : item.language}
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    {item.groups.map((mar, index) => (
+                      <div key={index}>{mar.name}</div>
+                    ))}
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <Link>
+                      <CIcon icon={cilPencil} size='xl' onClick={() => handleTogglePicker(item)} />
+                    </Link>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    {item.activate ? (
+                      <CButton
+                        size="sm"
+                        onClick={() => handleToggle(item.id, false)}
+                        style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }}
+                      >
+                        Deactivate
+                      </CButton>
+                    ) : (
+                      <CButton
+                        size="sm"
+                        onClick={() => handleToggle(item.id, true)}
+                        style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }}
+                      >
+                        Activate
+                      </CButton>
+                    )}
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => handleToggleDelete(item.id)}>
+                      <CIcon icon={cilTrash} size='lg' style={{ color: 'white' }} />
+                    </CButton>
+                  </CTableDataCell>
+                </CTableRow>
+              ))
+            )}
           </CTableBody>
         </CTable>
       )}
 
-<CModal alignment="center" visible={visiblePasswordModal} scrollable size='sm' onClose={() => setVisiblePasswordModal(false)}>
+      <CModal alignment="center" visible={visiblePasswordModal} scrollable size='sm' onClose={() => setVisiblePasswordModal(false)}>
         <CModalHeader closeButton>
           <CModalTitle>Update Password</CModalTitle>
         </CModalHeader>
         <CModalBody>
           {/* <a>Are you sure you want to delete this picker?</a><br></br><br></br> */}
-           <CCol md={12}>
-        <CFormInput
+          <CCol md={12}>
+            <CFormInput
               id="password"
               label="Enter New Password"
               type='password'
               onChange={(e) => setPassCode(e.target.value)}
             />
-        </CCol>
-        <br></br>
-        <CCol md={12}>
-        <CFormInput
+          </CCol>
+          <br></br>
+          <CCol md={12}>
+            <CFormInput
               id="repassword"
               label="Re Enter Password"
               type='password'
               onChange={(e) => setPassCodeReEnter(e.target.value)}
             />
-        </CCol>
+          </CCol>
 
         </CModalBody>
-          <CModalFooter>
-              <CButton type="submit" style={{ marginBottom: '3%', backgroundColor: '#ff4d4d', color: 'white' }} onClick={() => {updatePassword(riderEditObj.id)}}>
-                Update
-              </CButton>
+        <CModalFooter>
+          <CButton type="submit" style={{ marginBottom: '3%', backgroundColor: '#ff4d4d', color: 'white' }} onClick={() => { updatePassword(riderEditObj.id) }}>
+            Update
+          </CButton>
         </CModalFooter>
       </CModal>
 
@@ -825,12 +833,12 @@ const Drivers = () => {
           <CModalTitle>Confirmation</CModalTitle>
         </CModalHeader>
         <CModalBody>
-        <a>Are you sure you want to delete this driver?</a><br></br><br></br>
-        <div style={{display : "flex", justifyContent : 'center'}}>
-        <CButton onClick={() => deleteDriver(dId)} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
-        <CButton onClick={() => setVisibleDelete(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
-        </div>
-     
+          <a>Are you sure you want to delete this driver?</a><br></br><br></br>
+          <div style={{ display: "flex", justifyContent: 'center' }}>
+            <CButton onClick={() => deleteDriver(dId)} style={{ backgroundColor: '#ff4d4d', color: 'white', marginRight: '10px' }} >Yes</CButton>
+            <CButton onClick={() => setVisibleDelete(false)} style={{ backgroundColor: '#ff4d4d', color: 'white', marginLeft: '10px' }} >No</CButton>
+          </div>
+
         </CModalBody>
       </CModal>
 
@@ -848,10 +856,10 @@ const Drivers = () => {
           >
             Yes
           </CButton> */}
-          <div style={{display : "flex", justifyContent : 'center'}}>
-        <CButton onClick={() => handleActivate()} style={{  backgroundColor:'#ff4d4d', color:'white',marginRight: '10px' }} >Yes</CButton>
-        <CButton onClick={() => setVisible(false)} style={{  backgroundColor:'#ff4d4d', color:'white',marginLeft: '10px' }} >No</CButton>
-        </div>
+          <div style={{ display: "flex", justifyContent: 'center' }}>
+            <CButton onClick={() => handleActivate()} style={{ backgroundColor: '#ff4d4d', color: 'white', marginRight: '10px' }} >Yes</CButton>
+            <CButton onClick={() => setVisible(false)} style={{ backgroundColor: '#ff4d4d', color: 'white', marginLeft: '10px' }} >No</CButton>
+          </div>
         </CModalBody>
         {/* <CModalFooter>
           <CButton color="secondary" onClick={() => setVisible(false)}>
@@ -865,32 +873,32 @@ const Drivers = () => {
           <CModalTitle>Edit Driver Information</CModalTitle>
         </CModalHeader>
         <CModalBody>
-        <div className="row g-3" >
-          <CCol md={6}>
-            <CFormInput
-              id="name"
-              label="Firt Name"
-              defaultValue={riderEditObj.name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </CCol>
-          <CCol md={6}>
-            <CFormInput
-              id="surname"
-              label="LastName"
-              defaultValue={riderEditObj.surname}
-              onChange={(e) => setSurname(e.target.value)}
-            />
-          </CCol>
-          <CCol md={6}>
-            <CFormInput
-              id="address"
-              label="Address"
-              defaultValue={riderEditObj.address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </CCol>
-          {/* <CCol md={6}>
+          <div className="row g-3" >
+            <CCol md={6}>
+              <CFormInput
+                id="name"
+                label="Firt Name"
+                defaultValue={riderEditObj.name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </CCol>
+            <CCol md={6}>
+              <CFormInput
+                id="surname"
+                label="LastName"
+                defaultValue={riderEditObj.surname}
+                onChange={(e) => setSurname(e.target.value)}
+              />
+            </CCol>
+            <CCol md={6}>
+              <CFormInput
+                id="address"
+                label="Address"
+                defaultValue={riderEditObj.address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+            </CCol>
+            {/* <CCol md={6}>
             <CFormInput
               id="password"
               label="Password"
@@ -899,31 +907,31 @@ const Drivers = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </CCol> */}
-          <CCol md={6}>
-            <CFormInput
-              id="email"
-              label="Email"
-              defaultValue={riderEditObj.email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </CCol>
-          <CCol md={6}>
-            <CFormInput
-              id="phone"
-              label="Contact Number"
-              defaultValue={riderEditObj.contact}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </CCol>
-          <CCol md={6}>
-            <CFormInput
-              id="iban"
-              label="IBAN"
-              defaultValue={riderEditObj.iban}
-              onChange={(e) => setIban(e.target.value)}
-            />
-          </CCol>
-          {/* <CCol md={6}>
+            <CCol md={6}>
+              <CFormInput
+                id="email"
+                label="Email"
+                defaultValue={riderEditObj.email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </CCol>
+            <CCol md={6}>
+              <CFormInput
+                id="phone"
+                label="Contact Number"
+                defaultValue={riderEditObj.contact}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </CCol>
+            <CCol md={6}>
+              <CFormInput
+                id="iban"
+                label="IBAN"
+                defaultValue={riderEditObj.iban}
+                onChange={(e) => setIban(e.target.value)}
+              />
+            </CCol>
+            {/* <CCol md={6}>
             <CFormInput
               id="employeeid"
               label="Employee Id"
@@ -931,27 +939,27 @@ const Drivers = () => {
               onChange={(e) => setEmployeeId(e.target.value)}
             />
           </CCol> */}
-          <CCol md={6}>
-            <CFormInput
-              id="vat"
-              label="Vat"
-              defaultValue={riderEditObj.vat}
-              onChange={(e) => setVat(e.target.value)}
-            />
-          </CCol>
-          <CCol md={6}>
-          <CFormSelect
-            id="inputState"
-            label="City"
-            value={cityEdit}
-            onChange={(e) => setCityEdit(e.target.value)}
-          >
-            <option>{riderEditObj.city}</option>
-            <option >Milano</option>
-            <option>Napoli</option>
-          </CFormSelect>
-        </CCol>
-        {/* <CCol md={6}>
+            <CCol md={6}>
+              <CFormInput
+                id="vat"
+                label="Vat"
+                defaultValue={riderEditObj.vat}
+                onChange={(e) => setVat(e.target.value)}
+              />
+            </CCol>
+            <CCol md={6}>
+              <CFormSelect
+                id="inputState"
+                label="City"
+                value={cityEdit}
+                onChange={(e) => setCityEdit(e.target.value)}
+              >
+                <option>{riderEditObj.city}</option>
+                <option >Milano</option>
+                <option>Napoli</option>
+              </CFormSelect>
+            </CCol>
+            {/* <CCol md={6}>
           <CFormSelect
             id="gender"
             label="Gender"
@@ -963,16 +971,16 @@ const Drivers = () => {
             <option>Female</option>
           </CFormSelect>
         </CCol> */}
-  
-        <CCol xs={6}>
-            <CButton style={{ marginBottom:'3%', width:'200px',backgroundColor:'#ff4d4d',color:'white' }} onClick={()=>handleSubmit()}>
-              Update Rider
-            </CButton>
-          </CCol>
-          <CCol xs={6}>
+
+            <CCol xs={6}>
+              <CButton style={{ marginBottom: '3%', width: '200px', backgroundColor: '#ff4d4d', color: 'white' }} onClick={() => handleSubmit()}>
+                Update Rider
+              </CButton>
+            </CCol>
+            <CCol xs={6}>
               <span style={{ fontSize: 15, color: 'red', cursor: 'pointer', marginLeft: '64%', marginTop: '10%' }} onClick={() => handleTogglePassword()}>Change Password</span>
             </CCol>
-        </div>
+          </div>
         </CModalBody>
         {/* <CModalFooter>
           <CButton color="secondary" onClick={() => setVisibleRider(false)}>

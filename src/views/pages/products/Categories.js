@@ -79,9 +79,9 @@ const Categories = () => {
     const handler = setTimeout(() => {
       if (searchQuery.length >= 3) {
         setDebouncedSearchQuery(searchQuery);
-    }else if(searchQuery.length === 0){
-      setDebouncedSearchQuery(searchQuery);
-    }
+      } else if (searchQuery.length === 0) {
+        setDebouncedSearchQuery(searchQuery);
+      }
     }, 500);
 
     return () => {
@@ -93,7 +93,7 @@ const Categories = () => {
   useEffect(() => {
     if (token) {
       axios
-        .get(BASE_URL+'assistant/market/chains/all', {
+        .get(BASE_URL + 'assistant/market/chains/all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -148,7 +148,7 @@ const Categories = () => {
   const loadDataMarkets = (chainId) => {
     axios
       .get(
-        BASE_URL+`assistant/market/locations?brand=${chainId}`,
+        BASE_URL + `assistant/market/locations?brand=${chainId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -210,15 +210,15 @@ const Categories = () => {
           })
         } else if (res.status === 204) {
           setLoading(false)
-          dispatch({
-            type: SET_ALERT,
-            payload: {
-              status: true,
-              title: 'No Products',
-              message: "No products found in this market address",
-              color: 'info'
-            }
-          })
+          // dispatch({
+          //   type: SET_ALERT,
+          //   payload: {
+          //     status: true,
+          //     title: 'No Products',
+          //     message: "No products found in this market address",
+          //     color: 'info'
+          //   }
+          // })
         } else if (res.status === 500) {
           setLoading(false)
           dispatch({
@@ -539,7 +539,7 @@ const Categories = () => {
   }
 
 
- 
+
 
   return (
     <CContainer>
@@ -599,7 +599,7 @@ const Categories = () => {
           ))}
         </CDropdownMenu>
       </CDropdown>
-      
+
 
 
 
@@ -637,20 +637,28 @@ const Categories = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          {productData.map((item, index) => {
-            return (
-              <CTableRow key={index}>
-                <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-                <CTableDataCell>{item.pid}</CTableDataCell>
-                <CTableHeaderCell onClick={() => { handleToggleImageUploader(item.productId) }}><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
-                <CTableDataCell>{item.name}</CTableDataCell>
-                <CTableDataCell>{item.price}<Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item.productId, item.price)} /></Link></CTableDataCell>
-                <CTableDataCell>{item.brand}</CTableDataCell>
-                <CTableDataCell>{item.chainName}</CTableDataCell>
-                <CTableDataCell>{item.marketAddress}</CTableDataCell>
-              </CTableRow>
-            )
-          })}
+          {productData.length === 0 ? (
+            <CTableRow>
+              <CTableDataCell colSpan="8" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                <h6 style={{ marginTop: "1%" }}>No Data</h6>
+              </CTableDataCell>
+            </CTableRow>
+          ) : (
+            productData.map((item, index) => {
+              return (
+                <CTableRow key={index}>
+                  <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                  <CTableDataCell>{item.pid}</CTableDataCell>
+                  <CTableHeaderCell onClick={() => { handleToggleImageUploader(item.productId) }}><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
+                  <CTableDataCell>{item.name}</CTableDataCell>
+                  <CTableDataCell>{item.price}<Link to={``}><CIcon icon={cilPencil} size="sm" onClick={() => handleToggleName(item.productId, item.price)} /></Link></CTableDataCell>
+                  <CTableDataCell>{item.brand}</CTableDataCell>
+                  <CTableDataCell>{item.chainName}</CTableDataCell>
+                  <CTableDataCell>{item.marketAddress}</CTableDataCell>
+                </CTableRow>
+              )
+            })
+          )}
         </CTableBody>
       </CTable>
 

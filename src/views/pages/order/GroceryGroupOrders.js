@@ -162,7 +162,14 @@ const GroceryGroupOrders = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {groceryGroupOrdersData.items?.map((order, orderIndex) =>
+              {groceryGroupOrdersData.length === 0 ? (
+                        <CTableRow>
+                          <CTableDataCell colSpan="6" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ) :  (
+              groceryGroupOrdersData.items?.map((order, orderIndex) =>
                 order.items?.map((item, itemIndex) => (
                   <CTableRow key={`${orderIndex}-${itemIndex}`}>
                     <CTableDataCell>{itemIndex + 1}</CTableDataCell>
@@ -178,7 +185,7 @@ const GroceryGroupOrders = () => {
                     <CTableDataCell>{item.price}</CTableDataCell>
                   </CTableRow>
                 )),
-              )}
+              ))}
             </CTableBody>
           </CTable>
         </div>

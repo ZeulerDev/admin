@@ -194,7 +194,14 @@ const GroceryOrderLits = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {ordersData.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
+            {
+            ordersData.length === 0 ? (
+              <CTableRow>
+                <CTableDataCell colSpan="11" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                  <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                </CTableDataCell>
+              </CTableRow>
+            ) : (
             ordersData.map((item,index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
@@ -218,7 +225,8 @@ const GroceryOrderLits = () => {
                 </Link>
               </CTableDataCell> */}
               </CTableRow>
-            ))}
+            ))
+            )}
           </CTableBody>
         </CTable>
       )}
@@ -259,7 +267,14 @@ const GroceryOrderLits = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {orderDataDetails?.map((items, index) => (
+                {orderDataDetails.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="6" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+                orderDataDetails?.map((items, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell>{index + 1}</CTableDataCell>
                     <CTableDataCell>
@@ -277,7 +292,8 @@ const GroceryOrderLits = () => {
                     </CTableDataCell>
                     {/* <CTableDataCell><CBadge style={{ width:80 }} color="info">{items.status}</CBadge></CTableDataCell> */}
                   </CTableRow>
-                ))}
+                ))
+                )}
               </CTableBody>
             </CTable>
           )}

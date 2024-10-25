@@ -1,30 +1,30 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
-    CContainer,
-    CTable,
-    CTableHead,
-    CTableRow,
-    CTableHeaderCell,
-    CTableBody,
-    CTableDataCell,
-    CButton,
-    CNavbar,
-    CForm,
-    CPagination,
-    CPaginationItem,
-    CDropdownToggle,
-    CDropdownMenu,
-    CDropdownItem,
-    CDropdown,
-    CSpinner,
-  } from '@coreui/react'
-  import { Link,useParams } from 'react-router-dom'
-  import { useAppContext } from '../../../../context/AppContext'
-  import axios from 'axios'
+  CContainer,
+  CTable,
+  CTableHead,
+  CTableRow,
+  CTableHeaderCell,
+  CTableBody,
+  CTableDataCell,
+  CButton,
+  CNavbar,
+  CForm,
+  CPagination,
+  CPaginationItem,
+  CDropdownToggle,
+  CDropdownMenu,
+  CDropdownItem,
+  CDropdown,
+  CSpinner,
+} from '@coreui/react'
+import { Link, useParams } from 'react-router-dom'
+import { useAppContext } from '../../../../context/AppContext'
+import axios from 'axios'
 import { BASE_URL } from '../../../../context/config'
 import { SET_ALERT } from '../../../../context/context_reducer'
 
-const MarketDistance = ()=>{
+const MarketDistance = () => {
 
   const { id } = useParams()
   const [{ user, token }, dispatch] = useAppContext()
@@ -34,14 +34,14 @@ const MarketDistance = ()=>{
 
   useEffect(() => {
     loadData(id)
-  },[user])
+  }, [user])
 
-  const loadData = (id)=>{
-    if(id){
+  const loadData = (id) => {
+    if (id) {
       if (user && token) {
         setLoading(true)
         axios
-          .get(BASE_URL+`market/group/distance/${id}`, {
+          .get(BASE_URL + `market/group/distance/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -52,11 +52,11 @@ const MarketDistance = ()=>{
               setLoading(false)
             } else if (res.status === 500) {
               dispatch({
-                type : SET_ALERT,
-                payload : {
-                  status : true,
-                  title : 'Market group distance loading error',
-                  message : res.data.message
+                type: SET_ALERT,
+                payload: {
+                  status: true,
+                  title: 'Market group distance loading error',
+                  message: res.data.message
                 }
               })
             }
@@ -65,121 +65,129 @@ const MarketDistance = ()=>{
           })
       }
 
-    }else{
+    } else {
       dispatch({
-        type : SET_ALERT,
-        payload : {
-          status : true,
-          title : 'Id Not found',
-          color : 'danger',
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Id Not found',
+          color: 'danger',
         }
       })
     }
   }
 
-  const fetchRoutes = (id)=>{
-    if(user && token){
+  const fetchRoutes = (id) => {
+    if (user && token) {
       setLoadingRoutes(true)
-      axios.get(BASE_URL+`market/group/fetch/routes/${id}`,{
-        headers : {
-          Authorization : `Bearer ${token}`
+      axios.get(BASE_URL + `market/group/fetch/routes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
       })
-      .then((res)=>{
-        if(res.status === 200){
-          setLoadingRoutes(false)
-          console.log('load data')
-          dispatch({
-            type : SET_ALERT,
-            payload : {
-              status : true,
-              title : 'Routes fetched',
-              message : 'Routes fetched successfully',
-              color : 'success'
-            }
-          })
-          loadData(id)
-
-          
-        }else if(res.status === 500){
-          dispatch({
-            type : SET_ALERT,
-            payload : {
-              status : true,
-              title : 'Routes fetching error',
-              message : res.data.message,
-              color : 'danger'
-            }
-          })
-        }
-      })
+        .then((res) => {
+          if (res.status === 200) {
+            setLoadingRoutes(false)
+            console.log('load data')
+            dispatch({
+              type: SET_ALERT,
+              payload: {
+                status: true,
+                title: 'Routes fetched',
+                message: 'Routes fetched successfully',
+                color: 'success'
+              }
+            })
+            loadData(id)
 
 
-    }else{
+          } else if (res.status === 500) {
+            dispatch({
+              type: SET_ALERT,
+              payload: {
+                status: true,
+                title: 'Routes fetching error',
+                message: res.data.message,
+                color: 'danger'
+              }
+            })
+          }
+        })
+
+
+    } else {
       dispatch({
-        type : SET_ALERT,
-        payload : {
-          status : true,
-          title : 'User not found',
-          message : 'Please login to continue'
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'User not found',
+          message: 'Please login to continue'
         }
       })
     }
   }
- 
 
-  
-    return(
-        <CContainer>
-            <CButton onClick={()=>{fetchRoutes(id)}} style={{ marginLeft: '82%', width: '17%', backgroundColor: '#ff4d4d', color: 'white' }}>
-                   {loadingRoutes ? <CSpinner color="info" size="sm"/> : 
-                   <>  Fetch Routes</>
 
-                   }
-                   
-                 
-            </CButton>
-        <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
-       
-        </CNavbar>
-  
-        {loading ? <CSpinner/> : <CTable>
-          <CTableHead>
+
+  return (
+    <CContainer>
+      <CButton onClick={() => { fetchRoutes(id) }} style={{ marginLeft: '82%', width: '17%', backgroundColor: '#ff4d4d', color: 'white' }}>
+        {loadingRoutes ? <CSpinner color="info" size="sm" /> :
+          <>  Fetch Routes</>
+
+        }
+
+
+      </CButton>
+      <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
+
+      </CNavbar>
+
+      {loading ? <CSpinner /> : <CTable>
+        <CTableHead>
+          <CTableRow>
+            <CTableHeaderCell scope="col">#</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Routers</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Distance</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Duration</CTableHeaderCell>
+
+          </CTableRow>
+        </CTableHead>
+        <CTableBody>
+          {marketLocation.length === 0 ? (
             <CTableRow>
-              <CTableHeaderCell scope="col">#</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Routers</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Distance</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Duration</CTableHeaderCell>
-              
+              <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                <h6 style={{ marginTop: "1%" }}>No Data</h6>
+              </CTableDataCell>
             </CTableRow>
-          </CTableHead>
-          <CTableBody>
-          {marketLocation.map((item, index) => (
-            
+          ) : (
+            marketLocation.map((item, index) => (
+
               <CTableRow key={index}>
-                <CTableDataCell>{index+1}</CTableDataCell>
-                
+                <CTableDataCell>{index + 1}</CTableDataCell>
+
                 <CTableDataCell>
-                {item.routeFlow.map((flow, flowIndex) => (
-                  <div key={flowIndex}>{flow}</div>
-               ))}
+                  {item.routeFlow.map((flow, flowIndex) => (
+                    <div key={flowIndex}>{flow}</div>
+                  ))}
 
                 </CTableDataCell>
                 <CTableDataCell>{item.distance} m</CTableDataCell>
                 <CTableDataCell>{item.duration} min</CTableDataCell>
               </CTableRow>
-          ))}
-          </CTableBody>
-        </CTable>
+            ))
+          )}
+        </CTableBody>
+      </CTable>
 
-        }
-  
-        {/* <CPagination aria-label="Page navigation example">
+      }
+
+      {/* <CPagination aria-label="Page navigation example">
           <CPaginationItem>Previous</CPaginationItem>
           <CPaginationItem>Next</CPaginationItem>
         </CPagination> */}
-      </CContainer>
-    )
+    </CContainer>
+  )
 }
 
 export default MarketDistance

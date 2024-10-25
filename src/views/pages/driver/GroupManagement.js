@@ -578,7 +578,14 @@ const GroupManagement = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {driverData.map((item, index) => (
+            {driverData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="10" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+            driverData.map((item, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{item.name}</CTableDataCell>
@@ -625,7 +632,8 @@ const GroupManagement = () => {
                   )}
                 </CTableDataCell>
               </CTableRow>
-            ))}
+            ))
+            )}
           </CTableBody>
         </CTable>
       )}

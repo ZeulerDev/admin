@@ -29,7 +29,7 @@ const Orders = () => {
   const { id } = useParams()
 
   const [{ token, user }, dispatch] = useAppContext()
-  const [OrderData, setOrderData] = useState([])
+  const [orderData, setOrderData] = useState([])
   const [loading, setLoading] = useState(false)
   const [ProductData, setProductData] = useState([])
   const [productId, setProductIDData] = useState([])
@@ -128,48 +128,48 @@ const Orders = () => {
       <CNavbar className="bg-body-tertiary">
       </CNavbar>
 
-      { loading ? <CSpinner/> : <CTable>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Total</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Date</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Saving</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Address</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Products</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          {OrderData.length === 0? <h6 style={{marginTop:"1%"}}>No data</h6> :
-          OrderData.map((item,index) => (
-            <CTableRow key={index}>
-              <CTableDataCell>{index + 1}</CTableDataCell>
-              <CTableDataCell scope="row">{item.name}</CTableDataCell>
-              <CTableDataCell>{item.total}</CTableDataCell>
-              <CTableDataCell>{item.date}</CTableDataCell>
-              <CTableDataCell>{item.saving}</CTableDataCell>
-              <CTableDataCell>{item.address.address}</CTableDataCell>
-              <CTableDataCell>
-                {/* <Link to={`/customers/list/products/${item.id}`}> */}
-                  <CButton onClick={() => handleToggle(item.id)} size='sm' style={{ backgroundColor:'#ff4d4d',color:'white'}}>
-                    View
-                  </CButton>
-                {/* </Link> */}
-              </CTableDataCell>
+      {loading ? <CSpinner /> : (
+        <CTable>
+          <CTableHead>
+            <CTableRow>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Total</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Date</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Saving</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Address</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Products</CTableHeaderCell>
             </CTableRow>
-          ))}
-        </CTableBody>
-      </CTable>
+          </CTableHead>
+          <CTableBody>
+            {orderData.length !== 0 ? (
+              orderData.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{index + 1}</CTableDataCell>
+                  <CTableDataCell scope="row">{item.name}</CTableDataCell>
+                  <CTableDataCell>{item.total}</CTableDataCell>
+                  <CTableDataCell>{item.date}</CTableDataCell>
+                  <CTableDataCell>{item.saving}</CTableDataCell>
+                  <CTableDataCell>{item.address.address}</CTableDataCell>
+                  <CTableDataCell>
+                    <CButton onClick={() => handleToggle(item.id)} size='sm' style={{ backgroundColor: '#ff4d4d', color: 'white' }}>
+                      View
+                    </CButton>
+                  </CTableDataCell>
+                </CTableRow>
+              ))
+            ) : (
+              <CTableRow>
+                <CTableDataCell colSpan="7" style={{ textAlign: 'center' }}>
+                  <h6 style={{ marginTop: "1%" }}>No data</h6>
+                </CTableDataCell>
+              </CTableRow>
+            )}
+          </CTableBody>
+        </CTable>
+      )}
 
-      }
-
-      {/* <CPagination aria-label="Page navigation example">
-        <CPaginationItem>Previous</CPaginationItem>
-        <CPaginationItem>Next</CPaginationItem>
-      </CPagination> */}
-
-<CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>
+      <CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>
         <CModalHeader closeButton>
           <CModalTitle>Customer Order List Information</CModalTitle>
         </CModalHeader>
@@ -185,49 +185,50 @@ const Orders = () => {
             <CSpinner />
           ) : (
             <CTable>
-            <CTableHead>
-              <CTableRow>
-              <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Price</CTableHeaderCell>
-                <CTableHeaderCell scope="col">SubTotal</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Measurement</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Saving</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Quantity</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Chain</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Market</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {ProductData.map((item, index) => (
-                <CTableRow key={index}>
-                  <CTableDataCell>{index + 1}</CTableDataCell>
-                  <CTableDataCell scope="row"><CCardImage style={{ width :'50px', height:'50px' }} src={`https://api.zeuler.com/image/`+item.photo} /></CTableDataCell>
-                  <CTableDataCell>{item.name}</CTableDataCell>
-                  <CTableDataCell>{item.price}</CTableDataCell>
-                  <CTableDataCell>{item.subTotal}</CTableDataCell>
-                  <CTableDataCell>{item.measurement}</CTableDataCell>
-                  <CTableDataCell>{item.saving}</CTableDataCell>
-                  <CTableDataCell>{item.quantity}</CTableDataCell>
-                  <CTableDataCell>{item.chain}</CTableDataCell>
-                  <CTableDataCell>{item.market}</CTableDataCell>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Price</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">SubTotal</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Measurement</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Saving</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Quantity</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Chain</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Market</CTableHeaderCell>
                 </CTableRow>
-              ))}
-            </CTableBody>
-          </CTable>
+              </CTableHead>
+              <CTableBody>
+                {ProductData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="10" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+                  ProductData.map((item, index) => (
+                    <CTableRow key={index}>
+                      <CTableDataCell>{index + 1}</CTableDataCell>
+                      <CTableDataCell scope="row"><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.photo} /></CTableDataCell>
+                      <CTableDataCell>{item.name}</CTableDataCell>
+                      <CTableDataCell>{item.price}</CTableDataCell>
+                      <CTableDataCell>{item.subTotal}</CTableDataCell>
+                      <CTableDataCell>{item.measurement}</CTableDataCell>
+                      <CTableDataCell>{item.saving}</CTableDataCell>
+                      <CTableDataCell>{item.quantity}</CTableDataCell>
+                      <CTableDataCell>{item.chain}</CTableDataCell>
+                      <CTableDataCell>{item.market}</CTableDataCell>
+                    </CTableRow>
+                  ))
+                )}
+              </CTableBody>
+            </CTable>
           )}
         </CModalBody>
         <CModalFooter>
-          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton> */}
         </CModalFooter>
       </CModal>
-
-
-
-
     </CContainer>
   )
 }

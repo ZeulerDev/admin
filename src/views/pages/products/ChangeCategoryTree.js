@@ -798,15 +798,15 @@ const CreateCategoryTree = () => {
                     })
                 } else if (res.status === 204) {
                     setLoadingProduct(false)
-                    dispatch({
-                        type: SET_ALERT,
-                        payload: {
-                            status: true,
-                            title: 'No Products',
-                            message: "No products found in this market address",
-                            color: 'info'
-                        }
-                    })
+                    // dispatch({
+                    //     type: SET_ALERT,
+                    //     payload: {
+                    //         status: true,
+                    //         title: 'No Products',
+                    //         message: "No products found in this market address",
+                    //         color: 'info'
+                    //     }
+                    // })
                 } else if (res.status === 500) {
                     setLoadingProduct(false)
                     dispatch({

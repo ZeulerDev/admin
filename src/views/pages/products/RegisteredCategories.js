@@ -228,7 +228,14 @@ const RegisteredCategories = () => {
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                        {ordersData.map((item, index) => (
+                        {ordersData.length === 0 ? (
+                                    <CTableRow>
+                                        <CTableDataCell colSpan="5" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ) : (
+                        ordersData.map((item, index) => (
                             <CTableRow key={index}>
                                 <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
                               
@@ -261,7 +268,8 @@ const RegisteredCategories = () => {
                                 {/* <CTableDataCell>{item.chainName}</CTableDataCell>
                                 <CTableDataCell>{item.marketAddress}</CTableDataCell> */}
                             </CTableRow>
-                        ))}
+                        ))
+                    )}
                     </CTableBody>
                 </CTable>
             )}

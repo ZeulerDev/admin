@@ -298,7 +298,14 @@ const VatManagement = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {pickersVatData.map((item, index) => (
+            {pickersVatData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="8" style={{ textAlign: 'center',backgroundColor:"white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+            pickersVatData.map((item, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{index + 1}</CTableDataCell>
                 <CTableDataCell>{item.name}</CTableDataCell>
@@ -309,7 +316,8 @@ const VatManagement = () => {
                 <CTableDataCell>{item.market?.chain?.name} - {item.market?.address}</CTableDataCell>
                 <CTableDataCell>{item.vat === "" ? <CButton size='sm' style={{ backgroundColor:"#ff4d4d", width: 70,color:'white' }} onClick={() => handleToggle(item.id, item.vat)}>Insert </CButton> : <CButton size='sm' style={{ backgroundColor:"#ff4d4d", width: 70,color:'white' }} onClick={() => handleToggle(item.id, item.vat)}>Edit </CButton>}</CTableDataCell>
               </CTableRow>
-            ))}
+            ))
+          )}
           </CTableBody>
         </CTable>
 
