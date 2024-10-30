@@ -178,7 +178,7 @@ const GroceryList = () => {
       </CNavbar>
 
       {loading ? (
-        <CSpinner />
+        <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
       ) : (
         <CTable>
           <CTableHead>
@@ -278,7 +278,7 @@ const GroceryList = () => {
           }}
         >
           {loadingModal ? (
-            <CSpinner />
+             <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
           ) : (
             <CTable>
               <CTableHead>
@@ -350,7 +350,7 @@ const GroceryList = () => {
           }}
         >
           {loadingModal ? (
-            <CSpinner />
+             <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
           ) : (
             <div>
               <CRow className="mb-3">

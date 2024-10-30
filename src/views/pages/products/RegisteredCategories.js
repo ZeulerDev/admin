@@ -212,7 +212,7 @@ const RegisteredCategories = () => {
             </CNavbar>
 
             {loading ? (
-                <CSpinner />
+                <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
             ) : (
                 <CTable>
                     <CTableHead>

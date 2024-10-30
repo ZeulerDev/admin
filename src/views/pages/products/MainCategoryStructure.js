@@ -489,7 +489,7 @@ const MainCategoryStructure = () => {
             </CModal>
 
 
-            {loadingCategory ? <CSpinner /> : <CTable>
+            {loadingCategory ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
                 <CTableHead>
                     <CTableRow>
                         <CTableHeaderCell scope="col">#</CTableHeaderCell>

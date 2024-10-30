@@ -33,9 +33,10 @@ import axios from 'axios'
 import { useAppContext } from '../../../context/AppContext'
 import { SET_ALERT } from '../../../context/context_reducer'
 import { Link } from 'react-router-dom'
-import { cilBan, cilFolderOpen, cilList, cilMove, cilPen, cilPencil, cilSchool, cilStorage, cilViewColumn, cilViewModule } from '@coreui/icons'
+import { cilBan, cilFolderOpen, cilList, cilMove, cilPen, cilPencil, cilSchool, cilStorage, cilTrash, cilViewColumn, cilViewModule } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { BASE_URL } from '../../../context/config'
+
 import Market from './../Market/Markets';
 
 const Flayers = () => {
@@ -774,15 +775,15 @@ const Flayers = () => {
                         setLoadingMarkerModal(false)
                     } else {
                         setLoadingMarkerModal(false)
-                        dispatch({
-                            type: SET_ALERT,
-                            payload: {
-                                status: true,
-                                title: 'Market Loading',
-                                message: 'No market assigned to this flayer',
-                                color: 'info'
-                            }
-                        })
+                        // dispatch({
+                        //     type: SET_ALERT,
+                        //     payload: {
+                        //         status: true,
+                        //         title: 'Market Loading',
+                        //         message: 'No market assigned to this flayer',
+                        //         color: 'info'
+                        //     }
+                        // })
                     }
 
 
@@ -819,18 +820,19 @@ const Flayers = () => {
 
                 />
             </CNavbar>
-            {loadingMain ? <CSpinner /> : <CTable>
+            {loadingMain ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
                 <CTableHead>
                     <CTableRow>
                         <CTableHeaderCell scope="col">#</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Id</CTableHeaderCell>
                         <CTableHeaderCell scope="col">End Date</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Retailer</CTableHeaderCell>
-                        <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                        
                         <CTableHeaderCell scope="col">Markets</CTableHeaderCell>
                         {/* <CTableHeaderCell scope="col">Disabled</CTableHeaderCell> */}
                         <CTableHeaderCell scope="col">Products</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Assigned Market</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Action</CTableHeaderCell>
 
                     </CTableRow>
                 </CTableHead>
@@ -850,7 +852,6 @@ const Flayers = () => {
                                 <CTableDataCell>{item.endDate}</CTableDataCell>
                                 <CTableDataCell>{item.retailer}</CTableDataCell>
                                 {/* <CTableDataCell>{item.status === true ? 'Active' : 'Inactive'}</CTableDataCell> */}
-                                <CTableDataCell>{item.status === true ? <CButton size='sm' onClick={() => { handleToggle(item._id, false) }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Deactivate</CButton> : <CButton size='sm' onClick={() => { handleToggle(item._id, true) }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Activate</CButton>}</CTableDataCell>
                                 <CTableDataCell>
                                     <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleMarketView(item.stores, item._id) }}>
                                         <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
@@ -867,6 +868,8 @@ const Flayers = () => {
                                         <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
                                     </CButton>
                                 </CTableDataCell>
+                                <CTableDataCell>{item.status === true ? <CButton size='sm' onClick={() => { handleToggle(item._id, false) }} style={{ backgroundColor: '#ff4d4d', color: 'white' }} > <CIcon icon={cilTrash} size='lg' style={{ color: 'white' }} /></CButton> : <CButton size='sm' onClick={() => { handleToggle(item._id, true) }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Activate</CButton>}</CTableDataCell>
+
                             </CTableRow>
                         )
                     })
@@ -891,13 +894,15 @@ const Flayers = () => {
                 </CPaginationItem>
             </CPagination>
 
-            <CModal alignment="center" visible={visibleAssignMarket} scrollable size='lg' onClose={() => setVisibleAssignMarket(false)}>
+            <CModal alignment="center" visible={visibleAssignMarket} scrollable size='lg' onClose={() => {
+                setAssignMarkets([])
+                setVisibleAssignMarket(false)}}>
                 <CModalHeader closeButton>
                     <CModalTitle>All Assign Markets details</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
 
-                    {loadingMarketModal ? <CSpinner /> : <CTable>
+                    {loadingMarketModal ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
                         <CTableHead>
                             <CTableRow>
                                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -984,7 +989,7 @@ const Flayers = () => {
                     }}
                 >
                     {loading ? (
-                        <CSpinner />
+                       <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
                     ) : (
                         <CTable>
                             <CTableHead>
@@ -1080,7 +1085,7 @@ const Flayers = () => {
                     <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
 
                     </CNavbar>
-                    {loadingModal ? <CSpinner /> : <CTable>
+                    {loadingModal ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>: <CTable>
                         <CTableHead>
                             <CTableRow>
                                 <CTableHeaderCell scope="col">#</CTableHeaderCell>

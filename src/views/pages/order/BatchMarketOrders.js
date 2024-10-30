@@ -129,7 +129,7 @@ const BatchMarketOrders = () => {
       </CNavbar>
 
       {loading ? (
-        <CSpinner />
+      <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
       ) : (
         <CTable>
           <CTableHead>
@@ -194,7 +194,7 @@ const BatchMarketOrders = () => {
           }}
         >
           {loadingModal ? (
-            <CSpinner />
+           <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
           ) : (
             <CTable>
               <CTableHead>

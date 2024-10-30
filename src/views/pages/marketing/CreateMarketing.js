@@ -1,16 +1,17 @@
-import { CBadge, CButton, CCardImage, CContainer, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormInput, CNavbar, CPagination, CPaginationItem, CSpinner, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
+import { CBadge, CButton, CCardImage, CCol, CContainer, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CFormCheck, CFormInput, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle, CNavbar, CPagination, CPaginationItem, CRow, CSpinner, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow } from '@coreui/react';
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../../context/AppContext';
 import axios from 'axios';
 import { BASE_URL } from '../../../context/config';
 import { cilTrash } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { SET_ALERT } from '../../../context/context_reducer';
-import { set } from 'rsuite/esm/utils/dateUtils';
+
 
 const CreateMarketing = () => {
-
+    const { id } = useParams()
+    const [paramBaseLinkId, setParamBaseLinkId] = useState('')
     const [selectedType, setSelectedType] = useState('all');
     const [{ user, token }, dispatch] = useAppContext()
     const [loading, setLoading] = useState(false)
@@ -25,10 +26,6 @@ const CreateMarketing = () => {
     const [chainMarket, setChainMarketData] = useState([])
     const [searchQuery, setSearchQuery] = useState('');
     const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
-    const [visiblePriceModal, setVisiblePriceModal] = useState(false)
-    const [id, setId] = useState('')
-    const [price, setPrice] = useState('')
-    const [priceDisplay, setPriceDisplay] = useState('')
     const [resultCount, setResultCount] = useState(0)
     const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate()
@@ -39,6 +36,8 @@ const CreateMarketing = () => {
     const [selectedMarketGroups, setSelectedMarketGroups] = useState('All MarketGroups')
     const [selectedMarketGroup, setSelectedMarketGroup] = useState('All Markets in Group')
     const [group, setGroup] = useState([])
+    const [mid,setMid] = useState('')
+    const [marketId,setMarketId]=useState('')
 
     // market section
     const [paramCity, setParamCityData] = useState('')
@@ -46,6 +45,15 @@ const CreateMarketing = () => {
 
     // market group section
     const [marketGroupData, setMarketGroupData] = useState([])
+    const [visibleAssignMarket, setVisibleAssignMarket] = useState(false)
+    const [gId, setGid] = useState('')
+    const [gMarket, setGMarket] = useState([])
+    const [loadingMarketModal, setLoadingMarkerModal] = useState(false)
+
+    useEffect(() => {
+        console.log('ID', id)
+        setParamBaseLinkId(id)
+    }, [])
 
     useEffect(() => {
         if (status) {
@@ -250,7 +258,7 @@ const CreateMarketing = () => {
             setSelectedChian('All Chains')
             setChainMarketData([])
             setSearchQuery('')
-        } else if(mId === 'group'){
+        } else if (mId === 'group') {
             setParamMarketData(marketName.marketId)
             setSelectedMarketGroup(`${marketName.chainName}- ${marketName.marketAddress}`)
             setSearchQuery('')
@@ -454,7 +462,7 @@ const CreateMarketing = () => {
     const loadDataMarketGroup = (count) => {
         setLoading(true)
         axios
-            .get(BASE_URL + `market/groups/fetch/${count}?city=${paramCity}`, {
+            .get(BASE_URL + `market/groups/base/link/fetch/${count}?city=${paramCity}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -462,6 +470,7 @@ const CreateMarketing = () => {
             .then((res) => {
                 console.log(res.status)
                 if (res.status === 200) {
+                    console.log(res.data)
                     setMarketGroupData(res.data)
                     setLoading(false)
                     if (res.data.length < 20) {
@@ -491,10 +500,31 @@ const CreateMarketing = () => {
         console.log(selectedType, paramId)
 
         if (selectedType && id) {
-            const formData = {
-                type: selectedType,
-                id: id,
+            let formData;
+            if (paramBaseLinkId !== '') {
+                if(marketId !== '' && marketId !== 'all'){ 
+                    formData = {
+                        type: selectedType,
+                        id: id,
+                        baseLinkId: paramBaseLinkId,
+                        marketIndex: marketId
+                    }
+                }else{
+                    formData = {
+                        type: selectedType,
+                        id: id,
+                        baseLinkId: paramBaseLinkId
+                    }
+                }
+              
+            } else {
+                formData = {
+                    type: selectedType,
+                    id: id,
+                }
             }
+
+
             console.log(formData)
 
             if (user && token) {
@@ -515,7 +545,13 @@ const CreateMarketing = () => {
                                     color: 'success'
                                 }
                             })
-                            navigate('/marketing/all')
+                            if (paramBaseLinkId !== 'none') {
+                                navigate('/marketing/app/flayer/all')
+
+                            } else {
+                                navigate('/marketing/all')
+
+                            }
                         } else if (res.status === 400) {
                             dispatch({
                                 type: SET_ALERT,
@@ -547,6 +583,35 @@ const CreateMarketing = () => {
             alert('Please Check the Fields!')
         }
 
+    }
+
+    const handleToggleMarket = (market,id) => {
+        setLoadingMarkerModal(true)
+        console.log('markets', market)
+        setVisibleAssignMarket(true)
+        setGMarket(market)
+        setMid(id)
+        setLoadingMarkerModal(false)
+    }
+
+
+    const saveMarket = () => {
+        if(marketId === 'all'){
+            handleSubmit(mid)
+        } else if(marketId !== '') {
+        handleSubmit(mid)
+        // console.log('market group', mid)
+        }else{
+            dispatch({
+                type: SET_ALERT,
+                payload: {
+                    status: true,
+                    title: 'Market Selection',
+                    message: 'Please select the market',
+                    color: 'info'
+                }
+            })
+        }
     }
 
     return (
@@ -583,9 +648,9 @@ const CreateMarketing = () => {
                         <CDropdownMenu>
                             <CDropdownItem onClick={() => marketGroups('all')}>All</CDropdownItem>
                             {group.map((item, index) => (
-                                    <CDropdownItem onClick={() => {market('group', item)}} key={index}>
-                                        {item.chainName} - {item.marketAddress}
-                                    </CDropdownItem>
+                                <CDropdownItem onClick={() => { market('group', item) }} key={index}>
+                                    {item.chainName} - {item.marketAddress}
+                                </CDropdownItem>
                             ))}
 
                         </CDropdownMenu>
@@ -622,7 +687,7 @@ const CreateMarketing = () => {
                         </CDropdownMenu>
                     </CDropdown>
                     <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
-                  
+
                         <CFormInput
                             type="text"
                             placeholder="Search products by name, brand name and product id"
@@ -634,7 +699,7 @@ const CreateMarketing = () => {
 
                     </CNavbar>
 
-                    {loading ? <CSpinner /> : <CTable>
+                    {loading ? <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "15%" }} /></div> : <CTable>
                         <CTableHead>
                             <CTableRow>
                                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -654,36 +719,36 @@ const CreateMarketing = () => {
                         </CTableHead>
                         <CTableBody>
                             {productData.length === 0 ? (
-                                    <CTableRow>
-                                        <CTableDataCell colSpan="13" style={{ textAlign: 'center', backgroundColor: "white" }}>
-                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
-                                        </CTableDataCell>
-                                    </CTableRow>
-                                ) : (
-                            productData.map((item, index) => {
-                                return (
-                                    <CTableRow key={index}>
-                                        <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-                                        <CTableDataCell>{item.pid}</CTableDataCell>
-                                        <CTableHeaderCell><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
-                                        <CTableDataCell>{item.name}</CTableDataCell>
-                                        <CTableDataCell>{(item.price?.basePrice ?? 0).toFixed(2)}</CTableDataCell>
-                                        <CTableDataCell>{(item.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
-                                        <CTableDataCell>{item.price.percentage}%</CTableDataCell>
-                                        <CTableDataCell>{(item.price?.markup ?? 0).toFixed(2)}</CTableDataCell>
-                                        <CTableDataCell>{(item.price?.total ?? 0).toFixed(2)}</CTableDataCell>
-                                        <CTableDataCell>{item.brand}</CTableDataCell>
-                                        <CTableDataCell>{item.chainName}</CTableDataCell>
-                                        <CTableDataCell>{item.marketAddress}</CTableDataCell>
-                                        <CTableDataCell>
-                                            <CButton size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }} variant="outline" onClick={() => { handleSubmit(item.productId) }}>
-                                                Add
-                                            </CButton>
-                                        </CTableDataCell>
-                                    </CTableRow>
-                                )
-                            })
-                        )}
+                                <CTableRow>
+                                    <CTableDataCell colSpan="13" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                        <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                    </CTableDataCell>
+                                </CTableRow>
+                            ) : (
+                                productData.map((item, index) => {
+                                    return (
+                                        <CTableRow key={index}>
+                                            <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                                            <CTableDataCell>{item.pid}</CTableDataCell>
+                                            <CTableHeaderCell><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + item.image} /></CTableHeaderCell>
+                                            <CTableDataCell>{item.name}</CTableDataCell>
+                                            <CTableDataCell>{(item.price?.basePrice ?? 0).toFixed(2)}</CTableDataCell>
+                                            <CTableDataCell>{(item.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
+                                            <CTableDataCell>{item.price.percentage}%</CTableDataCell>
+                                            <CTableDataCell>{(item.price?.markup ?? 0).toFixed(2)}</CTableDataCell>
+                                            <CTableDataCell>{(item.price?.total ?? 0).toFixed(2)}</CTableDataCell>
+                                            <CTableDataCell>{item.brand}</CTableDataCell>
+                                            <CTableDataCell>{item.chainName}</CTableDataCell>
+                                            <CTableDataCell>{item.marketAddress}</CTableDataCell>
+                                            <CTableDataCell>
+                                                <CButton size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }} variant="outline" onClick={() => { handleSubmit(item.productId) }}>
+                                                    Add
+                                                </CButton>
+                                            </CTableDataCell>
+                                        </CTableRow>
+                                    )
+                                })
+                            )}
                         </CTableBody>
                     </CTable>
 
@@ -733,7 +798,7 @@ const CreateMarketing = () => {
                     <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
                     </CNavbar>
 
-                    {loading ? <CSpinner /> : <CTable>
+                    {loading ? <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "15%" }} /></div> : <CTable>
                         <CTableHead>
                             <CTableRow>
                                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -746,27 +811,27 @@ const CreateMarketing = () => {
                         </CTableHead>
                         <CTableBody>
                             {chainMarket.length === 0 ? (
-                                    <CTableRow>
-                                        <CTableDataCell colSpan="6" style={{ textAlign: 'center', backgroundColor: "white" }}>
-                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
-                                        </CTableDataCell>
-                                    </CTableRow>
-                                ) : (
-                            chainMarket.map((item, index) => (
-                                <CTableRow key={index}>
-                                    <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-                                    <CTableDataCell>{item.chain?.name}</CTableDataCell>
-                                    <CTableDataCell>{item.address}</CTableDataCell>
-                                    <CTableDataCell>{item.city}</CTableDataCell>
-                                    <CTableDataCell>{item.scraped}</CTableDataCell>
-                                    <CTableDataCell>
-                                        <CButton size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }} variant="outline" onClick={() => { handleSubmit(item._id) }}>
-                                            Add
-                                        </CButton>
+                                <CTableRow>
+                                    <CTableDataCell colSpan="6" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                        <h6 style={{ marginTop: "1%" }}>No Data</h6>
                                     </CTableDataCell>
                                 </CTableRow>
-                            ))
-                        )}
+                            ) : (
+                                chainMarket.map((item, index) => (
+                                    <CTableRow key={index}>
+                                        <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                                        <CTableDataCell>{item.chain?.name}</CTableDataCell>
+                                        <CTableDataCell>{item.address}</CTableDataCell>
+                                        <CTableDataCell>{item.city}</CTableDataCell>
+                                        <CTableDataCell>{item.scraped}</CTableDataCell>
+                                        <CTableDataCell>
+                                            <CButton size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }} variant="outline" onClick={() => { handleSubmit(item._id) }}>
+                                                Add
+                                            </CButton>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ))
+                            )}
                         </CTableBody>
                     </CTable>
 
@@ -804,7 +869,7 @@ const CreateMarketing = () => {
 
                     <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
                     </CNavbar>
-                    {loading ? <CSpinner /> : <CTable>
+                    {loading ? <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "15%" }} /></div> : <CTable>
                         <CTableHead>
                             <CTableRow>
                                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -815,27 +880,27 @@ const CreateMarketing = () => {
                         </CTableHead>
                         <CTableBody>
                             {marketGroupData.length === 0 ? (
-                                    <CTableRow>
-                                        <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
-                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
-                                        </CTableDataCell>
-                                    </CTableRow>
-                                ) : (
-                            marketGroupData.map((item, index) => (
-                                <CTableRow key={index}>
-                                    <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-                                    <CTableDataCell>
-                                        <span>{item.name}</span>
-                                    </CTableDataCell>
-                                    <CTableDataCell>{item.city}</CTableDataCell>
-                                    <CTableDataCell>
-                                        <CButton onClick={() => { handleSubmit(item._id) }} size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }}>
-                                            Add
-                                        </CButton>
+                                <CTableRow>
+                                    <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                        <h6 style={{ marginTop: "1%" }}>No Data</h6>
                                     </CTableDataCell>
                                 </CTableRow>
-                            ))
-                        )}
+                            ) : (
+                                marketGroupData.map((item, index) => (
+                                    <CTableRow key={index}>
+                                        <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                                        <CTableDataCell>
+                                            <span>{item.name}</span>
+                                        </CTableDataCell>
+                                        <CTableDataCell>{item.city}</CTableDataCell>
+                                        <CTableDataCell>
+                                            <CButton onClick={() => { handleToggleMarket(item.markets,item._id) }} size='sm' style={{ backgroundColor: '#ff4d4d', marginLeft: '5px', color: 'white' }}>
+                                                Add
+                                            </CButton>
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                ))
+                            )}
                         </CTableBody>
                     </CTable>
 
@@ -852,6 +917,46 @@ const CreateMarketing = () => {
                 </>
             }
 
+            <CModal alignment="center" visible={visibleAssignMarket} scrollable size='lg' onClose={() => {
+                setVisibleAssignMarket(false)
+                setGMarket([])
+                setMarketId('')
+            }}>
+                <CModalHeader closeButton>
+                    <CModalTitle> Markets details of Market Group </CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                    {/* <CButton size='sm' onClick={() => { handleSubmit(mid)}} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white', marginLeft: '88%' }} >All</CButton> */}
+                    <CRow>
+                        <CCol md={6}>
+                            <a style={{ fontSize: 17, fontWeight: 'bold' }}>Select the Market</a><br></br><br></br>
+                            <CFormCheck
+                                    onChange={() => { setMarketId('all')} }
+                                    key="0"
+                                    type="radio"
+                                    name="mainCategoryRadio"
+                                    id={`flexRadioDefault0`}
+                                    label="All"
+                                // checked={mainCIdMove2 === index}
+                                />
+                            {gMarket.map((item, index) => (
+                                <CFormCheck
+                                    onChange={() => { setMarketId(item.id)}}
+                                    key={index}
+                                    type="radio"
+                                    name="mainCategoryRadio"
+                                    id={`flexRadioDefault${index}`}
+                                    label={item.address}
+                                // checked={mainCIdMove2 === index}
+                                />
+                            ))}
+                        </CCol>
+                    </CRow>
+                </CModalBody>
+                <CModalFooter>
+                    <CButton size='sm' onClick={() => {saveMarket() }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Save</CButton>
+                </CModalFooter>
+            </CModal>
 
 
         </CContainer>

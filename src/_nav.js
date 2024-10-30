@@ -118,6 +118,11 @@ const _nav = [
         component: CNavItem,
         name: 'Zeuler',
         to: '/marketing/all',
+      },
+      {
+        component: CNavItem,
+        name: 'AppFlyer',
+        to: '/marketing/app/flayer/all',
       }
     ],
   },

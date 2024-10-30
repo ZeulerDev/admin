@@ -661,7 +661,7 @@ const SoloCouriers = () => {
       </CNavbar>
 
       {loading ? (
-        <CSpinner />
+        <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
       ) : (
         <CTable>
           <CTableHead>
@@ -801,7 +801,7 @@ const SoloCouriers = () => {
         </CNavbar>
       
         {loadingRiders ? (
-        <CSpinner />
+        <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
       ) : (
         <CTable>
           <CTableHead>
@@ -904,7 +904,7 @@ const SoloCouriers = () => {
           }}
         >
           {loadingModal ? (
-            <CSpinner />
+            <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
           ) : (
             <div>
               <CRow className="mb-3">
@@ -967,7 +967,7 @@ const SoloCouriers = () => {
           }}
         >
           {loadingModal ? (
-            <CSpinner />
+            <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
           ) : (
             customerAllData.length === 0 ? <h3>No data to show</h3> :
             <CTable>

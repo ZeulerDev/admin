@@ -128,7 +128,7 @@ const Orders = () => {
       <CNavbar className="bg-body-tertiary">
       </CNavbar>
 
-      {loading ? <CSpinner /> : (
+      {loading ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>: (
         <CTable>
           <CTableHead>
             <CTableRow>
@@ -182,7 +182,7 @@ const Orders = () => {
           }}
         >
           {loadingModal ? (
-            <CSpinner />
+            <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
           ) : (
             <CTable>
               <CTableHead>

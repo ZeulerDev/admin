@@ -106,15 +106,15 @@ const Zeuler = () => {
           }
         } else if (res.status === 204) {
           setLoading(false)
-          dispatch({
-            type: SET_ALERT,
-            payload: {
-              status: true,
-              title: 'Links loading error',
-              message: 'No links found',
-              color: 'info'
-            },
-          })
+          // dispatch({
+          //   type: SET_ALERT,
+          //   payload: {
+          //     status: true,
+          //     title: 'Links loading error',
+          //     message: 'No links found',
+          //     color: 'info'
+          //   },
+          // })
         } else if (res.status === 500) {
           setLoading(false)
           dispatch({
@@ -264,7 +264,7 @@ const Zeuler = () => {
 
   return (
     <CContainer>
-      <Link to={`/marketing/create/marketing`}>
+      <Link to={`/marketing/create/marketing/none`}>
         <CButton style={{ marginLeft: '0%', width: '17%', backgroundColor: '#ff4d4d', color: 'white' }}>
           Create URL
         </CButton>
@@ -283,7 +283,7 @@ const Zeuler = () => {
       </CNavbar>
 
       {loading ? (
-        <CSpinner />
+        <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
       ) : (
         <CTable>
           <CTableHead>

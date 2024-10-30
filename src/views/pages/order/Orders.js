@@ -213,7 +213,7 @@ const Orders = () => {
       </CNavbar>
 
       {loading ? (
-        <CSpinner />
+        <div className="d-flex justify-content-center"><CSpinner /></div>
       ) : (
         <CTable>
           <CTableHead>
@@ -295,7 +295,7 @@ const Orders = () => {
           }}
         >
           {loadingModal ? (
-            <CSpinner />
+             <div className="d-flex justify-content-center"><CSpinner /></div>
           ) : (
             <CTable>
               <CTableHead>
@@ -367,7 +367,7 @@ const Orders = () => {
           }}
         >
           {loadingModal ? (
-            <CSpinner />
+           <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
           ) : (
             <div>
               <CRow className="mb-3">

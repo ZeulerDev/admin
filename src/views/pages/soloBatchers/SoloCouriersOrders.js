@@ -202,7 +202,7 @@ const SoloCourierBatchOrders = () => {
             </CNavbar>
 
             {loading ? (
-                <CSpinner />
+                <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
             ) : (
                 <CTable>
                     <CTableHead>
@@ -273,7 +273,7 @@ const SoloCourierBatchOrders = () => {
                     }}
                 >
                     {loadingModal ? (
-                        <CSpinner />
+                      <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
                     ) : (
                         <CTable>
                             <CTableHead>
@@ -345,7 +345,7 @@ const SoloCourierBatchOrders = () => {
                     }}
                 >
                     {loadingModal ? (
-                        <CSpinner />
+                         <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
                     ) : (
                         <div>
                             <CRow className="mb-3">
@@ -466,7 +466,7 @@ const SoloCourierBatchOrders = () => {
                     }}
                 >
                     {loadingModal ? (
-                        <CSpinner />
+                        <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
                     ) : (
                         <CTable>
                             <CTableHead>

@@ -804,7 +804,7 @@ const handleSubmitCenterPoint = () => {
 
       </CNavbar>
 
-      {loading ? <CSpinner /> : <CTable>
+      {loading ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -934,7 +934,7 @@ const handleSubmitCenterPoint = () => {
         </CModalHeader>
         <CModalBody>
 
-          {loadingMarketModal ? <CSpinner /> : <CTable>
+          {loadingMarketModal ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -1014,7 +1014,7 @@ const handleSubmitCenterPoint = () => {
           <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
 
           </CNavbar>
-          {loadingModal ? <CSpinner /> : <CTable>
+          {loadingModal ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">#</CTableHeaderCell>

@@ -623,7 +623,7 @@ const Categories = () => {
 
       </CNavbar>
 
-      {loading ? <CSpinner /> : <CTable>
+      {loading ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>

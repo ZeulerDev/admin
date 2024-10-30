@@ -6,6 +6,8 @@ const SoloCouriersMap = React.lazy(()=>import('./views/pages/soloBatchers/Map'))
 const SoloCouriersMarkets = React.lazy(()=>import('./views/pages/soloBatchers/SoloCouriersMarket'))
 const SoloCouriers = React.lazy(()=>import('./views/pages/soloBatchers/SoloCouriers'))
 
+const CreateAppFayer = React.lazy(()=>import('./views/pages/marketing/CreateAppFlayer'))
+const AppFayer = React.lazy(()=>import('./views/pages/marketing/AppFlayer'))
 const CreateMarketing = React.lazy(()=>import('./views/pages/marketing/CreateMarketing'))
 const Zeuler = React.lazy(()=>import('./views/pages/marketing/Zeuler'))
 
@@ -125,7 +127,9 @@ const routes = [
   { path: '/solocouriers/order/market/:id', name: 'Solo Courier Markets', element: SoloCouriersMarkets},
   { path: '/solocouriers/all', name: 'Solo Couriers', element: SoloCouriers},
   { path: '/solocouriers', name: 'Solo Couriers', element: SoloCouriers,exact: true},
-  { path: '/marketing/create/marketing', name: 'Create Marketing', element: CreateMarketing},
+  { path: '/marketing/create/marketing/:id', name: 'Create Marketing', element: CreateMarketing},
+  { path: '/marketing/app/flayer/create', name: 'Create App Flayer', element: CreateAppFayer},
+  { path: '/marketing/app/flayer/all', name: 'App Flayer', element: AppFayer},
   { path: '/marketing/all', name: 'Zeuler', element: Zeuler},
   { path: '/marketing', name: 'Zeuler', element: Zeuler, exact: true },
   { path: '/promotions/products/:id', name: 'Manage Products', element: ManageProducts},

@@ -573,7 +573,7 @@ const Customer = () => {
         />
       </CNavbar >
 
-      {loadingMain ? <CSpinner /> : <CTable>
+      {loadingMain ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -740,7 +740,7 @@ const Customer = () => {
         <CModalBody style={{ overflowY: 'auto', maxHeight: '70vh', display: "flex", justifyContent: 'center' }}>
 
           {
-            loadingAddress ? <CSpinner /> : <CTable>
+            loadingAddress ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>: <CTable>
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>

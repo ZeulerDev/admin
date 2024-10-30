@@ -920,7 +920,7 @@ const CreateCategory = () => {
             <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
 
             </CNavbar>
-            {loadingCategories ? <CSpinner /> : <CTable>
+            {loadingCategories ?  <div className="d-flex justify-content-center"><CSpinner /></div> : <CTable>
                 <CTableHead>
                     <CTableRow>
                         <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -1022,7 +1022,7 @@ const CreateCategory = () => {
                     <CModalTitle>View Products</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                    {loadingProduct ? <CSpinner /> : <CTable>
+                    {loadingProduct ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
                         <CTableHead>
                             <CTableRow>
                                 <CTableHeaderCell scope="col">#</CTableHeaderCell>

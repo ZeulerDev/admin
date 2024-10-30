@@ -920,7 +920,7 @@ const ManageProducts = () => {
                     Apply All
                 </CButton>
             </CNavbar>
-            {loading ? <CSpinner /> : <CTable>
+            {loading ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
                 <CTableHead>
                     <CTableRow>
                         <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -1031,7 +1031,7 @@ const ManageProducts = () => {
 
                         />
                     </CNavbar>
-                    {loadingModal ? <CSpinner /> : <CTable>
+                    {loadingModal ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
                         <CTableHead>
                             <CTableRow>
                                 <CTableHeaderCell scope="col">#</CTableHeaderCell>

@@ -144,7 +144,7 @@ const GroceryGroupOrders = () => {
       </div>
 
       {loading ? (
-        <CSpinner />
+        <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
       ) : (
         <div>
           <CNavbar className="bg-body-tertiary">

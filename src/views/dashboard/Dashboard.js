@@ -104,7 +104,7 @@ const Dashboard = () => {
     const formattedEndDate = format(lastMonth, 'yyyy-MM-dd');
     const date = [formattedStartDate, formattedEndDate];
     setSelectedDatesGraph(date);
-    loadDataMainGraph(date, selectAnalytics,'year');
+    loadDataMainGraph(date, selectAnalytics, 'year');
     // console.log(formattedStartDate, formattedEndDate);
   }, [])
 
@@ -120,7 +120,7 @@ const Dashboard = () => {
         const formattedStartDate = format(startDate, 'yyyy-MM-dd');
         const formattedEndDate = format(endDate, 'yyyy-MM-dd');
         const date = [formattedStartDate, formattedEndDate];
-        loadDataMainGraph(date, selectAnalytics,'year 2');
+        loadDataMainGraph(date, selectAnalytics, 'year 2');
         // console.log(date)
       }
 
@@ -276,7 +276,7 @@ const Dashboard = () => {
       })
   }
 
-  const loadDataMainGraph = (date, analyticsType,from) => {
+  const loadDataMainGraph = (date, analyticsType, from) => {
     // console.log("date", date,from)
 
     axios
@@ -353,7 +353,7 @@ const Dashboard = () => {
 
   return (
     <CContainer>
-      {loading ? <CSpinner /> :
+      {loading ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}} /></div> :
 
         <>
           <CRow >
@@ -776,12 +776,12 @@ const Dashboard = () => {
               </CRow><br></br>
               <CRow>
                 <CCol sm={5}>
-                  <div className="small text-body-secondary"><span style={{fontSize:15}}>{selectedDatesGraph[0]} - {selectedDatesGraph[1]}</span></div>
+                  <div className="small text-body-secondary"><span style={{ fontSize: 15 }}>{selectedDatesGraph[0]} - {selectedDatesGraph[1]}</span></div>
                 </CCol>
               </CRow><br></br>
-              <CCol  style={{ color: 'white'}} sm={12} className="d-none d-md-block">
+              <CCol style={{ color: 'white' }} sm={12} className="d-none d-md-block">
                 <CChart
-                style={{color: '#ff4d4d'}}
+                  style={{ color: '#ff4d4d' }}
                   type="line"
                   data={{
                     labels: selectMonth != 'Select Month' ? chartDates : chartMonth,
@@ -804,7 +804,7 @@ const Dashboard = () => {
                       x: {
                         grid: {
                           color: 'gray',
-                          
+
                         },
                         ticks: {
                           color: 'gray',

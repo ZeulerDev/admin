@@ -560,7 +560,7 @@ const GroupManagement = () => {
       </CNavbar>
 
       {loading ? (
-        <CSpinner />
+       <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
       ) : (
         <CTable>
           <CTableHead>
@@ -657,7 +657,7 @@ const GroupManagement = () => {
 
         </CNavbar>
 
-        {loadingModal ? <CSpinner/> :  <CTable>
+        {loadingModal ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}} /></div> :  <CTable>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">#</CTableHeaderCell>

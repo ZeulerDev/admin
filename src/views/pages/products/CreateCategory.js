@@ -783,7 +783,7 @@ const CreateCategory = () => {
 
       {
         loadingAllCon ?
-          loadingAll ? <CSpinner /> : <CTable>
+          loadingAll ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -829,7 +829,7 @@ const CreateCategory = () => {
           </CTable>
 
           :
-          loading ? <CSpinner /> : <CTable>
+          loading ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -946,7 +946,7 @@ const CreateCategory = () => {
           <CModalTitle>View Products</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          {loadingProduct ? <CSpinner /> : <CTable>
+          {loadingProduct ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
