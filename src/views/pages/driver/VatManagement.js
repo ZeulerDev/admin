@@ -291,7 +291,7 @@ const VatManagement = () => {
               <CTableHeaderCell scope="col">City</CTableHeaderCell>
               <CTableHeaderCell scope="col">Vat</CTableHeaderCell>
               <CTableHeaderCell scope="col">Activate</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Disabled</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Enabled</CTableHeaderCell>
               <CTableHeaderCell scope="col">Groups</CTableHeaderCell>
               <CTableHeaderCell scope="col">Action</CTableHeaderCell>
             </CTableRow>

@@ -99,6 +99,13 @@ const Flayers = () => {
     const [resultCountMarkets, setResultCountMarkets] = useState(0)
     const [currentPageMarkets, setCurrentPageMarkets] = useState(1);
 
+    const [visibleDeleteProduct, setVisibleDeleteProduct] = useState(false)
+    const [passData, setPassData] = useState({
+        flayer: '',
+        fPid: ''
+    })
+    const [selectAvailability, setSelectAvailability] = useState('all')
+    const [paramAvailability, setParamAvailability] = useState('')
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -121,7 +128,7 @@ const Flayers = () => {
         return () => {
             clearTimeout(timer);
         };
-    }, [user, token, debouncedSearchQuery])
+    }, [user, token, debouncedSearchQuery,paramAvailability])
 
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -140,7 +147,7 @@ const Flayers = () => {
 
     const loadData = (count, timer) => {
         setLoadingMain(true)
-        axios.get(BASE_URL + `flayers/all/${count}?search=${searchQuery}`, {
+        axios.get(BASE_URL + `flayers/all/${count}?search=${searchQuery}&available=${paramAvailability}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -149,7 +156,7 @@ const Flayers = () => {
                 if (res.status === 200) {
                     setCategoryData(res.data.list)
                     setResultCount(res.data.count)
-                    // console.log(res.data.list.length)
+                    // console.log(res.data.list)
                     setLoadingMain(false)
                     clearTimeout(timer);
                     if (res.data.list.length < 20) {
@@ -802,13 +809,111 @@ const Flayers = () => {
             })
     }
 
+    const handleDeleteProducts = (flayer, fPid) => {
+        setVisibleDeleteProduct(true)
+        setPassData({
+            flayer: flayer,
+            fPid: fPid
+        })
+    }
 
+    const handleDeleteProduct = (data) => {
+        console.log('data', data)
+        if (data) {
+            if (user && token) {
+                axios
+                    .delete(BASE_URL + `assistant/flayer/product/${data.fPid}?fid=${data.flayer}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
+                    .then((res) => {
+                        if (res.status === 200) {
+                            dispatch({
+                                type: SET_ALERT,
+                                payload: {
+                                    status: true,
+                                    title: 'Flayer Product delete',
+                                    message: 'Flayer Product delete success',
+                                    color: 'success'
+                                }
+                            })
+                            setVisibleDeleteProduct(false)
+                            handleFlayersProducts(data.flayer)
+                            setPassData({
+                                flayer: '',
+                                fPid: ''
+                            })
 
+                        } else if (res.status === 204) {
+                            dispatch({
+                                type: SET_ALERT,
+                                payload: {
+                                    status: true,
+                                    title: 'Flayer Product delete error',
+                                    message: res.data.message,
+                                    color: 'warning'
+                                }
+                            })
+                        } else if (res.status === 500) {
+                            dispatch({
+                                type: SET_ALERT,
+                                payload: {
+                                    status: true,
+                                    title: 'Flayer Product delete error',
+                                    message: res.data.message,
+                                    color: 'warning'
+                                }
+                            })
+                        }
+                    })
+                    .catch((error) => {
+                        dispatch({
+                            type: SET_ALERT,
+                            payload: {
+                                status: true,
+                                title: 'Flayer Product delete error',
+                                message: res.data.message,
+                                color: 'warning'
+                            }
+                        })
+                    })
+            }
+        } else {
+            dispatch({
+                type: SET_ALERT,
+                payload: {
+                    status: true,
+                    title: 'Flayer Product delete error',
+                    message: 'Flayer Product delete error',
+                    color: 'warning'
+                }
+            })
+        }
+    }
+
+    const availability = (status) => {
+        if (status === 'all') {
+            setParamAvailability('')
+            setSelectAvailability('All Cities')
+        } else {
+            setParamAvailability(status)
+            setSelectAvailability(status)
+        }
+    }
 
     return (
         <CContainer>
 
-            {/* <CBadge style={{ marginLeft: '48%', width: '7%' }} color="secondary">Select Category</CBadge> */}
+            <CBadge style={{ marginLeft: '75%' }} color="secondary">Filter by</CBadge>
+            <CDropdown style={{ marginLeft: '2%', width: '17%', marginRight: '5px', backgroundColor: '#ff4d4d' }}>
+                <CDropdownToggle style={{ color: 'white' }}>{selectAvailability}</CDropdownToggle>
+                <CDropdownMenu>
+                    <CDropdownItem onClick={() => availability('all')}>All</CDropdownItem>
+                    <CDropdownItem onClick={() => availability('yes')}>Yes</CDropdownItem>
+                    <CDropdownItem onClick={() => availability('no')}>No</CDropdownItem>
+                </CDropdownMenu>
+            </CDropdown>
 
             <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
                 <CFormInput
@@ -820,60 +925,62 @@ const Flayers = () => {
 
                 />
             </CNavbar>
-            {loadingMain ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
+            {loadingMain ? <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "15%" }} /></div> : <CTable>
                 <CTableHead>
                     <CTableRow>
                         <CTableHeaderCell scope="col">#</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Id</CTableHeaderCell>
                         <CTableHeaderCell scope="col">End Date</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Retailer</CTableHeaderCell>
-                        
+
+                        <CTableHeaderCell scope="col">Market(s) Availability</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Markets</CTableHeaderCell>
                         {/* <CTableHeaderCell scope="col">Disabled</CTableHeaderCell> */}
                         <CTableHeaderCell scope="col">Products</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Assigned Market</CTableHeaderCell>
-                        <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Status</CTableHeaderCell>
 
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
                     {categoryData.length === 0 ? (
-                                    <CTableRow>
-                                        <CTableDataCell colSpan="8" style={{ textAlign: 'center', backgroundColor: "white" }}>
-                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
-                                        </CTableDataCell>
-                                    </CTableRow>
-                                ) : (
-                    categoryData.map((item, index) => {
-                        return (
-                            <CTableRow key={index}>
-                                <CTableDataCell>{itemsPerPageCategory + index + 1}</CTableDataCell>
-                                <CTableDataCell>{item.flayer_id}</CTableDataCell>
-                                <CTableDataCell>{item.endDate}</CTableDataCell>
-                                <CTableDataCell>{item.retailer}</CTableDataCell>
-                                {/* <CTableDataCell>{item.status === true ? 'Active' : 'Inactive'}</CTableDataCell> */}
-                                <CTableDataCell>
-                                    <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleMarketView(item.stores, item._id) }}>
-                                        <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
-                                    </CButton>
-                                </CTableDataCell>
-                                {/* <CTableDataCell>{item.disabled === false ? 'No' : 'Yes'}</CTableDataCell> */}
-                                <CTableDataCell>
-                                    <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleFlayersProductsModal(item._id) }}>
-                                        <CIcon icon={cilViewModule} size='lg' style={{ color: 'white' }} />
-                                    </CButton>
-                                </CTableDataCell>
-                                <CTableDataCell>
-                                    <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleToggleName(item._id) }}>
-                                        <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
-                                    </CButton>
-                                </CTableDataCell>
-                                <CTableDataCell>{item.status === true ? <CButton size='sm' onClick={() => { handleToggle(item._id, false) }} style={{ backgroundColor: '#ff4d4d', color: 'white' }} > <CIcon icon={cilTrash} size='lg' style={{ color: 'white' }} /></CButton> : <CButton size='sm' onClick={() => { handleToggle(item._id, true) }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Activate</CButton>}</CTableDataCell>
+                        <CTableRow>
+                            <CTableDataCell colSpan="8" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                            </CTableDataCell>
+                        </CTableRow>
+                    ) : (
+                        categoryData.map((item, index) => {
+                            return (
+                                <CTableRow key={index}>
+                                    <CTableDataCell>{itemsPerPageCategory + index + 1}</CTableDataCell>
+                                    <CTableDataCell>{item.flayer_id}</CTableDataCell>
+                                    <CTableDataCell>{item.endDate}</CTableDataCell>
+                                    <CTableDataCell>{item.retailer}</CTableDataCell>
+                                    <CTableDataCell>{item.stores[0]?.isLinked === true ? "Yes" : "No"}</CTableDataCell>
+                                    {/* <CTableDataCell>{item.status === true ? 'Active' : 'Inactive'}</CTableDataCell> */}
+                                    <CTableDataCell>
+                                        <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleMarketView(item.stores, item._id) }}>
+                                            <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
+                                        </CButton>
+                                    </CTableDataCell>
+                                    {/* <CTableDataCell>{item.disabled === false ? 'No' : 'Yes'}</CTableDataCell> */}
+                                    <CTableDataCell>
+                                        <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleFlayersProductsModal(item._id) }}>
+                                            <CIcon icon={cilViewModule} size='lg' style={{ color: 'white' }} />
+                                        </CButton>
+                                    </CTableDataCell>
+                                    <CTableDataCell>
+                                        <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleToggleName(item._id) }}>
+                                            <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
+                                        </CButton>
+                                    </CTableDataCell>
+                                    <CTableDataCell>{item.status === true ? <CButton size='sm' onClick={() => { handleToggle(item._id, false) }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Deactivate</CButton> : <CButton size='sm' onClick={() => { handleToggle(item._id, true) }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Activate</CButton>}</CTableDataCell>
 
-                            </CTableRow>
-                        )
-                    })
-                )}
+                                </CTableRow>
+                            )
+                        })
+                    )}
                 </CTableBody>
             </CTable>
             }
@@ -894,15 +1001,30 @@ const Flayers = () => {
                 </CPaginationItem>
             </CPagination>
 
+            <CModal alignment="center" visible={visibleDeleteProduct} scrollable size='sm' onClose={() => setVisibleDeleteProduct(false)}>
+                <CModalHeader closeButton={false}>
+                    <CModalTitle>Confirmation</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                    <a>Are you sure you want to delete this flayer product?</a><br></br><br></br>
+                    <div style={{ display: "flex", justifyContent: 'center' }}>
+                        <CButton onClick={() => handleDeleteProduct(passData)} style={{ backgroundColor: '#ff4d4d', color: 'white', marginRight: '10px' }} >Yes</CButton>
+                        <CButton onClick={() => setVisibleDeleteProduct(false)} style={{ backgroundColor: '#ff4d4d', color: 'white', marginLeft: '10px' }} >No</CButton>
+                    </div>
+
+                </CModalBody>
+            </CModal>
+
             <CModal alignment="center" visible={visibleAssignMarket} scrollable size='lg' onClose={() => {
                 setAssignMarkets([])
-                setVisibleAssignMarket(false)}}>
+                setVisibleAssignMarket(false)
+            }}>
                 <CModalHeader closeButton>
                     <CModalTitle>All Assign Markets details</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
 
-                    {loadingMarketModal ?  <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div> : <CTable>
+                    {loadingMarketModal ? <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "15%" }} /></div> : <CTable>
                         <CTableHead>
                             <CTableRow>
                                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -913,21 +1035,21 @@ const Flayers = () => {
                         </CTableHead>
                         <CTableBody>
                             {assignMarkets.length === 0 ? (
-                                    <CTableRow>
-                                        <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
-                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
-                                        </CTableDataCell>
-                                    </CTableRow>
-                                ) : (
-                            assignMarkets.map((item, index) => (
-                                <CTableRow key={index}>
-                                    <CTableDataCell>{index + 1}</CTableDataCell>
-                                    <CTableDataCell>{item.chain.name}</CTableDataCell>
-                                    <CTableDataCell>{item.address}</CTableDataCell>
-                                    <CTableDataCell>{item.city}</CTableDataCell>
+                                <CTableRow>
+                                    <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                        <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                                    </CTableDataCell>
                                 </CTableRow>
-                            ))
-                        )}
+                            ) : (
+                                assignMarkets.map((item, index) => (
+                                    <CTableRow key={index}>
+                                        <CTableDataCell>{index + 1}</CTableDataCell>
+                                        <CTableDataCell>{item.chain.name}</CTableDataCell>
+                                        <CTableDataCell>{item.address}</CTableDataCell>
+                                        <CTableDataCell>{item.city}</CTableDataCell>
+                                    </CTableRow>
+                                ))
+                            )}
                         </CTableBody>
                     </CTable>
 
@@ -989,7 +1111,7 @@ const Flayers = () => {
                     }}
                 >
                     {loading ? (
-                       <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>
+                        <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "15%" }} /></div>
                     ) : (
                         <CTable>
                             <CTableHead>
@@ -999,6 +1121,7 @@ const Flayers = () => {
                                     <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Price</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Description</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Action</CTableHeaderCell>
 
                                 </CTableRow>
                             </CTableHead>
@@ -1010,21 +1133,26 @@ const Flayers = () => {
                                         </CTableDataCell>
                                     </CTableRow>
                                 ) : (
-                                products?.map((items, index) => (
-                                    <CTableRow key={index}>
-                                        <CTableDataCell>{index + 1}</CTableDataCell>
-                                        <CTableDataCell>
-                                            <CCardImage
-                                                style={{ width: 50, height: 50, borderRadius: 10 }}
-                                                src={`https://api.zeuler.com/image/` + items.image}
-                                            />
-                                        </CTableDataCell>
-                                        <CTableDataCell>{items.name}</CTableDataCell>
-                                        <CTableDataCell>{items.price}</CTableDataCell>
-                                        <CTableDataCell>{items.description}</CTableDataCell>
-                                    </CTableRow>
-                                ))
-                            )}
+                                    products?.map((items, index) => (
+                                        <CTableRow key={index}>
+                                            <CTableDataCell>{index + 1}</CTableDataCell>
+                                            <CTableDataCell>
+                                                <CCardImage
+                                                    style={{ width: 50, height: 50, borderRadius: 10 }}
+                                                    src={`https://api.zeuler.com/image/` + items.image}
+                                                />
+                                            </CTableDataCell>
+                                            <CTableDataCell>{items.name}</CTableDataCell>
+                                            <CTableDataCell>{items.price}</CTableDataCell>
+                                            <CTableDataCell>{items.description}</CTableDataCell>
+                                            <CTableDataCell>
+                                                <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleDeleteProducts(items.flayer, items._id) }}>
+                                                    <CIcon icon={cilTrash} size='lg' style={{ color: 'white' }} />
+                                                </CButton>
+                                            </CTableDataCell>
+                                        </CTableRow>
+                                    ))
+                                )}
                             </CTableBody>
                         </CTable>
                     )}
@@ -1085,7 +1213,7 @@ const Flayers = () => {
                     <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
 
                     </CNavbar>
-                    {loadingModal ? <div className="d-flex justify-content-center"><CSpinner style={{marginTop:"15%"}}/></div>: <CTable>
+                    {loadingModal ? <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "15%" }} /></div> : <CTable>
                         <CTableHead>
                             <CTableRow>
                                 <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -1097,32 +1225,32 @@ const Flayers = () => {
                         </CTableHead>
                         <CTableBody>
                             {chainMarket.length === 0 ? (
-                                    <CTableRow>
-                                        <CTableDataCell colSpan="5" style={{ textAlign: 'center', backgroundColor: "white" }}>
-                                            <h6 style={{ marginTop: "1%" }}>No Data</h6>
-                                        </CTableDataCell>
-                                    </CTableRow>
-                                ) : (
-                            chainMarket.map((item, index) => (
-                                <CTableRow key={index}>
-                                    <CTableDataCell>{itemsPerPageMarkets + index + 1}</CTableDataCell>
-                                    <CTableDataCell>{item.chain.name}</CTableDataCell>
-                                    <CTableDataCell>{item.address}</CTableDataCell>
-                                    <CTableDataCell>{item.city}</CTableDataCell>
-                                    <CTableDataCell>
-                                        {
-                                            ifHaveMarket === item._id ?
-                                                (
-                                                    <CButton size='sm' onClick={() => { }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Assigned</CButton>
-                                                ) : (
-                                                    <CButton size='sm' onClick={() => { handleMarketAssign(item._id) }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Add</CButton>
-                                                )
-                                        }
+                                <CTableRow>
+                                    <CTableDataCell colSpan="5" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                                        <h6 style={{ marginTop: "1%" }}>No Data</h6>
                                     </CTableDataCell>
-
                                 </CTableRow>
-                            ))
-                        )}
+                            ) : (
+                                chainMarket.map((item, index) => (
+                                    <CTableRow key={index}>
+                                        <CTableDataCell>{itemsPerPageMarkets + index + 1}</CTableDataCell>
+                                        <CTableDataCell>{item.chain.name}</CTableDataCell>
+                                        <CTableDataCell>{item.address}</CTableDataCell>
+                                        <CTableDataCell>{item.city}</CTableDataCell>
+                                        <CTableDataCell>
+                                            {
+                                                ifHaveMarket === item._id ?
+                                                    (
+                                                        <CButton size='sm' onClick={() => { }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Assigned</CButton>
+                                                    ) : (
+                                                        <CButton size='sm' onClick={() => { handleMarketAssign(item._id) }} style={{ backgroundColor: '#ff4d4d', width: 90, color: 'white' }} >Add</CButton>
+                                                    )
+                                            }
+                                        </CTableDataCell>
+
+                                    </CTableRow>
+                                ))
+                            )}
                         </CTableBody>
                     </CTable>
 
