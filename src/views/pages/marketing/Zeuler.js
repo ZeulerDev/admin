@@ -61,6 +61,11 @@ const Zeuler = () => {
   const [selectedType, setSelectedType] = useState('All');
   const [paramType, setParamType] = useState('');
 
+  const [isHaveMarket, setIsHaveMarket] = useState(false)
+  const [marketVisible, setMarketVisible] = useState(false)
+  const [singleMarketData, setSingleMarketData] = useState([])
+  const [mid, setMid] = useState('')
+
   useEffect(() => {
 
     const timer = setTimeout(() => {
@@ -192,6 +197,12 @@ const Zeuler = () => {
     } else if (items.marketGroup !== null) {
       console.log("marketGroup")
       setMarketGroupData(items.marketGroup)
+      const urlParams = new URLSearchParams(items.url.split('?')[1]);
+      if (urlParams.has('index')) {
+        setIsHaveMarket(true);
+        setMid(urlParams.get('index'));
+        console.log(urlParams.get('index'));
+      }
     } else if (items.product !== null) {
       console.log("product")
       loadDataMarket(items.product._id)
@@ -259,7 +270,57 @@ const Zeuler = () => {
     } else if (type === 'Market Group') {
       setSelectedType(type)
       setParamType('Market Group')
+
     }
+  }
+
+
+  const handleSingleMarket = (id) => {
+    setMarketVisible(true)
+    loadMarketData(id)
+  }
+
+  const loadMarketData = (id) => {
+    axios.get(BASE_URL + `assistant/market/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+
+      if (res.status === 200) {
+        setSingleMarketData(res.data)
+      } else if (res.status === 204) {
+        dispatch({
+          type: SET_ALERT,
+          payload: {
+            status: true,
+            title: 'Market Data loading error',
+            message: res.data.message
+          }
+        })
+      } else if (res.status === 500) {
+        dispatch({
+          type: SET_ALERT,
+          payload: {
+            status: true,
+            title: 'Market Data loading error',
+            message: res.data.message
+          }
+        })
+      }
+
+    }).catch((error) => {
+      console.error('Error:', error)
+      dispatch({
+        type: SET_ALERT,
+        payload: {
+          status: true,
+          title: 'Market Data loading error',
+          message: "Data loading error ",
+        },
+      })
+
+    })
   }
 
   return (
@@ -367,7 +428,14 @@ const Zeuler = () => {
         </CPaginationItem>
       </CPagination>
 
-      <CModal visible={visible} scrollable size="xl" onClose={() => setVisible(false)}>
+      <CModal visible={visible} scrollable size="xl" onClose={() => 
+        {
+          setVisible(false)
+          setMid('')
+          setSingleMarketData([])
+        }
+        
+        }>
         <CModalHeader closeButton>
           <CModalTitle>Link Information</CModalTitle>
         </CModalHeader>
@@ -400,12 +468,15 @@ const Zeuler = () => {
             </CTable>
           </> : itemsData.marketGroup !== null ? <>
 
-            <CTable>
+          <CTable>
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                   <CTableHeaderCell scope="col">City</CTableHeaderCell>
+                  {
+                    isHaveMarket ? <CTableHeaderCell scope="col">Market</CTableHeaderCell> : <></>
+                  }
                 </CTableRow>
               </CTableHead>
               <CTableBody>
@@ -414,6 +485,11 @@ const Zeuler = () => {
                   <CTableDataCell>#</CTableDataCell>
                   <CTableDataCell>{marketGroupData.name}</CTableDataCell>
                   <CTableDataCell>{marketGroupData.city}</CTableDataCell>
+                  {
+                    isHaveMarket ? <CTableDataCell> <Link> <CIcon icon={cilInfo} size="xl" onClick={() => { handleSingleMarket(mid) }} /> </Link>
+                    </CTableDataCell> : <></>
+
+                  }
                 </CTableRow>
               </CTableBody>
             </CTable>
@@ -463,6 +539,43 @@ const Zeuler = () => {
           {/* <CButton color="secondary" onClick={() => setVisible(false)}>
             Close
           </CButton> */}
+        </CModalFooter>
+      </CModal>
+
+      <CModal visible={marketVisible} scrollable size="xl" onClose={() => {
+        setMarketVisible(false)
+       
+      }}>
+        <CModalHeader closeButton>
+          <CModalTitle>Link Market Information</CModalTitle>
+        </CModalHeader>
+        <CModalBody
+          style={{
+            overflowY: 'auto',
+            maxHeight: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <CTable>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Chain Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col">Address</CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+
+              <CTableRow>
+                <CTableDataCell>#</CTableDataCell>
+                <CTableDataCell>{singleMarketData.chain?.name}</CTableDataCell>
+                <CTableDataCell>{singleMarketData.address}</CTableDataCell>
+              </CTableRow>
+            </CTableBody>
+          </CTable>
+        </CModalBody>
+        <CModalFooter>
         </CModalFooter>
       </CModal>
 

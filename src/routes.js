@@ -32,6 +32,7 @@ const CreateCategories = React.lazy(()=>import('./views/pages/products/CreateCat
 const PickerArea = React.lazy(()=>import('./views/pages/list/CreatePickArea'))
 const PickerAreas = React.lazy(()=>import('./views/pages/list/PickupAreas'))
 
+const AnalyticsSolo = React.lazy(()=>import('./views/pages/analytics/solo'))
 const Analytics = React.lazy(()=>import('./views/pages/analytics/Analytics'))
 
 const GroceryList = React.lazy(()=>import('./views/pages/order/GroceryList'))
@@ -154,7 +155,9 @@ const routes = [
   { path: '/list/view', name: 'Picker Areas ', element: PickerAreas },
   { path: '/list/pickerarea', name: 'Picker Area ', element: PickerArea },
   { path: '/list', name: 'List', element: PickerAreas,exact: true },
-  { path: '/analytics', name: 'Analytics ', element: Analytics },
+  { path: '/analytics/solo', name: 'Solo  ', element: AnalyticsSolo },
+  { path: '/analytics/multiple', name: 'Multiple', element: Analytics },
+  { path: '/analytics', name: 'Analytics ', element: Analytics,exact: true },
   { path: '/order/grocery/list', name: 'Grocery List ', element: GroceryList },
   { path: '/order/grocerygroup/orders/:id', name: 'Orders ', element: GroceryGroupOrders },
   { path: '/order/grocerygroup', name: 'Grocery Groups ', element: GroupOfOrders },

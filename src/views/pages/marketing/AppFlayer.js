@@ -66,7 +66,10 @@ const AppFlayer = () => {
   const [campaignCount, setCampaignCount] = useState(0)
   const [loadingSingleUrlCampaign, setLoadingSingleUrlCampaign] = useState(false)
   const [baseLinkId, setBaseLinkId] = useState('')
-
+  const [isHaveMarket, setIsHaveMarket] = useState(false)
+  const [marketVisible, setMarketVisible] = useState(false)
+  const [singleMarketData, setSingleMarketData] = useState([])
+  const [mid, setMid] = useState('')
   useEffect(() => {
 
     const timer = setTimeout(() => {
@@ -184,6 +187,7 @@ const AppFlayer = () => {
   const handleToggle = (items) => {
     setVisible(!visible)
     setVisibleCampaign(false)
+    console.log("items", items)
     setItemsData(items)
     if (items.market !== null) {
       console.log("market")
@@ -191,6 +195,12 @@ const AppFlayer = () => {
     } else if (items.marketGroup !== null) {
       console.log("marketGroup")
       setMarketGroupData(items.marketGroup)
+      const urlParams = new URLSearchParams(items.url.split('?')[1]);
+      if (urlParams.has('index')) {
+        setIsHaveMarket(true);
+        setMid(urlParams.get('index'));
+        console.log(urlParams.get('index'));
+      }
     } else if (items.product !== null) {
       console.log("product")
       loadDataMarket(items.product._id)
@@ -272,162 +282,420 @@ const AppFlayer = () => {
     if (loadingCampaign) {
       loadDataCampaign(baseLinkId)
     }
-  },[user, token, paramType])
+  }, [user, token, paramType])
 
 
 
-const loadDataCampaign = (id) => {
-  setLoadingSingleUrlCampaign(true)
-  axios
-    .get(BASE_URL + `deepLinkUrls/base/all/${id}?type=${paramType}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((res) => {
-      if (res.status === 200) {
-        setCampaignData(res.data.list)
-        // console.log("res", res.data.list)
-        setLoadingSingleUrlCampaign(false)
-       
-      } else if (res.status === 204) {
-        setLoadingSingleUrlCampaign(false)
-      } else if (res.status === 500) {
+  const loadDataCampaign = (id) => {
+    setLoadingSingleUrlCampaign(true)
+    axios
+      .get(BASE_URL + `deepLinkUrls/base/all/${id}?type=${paramType}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setCampaignData(res.data.list)
+          // console.log("res", res.data.list)
+          setLoadingSingleUrlCampaign(false)
+
+        } else if (res.status === 204) {
+          setLoadingSingleUrlCampaign(false)
+        } else if (res.status === 500) {
+          setLoadingSingleUrlCampaign(false)
+          dispatch({
+            type: SET_ALERT,
+            payload: {
+              status: true,
+              title: 'links loading error',
+              message: res.data.message,
+            },
+          })
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error)
         setLoadingSingleUrlCampaign(false)
         dispatch({
           type: SET_ALERT,
           payload: {
             status: true,
             title: 'links loading error',
-            message: res.data.message,
+            message: "Data loading error ",
           },
         })
+      })
+  }
+
+  const handleSingleMarket = (id) => {
+    setMarketVisible(true)
+    loadMarketData(id)
+  }
+
+  const loadMarketData = (id) => {
+    axios.get(BASE_URL + `assistant/market/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    })
-    .catch((error) => {
+    }).then((res) => {
+
+      if (res.status === 200) {
+        setSingleMarketData(res.data)
+      } else if (res.status === 204) {
+        dispatch({
+          type: SET_ALERT,
+          payload: {
+            status: true,
+            title: 'Market Data loading error',
+            message: res.data.message
+          }
+        })
+      } else if (res.status === 500) {
+        dispatch({
+          type: SET_ALERT,
+          payload: {
+            status: true,
+            title: 'Market Data loading error',
+            message: res.data.message
+          }
+        })
+      }
+
+    }).catch((error) => {
       console.error('Error:', error)
-      setLoadingSingleUrlCampaign(false)
       dispatch({
         type: SET_ALERT,
         payload: {
           status: true,
-          title: 'links loading error',
+          title: 'Market Data loading error',
           message: "Data loading error ",
         },
       })
+
     })
-}
+  }
 
-return (
-  <CContainer>
-    <Link to={`/marketing/app/flayer/create`}>
-      <CButton style={{ marginLeft: '0%', width: '17%', backgroundColor: '#ff4d4d', color: 'white' }}>
-        Create URL
-      </CButton>
-    </Link>
-    <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
 
-    </CNavbar>
+  return (
+    <CContainer>
+      <Link to={`/marketing/app/flayer/create`}>
+        <CButton style={{ marginLeft: '0%', width: '17%', backgroundColor: '#ff4d4d', color: 'white' }}>
+          Create URL
+        </CButton>
+      </Link>
+      <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
 
-    {loading ? (
-      <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "15%" }} /></div>
-    ) : (
-      <CTable>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell scope="col">#</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-            <CTableHeaderCell scope="col">URL</CTableHeaderCell>
-            <CTableHeaderCell scope="col">Add Campaign</CTableHeaderCell>
-            <CTableHeaderCell scope="col">View Campaign</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          {LinksListData.length === null ? (
+      </CNavbar>
+
+      {loading ? (
+        <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "15%" }} /></div>
+      ) : (
+        <CTable>
+          <CTableHead>
             <CTableRow>
-              <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
-                <h6 style={{ marginTop: "1%" }}>No Data</h6>
-              </CTableDataCell>
+              <CTableHeaderCell scope="col">#</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+              <CTableHeaderCell scope="col">URL</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Add Campaign</CTableHeaderCell>
+              <CTableHeaderCell scope="col">View Campaign</CTableHeaderCell>
             </CTableRow>
-          ) : (
-            LinksListData.map((item, index) => (
-              <CTableRow key={index}>
-                <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-                <CTableDataCell>{item.name}</CTableDataCell>
-                <CTableDataCell>{
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div>{item.url}</div>
-                    <div><CIcon
-                      icon={cilClipboard}
-                      onClick={() => {
-                        navigator.clipboard.writeText(item.url);
-                        dispatch({
-                          type: SET_ALERT,
-                          payload: {
-                            status: true,
-                            title: 'Copy Success',
-                            message: 'URL copied to clipboard',
-                            color: 'success',
-                          },
-                        });
-                      }}
-                    />
-
-                    </div>
-                  </div>
-
-                }</CTableDataCell>
-                <CTableDataCell>
-                  <Link to={`/marketing/create/marketing/${item.id}`}>
-                    <CButton onClick={() => { }} size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">
-                      <CIcon icon={cilPlus} size='lg' style={{ color: 'white' }} />
-                    </CButton>
-                  </Link>
-                </CTableDataCell>
-                <CTableDataCell>
-                  <CButton onClick={() => { handleCampaign(item.id) }} size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">View</CButton>
+          </CTableHead>
+          <CTableBody>
+            {LinksListData.length === null ? (
+              <CTableRow>
+                <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                  <h6 style={{ marginTop: "1%" }}>No Data</h6>
                 </CTableDataCell>
               </CTableRow>
-            ))
-          )}
-        </CTableBody>
-      </CTable>
-    )}
+            ) : (
+              LinksListData.map((item, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                  <CTableDataCell>{item.name}</CTableDataCell>
+                  <CTableDataCell>{
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <div>{item.url}</div>
+                      <div><CIcon
+                        icon={cilClipboard}
+                        onClick={() => {
+                          navigator.clipboard.writeText(item.url);
+                          dispatch({
+                            type: SET_ALERT,
+                            payload: {
+                              status: true,
+                              title: 'Copy Success',
+                              message: 'URL copied to clipboard',
+                              color: 'success',
+                            },
+                          });
+                        }}
+                      />
 
-    <CPagination aria-label="Page navigation example">
-      <CPaginationItem
-        disabled={itemsPerPage <= 0 ? true : false}
-        onClick={previousPage}
-      >
-        Previous
-      </CPaginationItem>
-      {renderPageNumbers()}
-      <CPaginationItem
-        disabled={isDisable === true ? true : false}
-        onClick={nextPage}
-      >
-        Next
-      </CPaginationItem>
-    </CPagination>
+                      </div>
+                    </div>
 
-    <CModal visible={visible} scrollable size="xl" onClose={() => {
-       loadDataCampaign(baseLinkId)
-       setVisibleCampaign(true)
-      setVisible(false)
+                  }</CTableDataCell>
+                  <CTableDataCell>
+                    <Link to={`/marketing/create/marketing/${item.id}`}>
+                      <CButton onClick={() => { }} size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">
+                        <CIcon icon={cilPlus} size='lg' style={{ color: 'white' }} />
+                      </CButton>
+                    </Link>
+                  </CTableDataCell>
+                  <CTableDataCell>
+                    <CButton onClick={() => { handleCampaign(item.id) }} size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">View</CButton>
+                  </CTableDataCell>
+                </CTableRow>
+              ))
+            )}
+          </CTableBody>
+        </CTable>
+      )}
+
+      <CPagination aria-label="Page navigation example">
+        <CPaginationItem
+          disabled={itemsPerPage <= 0 ? true : false}
+          onClick={previousPage}
+        >
+          Previous
+        </CPaginationItem>
+        {renderPageNumbers()}
+        <CPaginationItem
+          disabled={isDisable === true ? true : false}
+          onClick={nextPage}
+        >
+          Next
+        </CPaginationItem>
+      </CPagination>
+
+      <CModal visible={visible} scrollable size="xl" onClose={() => {
+        loadDataCampaign(baseLinkId)
+        setVisibleCampaign(true)
+        setVisible(false)
+        setIsHaveMarket(false)
+        setMid('')
+        setSingleMarketData([])
       }}>
-      <CModalHeader closeButton>
-        <CModalTitle>Link Information</CModalTitle>
-      </CModalHeader>
-      <CModalBody
-        style={{
-          overflowY: 'auto',
-          maxHeight: '70vh',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        {itemsData.market !== null ? <>
+        <CModalHeader closeButton>
+          <CModalTitle>Link Information</CModalTitle>
+        </CModalHeader>
+        <CModalBody
+          style={{
+            overflowY: 'auto',
+            maxHeight: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          {itemsData.market !== null ? <>
 
+            <CTable>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Chain Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Address</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+
+                <CTableRow>
+                  <CTableDataCell>#</CTableDataCell>
+                  <CTableDataCell>{marketData.chain?.name}</CTableDataCell>
+                  <CTableDataCell>{marketData.address}</CTableDataCell>
+                </CTableRow>
+              </CTableBody>
+            </CTable>
+          </> : itemsData.marketGroup !== null ? <>
+
+            <CTable>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">City</CTableHeaderCell>
+                  {
+                    isHaveMarket ? <CTableHeaderCell scope="col">Market</CTableHeaderCell> : <></>
+                  }
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+
+                <CTableRow>
+                  <CTableDataCell>#</CTableDataCell>
+                  <CTableDataCell>{marketGroupData.name}</CTableDataCell>
+                  <CTableDataCell>{marketGroupData.city}</CTableDataCell>
+                  {
+                    isHaveMarket ? <CTableDataCell> <Link> <CIcon icon={cilInfo} size="xl" onClick={() => { handleSingleMarket(mid) }} /> </Link>
+                    </CTableDataCell> : <></>
+
+                  }
+                </CTableRow>
+              </CTableBody>
+            </CTable>
+
+          </> : itemsData.product !== null ? <>
+
+            <CTable>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Product Id</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Base Price</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Tax</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Markup Percentage </CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Markup</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Total</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Brand</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Chain</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Market Address</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+
+                <CTableRow>
+                  <CTableDataCell>#</CTableDataCell>
+                  <CTableDataCell>{productData.pid}</CTableDataCell>
+                  <CTableHeaderCell><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + productData.image} /></CTableHeaderCell>
+                  <CTableDataCell>{productData.name}</CTableDataCell>
+                  <CTableDataCell>{(productData.price?.basePrice ?? 0).toFixed(2)}</CTableDataCell>
+                  <CTableDataCell>{(productData.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
+                  <CTableDataCell>{productData.price?.percentage}%</CTableDataCell>
+                  <CTableDataCell>{(productData.price?.markup ?? 0).toFixed(2)}</CTableDataCell>
+                  <CTableDataCell>{(productData.price?.total ?? 0).toFixed(2)}</CTableDataCell>
+                  <CTableDataCell>{productData.brand}</CTableDataCell>
+                  <CTableDataCell>{productData.chainName}</CTableDataCell>
+                  <CTableDataCell>{productData.marketAddress}</CTableDataCell>
+                </CTableRow>
+              </CTableBody>
+            </CTable>
+
+          </> : <></>}
+
+        </CModalBody>
+        <CModalFooter>
+          {/* <CButton color="secondary" onClick={() => setVisible(false)}>
+            Close
+          </CButton> */}
+        </CModalFooter>
+      </CModal>
+
+      <CModal visible={visibleCampaign} scrollable size="xl" onClose={() => {
+        setVisibleCampaign(false)
+        setSelectedType('All')
+        setParamType('')
+      }}>
+        <CModalHeader closeButton>
+          <CModalTitle>Campaign Information</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CBadge style={{ marginLeft: '74%' }} color="secondary">Filter by</CBadge>
+          <CDropdown style={{ marginLeft: '2%', width: '17%', backgroundColor: '#ff4d4d' }}>
+            <CDropdownToggle style={{ color: 'white' }}>{selectedType}</CDropdownToggle>
+            <CDropdownMenu >
+              <CDropdownItem onClick={() => { filter('all') }}>All</CDropdownItem>
+              <CDropdownItem onClick={() => { filter('Product') }}>Product</CDropdownItem>
+              <CDropdownItem onClick={() => { filter('Market') }}>Market</CDropdownItem>
+              <CDropdownItem onClick={() => { filter('Market Group') }}>Market Group</CDropdownItem>
+            </CDropdownMenu>
+          </CDropdown>
+
+          <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
+
+          </CNavbar>
+          {loadingSingleUrlCampaign ? (
+            <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "5%" }} /></div>
+          ) : (
+            <CTable>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Type</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">URL</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">View Details</CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {campaignData.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                      <h6 style={{ marginTop: "1%" }}>No Data</h6>
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+                  campaignData.map((item, index) => (
+                    <CTableRow key={index}>
+                      <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
+                      <CTableDataCell>{item.type}</CTableDataCell>
+                      <CTableDataCell>{
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <div>{item.url}</div>
+                          <div><CIcon
+                            icon={cilClipboard}
+                            onClick={() => {
+                              navigator.clipboard.writeText(item.url);
+                              dispatch({
+                                type: SET_ALERT,
+                                payload: {
+                                  status: true,
+                                  title: 'Copy Success',
+                                  message: 'URL copied to clipboard',
+                                  color: 'success',
+                                },
+                              });
+                            }}
+                          />
+
+                          </div>
+                        </div>
+
+                      }</CTableDataCell>
+                      <CTableDataCell>
+                        {
+                          item.items === null ?
+                            (
+                              <CIcon icon={cilInfo} size="xl" />
+                            )
+                            :
+                            (
+                              <Link>
+                                <CIcon icon={cilInfo} size="xl" onClick={() => handleToggle(item)} />
+                              </Link>
+                            )
+                        }
+
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))
+                )}
+              </CTableBody>
+            </CTable>
+          )}
+
+        </CModalBody>
+        <CModalFooter>
+        </CModalFooter>
+
+      </CModal>
+
+      <CModal visible={marketVisible} scrollable size="xl" onClose={() => {
+        setMarketVisible(false)
+       
+      }}>
+        <CModalHeader closeButton>
+          <CModalTitle>Link Market Information</CModalTitle>
+        </CModalHeader>
+        <CModalBody
+          style={{
+            overflowY: 'auto',
+            maxHeight: '70vh',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
           <CTable>
             <CTableHead>
               <CTableRow>
@@ -440,180 +708,18 @@ return (
 
               <CTableRow>
                 <CTableDataCell>#</CTableDataCell>
-                <CTableDataCell>{marketData.chain?.name}</CTableDataCell>
-                <CTableDataCell>{marketData.address}</CTableDataCell>
+                <CTableDataCell>{singleMarketData.chain?.name}</CTableDataCell>
+                <CTableDataCell>{singleMarketData.address}</CTableDataCell>
               </CTableRow>
             </CTableBody>
           </CTable>
-        </> : itemsData.marketGroup !== null ? <>
+        </CModalBody>
+        <CModalFooter>
+        </CModalFooter>
+      </CModal>
 
-          <CTable>
-            <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">City</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-
-              <CTableRow>
-                <CTableDataCell>#</CTableDataCell>
-                <CTableDataCell>{marketGroupData.name}</CTableDataCell>
-                <CTableDataCell>{marketGroupData.city}</CTableDataCell>
-              </CTableRow>
-            </CTableBody>
-          </CTable>
-
-        </> : itemsData.product !== null ? <>
-
-          <CTable>
-            <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Product Id</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Photo</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Base Price</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Tax</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Markup Percentage </CTableHeaderCell>
-                <CTableHeaderCell scope="col">Markup</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Total</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Brand</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Chain</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Market Address</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-
-              <CTableRow>
-                <CTableDataCell>#</CTableDataCell>
-                <CTableDataCell>{productData.pid}</CTableDataCell>
-                <CTableHeaderCell><CCardImage style={{ width: '50px', height: '50px' }} src={`https://api.zeuler.com/image/` + productData.image} /></CTableHeaderCell>
-                <CTableDataCell>{productData.name}</CTableDataCell>
-                <CTableDataCell>{(productData.price?.basePrice ?? 0).toFixed(2)}</CTableDataCell>
-                <CTableDataCell>{(productData.price?.tax ?? 0).toFixed(2)}</CTableDataCell>
-                <CTableDataCell>{productData.price?.percentage}%</CTableDataCell>
-                <CTableDataCell>{(productData.price?.markup ?? 0).toFixed(2)}</CTableDataCell>
-                <CTableDataCell>{(productData.price?.total ?? 0).toFixed(2)}</CTableDataCell>
-                <CTableDataCell>{productData.brand}</CTableDataCell>
-                <CTableDataCell>{productData.chainName}</CTableDataCell>
-                <CTableDataCell>{productData.marketAddress}</CTableDataCell>
-              </CTableRow>
-            </CTableBody>
-          </CTable>
-
-        </> : <></>}
-
-      </CModalBody>
-      <CModalFooter>
-        {/* <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton> */}
-      </CModalFooter>
-    </CModal>
-
-    <CModal visible={visibleCampaign} scrollable size="xl" onClose={() => {
-      setVisibleCampaign(false)
-      setSelectedType('All')
-      setParamType('')
-      }}>
-      <CModalHeader closeButton>
-        <CModalTitle>Campaign Information</CModalTitle>
-      </CModalHeader>
-      <CModalBody>
-        <CBadge style={{ marginLeft: '74%' }} color="secondary">Filter by</CBadge>
-        <CDropdown style={{ marginLeft: '2%', width: '17%', backgroundColor: '#ff4d4d' }}>
-          <CDropdownToggle style={{ color: 'white' }}>{selectedType}</CDropdownToggle>
-          <CDropdownMenu >
-            <CDropdownItem onClick={() => { filter('all') }}>All</CDropdownItem>
-            <CDropdownItem onClick={() => { filter('Product') }}>Product</CDropdownItem>
-            <CDropdownItem onClick={() => { filter('Market') }}>Market</CDropdownItem>
-            <CDropdownItem onClick={() => { filter('Market Group') }}>Market Group</CDropdownItem>
-          </CDropdownMenu>
-        </CDropdown>
-
-        <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
-
-        </CNavbar>
-        {loadingSingleUrlCampaign ? (
-          <div className="d-flex justify-content-center"><CSpinner style={{ marginTop: "5%" }} /></div>
-        ) : (
-          <CTable>
-            <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Type</CTableHeaderCell>
-                <CTableHeaderCell scope="col">URL</CTableHeaderCell>
-                <CTableHeaderCell scope="col">View Details</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {campaignData.length === 0 ? (
-                <CTableRow>
-                  <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
-                    <h6 style={{ marginTop: "1%" }}>No Data</h6>
-                  </CTableDataCell>
-                </CTableRow>
-              ) : (
-                campaignData.map((item, index) => (
-                  <CTableRow key={index}>
-                    <CTableDataCell>{itemsPerPage + index + 1}</CTableDataCell>
-                    <CTableDataCell>{item.type}</CTableDataCell>
-                    <CTableDataCell>{
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <div>{item.url}</div>
-                        <div><CIcon
-                          icon={cilClipboard}
-                          onClick={() => {
-                            navigator.clipboard.writeText(item.url);
-                            dispatch({
-                              type: SET_ALERT,
-                              payload: {
-                                status: true,
-                                title: 'Copy Success',
-                                message: 'URL copied to clipboard',
-                                color: 'success',
-                              },
-                            });
-                          }}
-                        />
-
-                        </div>
-                      </div>
-
-                    }</CTableDataCell>
-                    <CTableDataCell>
-                      {
-                        item.items === null ?
-                          (
-                            <CIcon icon={cilInfo} size="xl" />
-                          )
-                          :
-                          (
-                            <Link>
-                              <CIcon icon={cilInfo} size="xl" onClick={() => handleToggle(item)} />
-                            </Link>
-                          )
-                      }
-
-                    </CTableDataCell>
-                  </CTableRow>
-                ))
-              )}
-            </CTableBody>
-          </CTable>
-        )}
-
-      </CModalBody>
-      <CModalFooter>
-      </CModalFooter>
-
-    </CModal>
-
-
-  </CContainer>
-)
+    </CContainer>
+  )
 }
 
 export default AppFlayer

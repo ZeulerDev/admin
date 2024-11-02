@@ -54,12 +54,12 @@ const _nav = [
   //   to: '/customers',
   //   icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   // }, 
-  {
-    component: CNavItem,
-    name: 'Analytics',
-    to: '/analytics',
-    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Analytics',
+  //   to: '/analytics',
+  //   icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: 'Markets',
@@ -71,6 +71,24 @@ const _nav = [
     name: 'Market Groups',
     to: '/marketgroups',
     icon: <CIcon icon={cilFactory} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavGroup,
+    name: 'Analytics',
+    to: '/analytics',
+    icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Multiple',
+        to: '/analytics/multiple',
+      },
+      {
+        component: CNavItem,
+        name: 'Solo',
+        to: '/analytics/solo',
+      },
+    ],
   },
   {
     component: CNavGroup,
@@ -304,18 +322,23 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Solo Batches',
+    name: 'Solo Delivery',
     to: '/solocouriers',
     icon: <CIcon icon={cilSignLanguage} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Orders',
+        to: '/order/view',
+      },
+      {
+        component: CNavItem,
+        name: 'Batches',
         to: '/solocouriers/all',
       },
       {
         component: CNavItem,
-        name: 'All locations',
+        name: 'View In Map',
         to: '/solocouriers/map',
       }
     ],

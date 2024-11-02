@@ -104,7 +104,7 @@ const Flayers = () => {
         flayer: '',
         fPid: ''
     })
-    const [selectAvailability, setSelectAvailability] = useState('all')
+    const [selectAvailability, setSelectAvailability] = useState('All')
     const [paramAvailability, setParamAvailability] = useState('')
 
     useEffect(() => {
@@ -895,7 +895,7 @@ const Flayers = () => {
     const availability = (status) => {
         if (status === 'all') {
             setParamAvailability('')
-            setSelectAvailability('All Cities')
+            setSelectAvailability('All')
         } else {
             setParamAvailability(status)
             setSelectAvailability(status)
@@ -957,7 +957,8 @@ const Flayers = () => {
                                     <CTableDataCell>{item.flayer_id}</CTableDataCell>
                                     <CTableDataCell>{item.endDate}</CTableDataCell>
                                     <CTableDataCell>{item.retailer}</CTableDataCell>
-                                    <CTableDataCell>{item.stores[0]?.isLinked === true ? "Yes" : "No"}</CTableDataCell>
+                                    <CTableDataCell>  {item.stores.some(store => store.isLinked) ? "Yes" : "No"}</CTableDataCell>
+                                  
                                     {/* <CTableDataCell>{item.status === true ? 'Active' : 'Inactive'}</CTableDataCell> */}
                                     <CTableDataCell>
                                         <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleMarketView(item.stores, item._id) }}>
