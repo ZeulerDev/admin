@@ -272,7 +272,7 @@ const Map = () => {
             <CDropdownItem onClick={() => groceryStatus('finished')}>Finished</CDropdownItem>
             <CDropdownItem onClick={() => groceryStatus('start')}>Start</CDropdownItem>
             <CDropdownItem onClick={() => groceryStatus('delivery')}>Delivery</CDropdownItem>
-          </CDropdownMenu>
+          </CDropdownMenu> 
         </CDropdown>
       <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
       </CNavbar>
