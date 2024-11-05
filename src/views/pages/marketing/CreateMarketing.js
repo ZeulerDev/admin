@@ -424,7 +424,7 @@ const CreateMarketing = () => {
         setLoading(true)
         axios
             .get(
-                BASE_URL + `assistant/market/locations/${count}?brand=${paramChainId}&city=${paramCity}`,
+                BASE_URL + `assistant/market/link/${count}?brand=${paramChainId}&city=${paramCity}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

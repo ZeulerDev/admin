@@ -546,7 +546,7 @@ const Categories = () => {
 
       <CBadge style={{ marginLeft: '14%' }} color="secondary">Filter by</CBadge>
       <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle >{selectedChain}</CDropdownToggle>
+        <CDropdownToggle style={{ color: 'white' }}>{selectedChain}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
           {chainData.map((item, index) => (
@@ -559,7 +559,7 @@ const Categories = () => {
 
 
       <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle>
+        <CDropdownToggle style={{ color: 'white' }}>
           {selectedMarket.length > 15 ? `${selectedMarket.substring(0, 15)}...` : selectedMarket}
         </CDropdownToggle>
         <CDropdownMenu>
@@ -577,7 +577,7 @@ const Categories = () => {
       </CDropdown>
 
       <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle >{selectedMainCategory}</CDropdownToggle>
+        <CDropdownToggle style={{ color: 'white' }}>{selectedMainCategory}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => mainCategory('all')}>All Main Category</CDropdownItem>
           {mainCategoriesData.map((item, index) => (
@@ -589,7 +589,7 @@ const Categories = () => {
       </CDropdown>
 
       <CDropdown style={{ marginLeft: '2%', width: '18%', backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle >{selectedSubCategory}</CDropdownToggle>
+        <CDropdownToggle style={{ color: 'white' }}>{selectedSubCategory}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => subCategories('all')}>Clear Category</CDropdownItem>
           {subCategoriesData.map((item, index) => (

@@ -104,7 +104,7 @@ const AppFlayer = () => {
       })
       .then((res) => {
         if (res.status === 200) {
-          console.log("res", res.data.list)
+          // console.log("res", res.data.list)
           setLinksListData(res.data.list)
           setResultCount(res.data.count)
           setLoading(false)
@@ -402,9 +402,9 @@ const AppFlayer = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {LinksListData.length === null ? (
+            {LinksListData.length === 0 ? (
               <CTableRow>
-                <CTableDataCell colSpan="4" style={{ textAlign: 'center', backgroundColor: "white" }}>
+                <CTableDataCell colSpan="5" style={{ textAlign: 'center', backgroundColor: "white" }}>
                   <h6 style={{ marginTop: "1%" }}>No Data</h6>
                 </CTableDataCell>
               </CTableRow>

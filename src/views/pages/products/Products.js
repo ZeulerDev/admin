@@ -453,7 +453,7 @@ const Products = () => {
     <CContainer>
       <CBadge style={{ marginLeft: '57%' }} color="secondary">Filter by</CBadge>
       <CDropdown style={{ marginLeft: '2%', width: '17%', backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle >{selectedChain}</CDropdownToggle>
+        <CDropdownToggle style={{ color: 'white' }}>{selectedChain}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
           {chainData.map((item, index) => (
@@ -465,7 +465,7 @@ const Products = () => {
       </CDropdown>
 
       <CDropdown style={{ marginLeft: '2%', width: '17%', backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle>
+        <CDropdownToggle style={{ color: 'white' }}>
           {selectedMarket.length > 15 ? `${selectedMarket.substring(0, 15)}...` : selectedMarket}
         </CDropdownToggle>
         <CDropdownMenu>

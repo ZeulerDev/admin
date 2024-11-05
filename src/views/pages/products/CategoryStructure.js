@@ -853,7 +853,7 @@ const CreateCategory = () => {
         <CContainer>
             <CBadge style={{ marginLeft: '48%', width: '7%' }} color="secondary">Select Category</CBadge>
             <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                <CDropdownToggle >{selectedMainCategorySelect2}</CDropdownToggle>
+                <CDropdownToggle style={{ color: 'white' }}>{selectedMainCategorySelect2}</CDropdownToggle>
                 <CDropdownMenu>
                     <CDropdownItem onClick={() => mainCategory('all', null, 'select2')}>Clear Main Category</CDropdownItem>
                     {mainCategoriesDataSelect2.map((item, index) => (
@@ -864,7 +864,7 @@ const CreateCategory = () => {
                 </CDropdownMenu>
             </CDropdown>
             <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                <CDropdownToggle >{selectedSubCategorySelect2}</CDropdownToggle>
+                <CDropdownToggle style={{ color: 'white' }}>{selectedSubCategorySelect2}</CDropdownToggle>
                 <CDropdownMenu>
                     <CDropdownItem onClick={() => subCategories('all', null, 'select2')}>Clear Category</CDropdownItem>
                     {subCategoriesDataSelect2.map((item, index) => (

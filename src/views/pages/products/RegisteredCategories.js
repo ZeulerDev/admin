@@ -195,7 +195,7 @@ const RegisteredCategories = () => {
 
                 <CBadge style={{ marginLeft: '0.2%' }} color="secondary">Select the search type</CBadge>
                 <CDropdown style={{ marginLeft: '0.5%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                        <CDropdownToggle >{searchType} </CDropdownToggle>
+                        <CDropdownToggle style={{ color: 'white' }}>{searchType} </CDropdownToggle>
                         <CDropdownMenu>
                             <CDropdownItem onClick={() => setSearchType('NAME')}>By Name</CDropdownItem>
                             <CDropdownItem onClick={() => setSearchType('ID')}>By Id</CDropdownItem>

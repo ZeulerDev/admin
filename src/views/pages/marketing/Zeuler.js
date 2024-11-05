@@ -103,6 +103,7 @@ const Zeuler = () => {
           setLinksListData(res.data.list)
           setResultCount(res.data.count)
           setLoading(false)
+          // console.log("data", res.data)
           clearTimeout(timer);
           if (res.data.length < 50) {
             setIsDisable(true)

@@ -731,7 +731,7 @@ const CreateCategory = () => {
 
       <CBadge style={{ marginLeft: '0%' }} color="secondary">Filter by</CBadge>
       <CDropdown style={{ marginLeft: '2%', width: '19%', backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle >{selectedChain}</CDropdownToggle>
+        <CDropdownToggle style={{ color: 'white' }} >{selectedChain}</CDropdownToggle>
         <CDropdownMenu>
           <CDropdownItem onClick={() => chain('all')}>All</CDropdownItem>
           {chainData.map((item, index) => (
@@ -743,7 +743,7 @@ const CreateCategory = () => {
       </CDropdown>
 
       <CDropdown style={{ marginLeft: '1%', width: '19%', backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle>
+        <CDropdownToggle style={{ color: 'white' }}>
           {selectedMarket.length > 15 ? `${selectedMarket.substring(0, 15)}...` : selectedMarket}
         </CDropdownToggle>
         <CDropdownMenu>
@@ -760,7 +760,7 @@ const CreateCategory = () => {
       </CDropdown>
       <CBadge style={{ marginLeft: '4%' }} color="secondary">Selected Markets</CBadge>
       <CDropdown style={{ marginLeft: '2%', width: '19%', backgroundColor: '#ff4d4d' }}>
-        <CDropdownToggle>
+        <CDropdownToggle style={{ color: 'white' }}>
           {selectedMarketForID.length > 15 ? `${selectedMarketForID.substring(0, 15)}...` : selectedMarketForID}
         </CDropdownToggle>
         <CDropdownMenu>

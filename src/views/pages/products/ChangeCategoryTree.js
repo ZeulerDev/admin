@@ -876,7 +876,7 @@ const CreateCategoryTree = () => {
                 <CCol style={{ marginTop: '2%' }} md={12}> */}
                     <CBadge style={{ marginLeft: '0%', width: '7%', marginTop:'2%' }} color="secondary">Select Category</CBadge>
                     <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                        <CDropdownToggle >{selectedMainCategory}</CDropdownToggle>
+                        <CDropdownToggle style={{ color: 'white' }}>{selectedMainCategory}</CDropdownToggle>
                         <CDropdownMenu>
                             <CDropdownItem onClick={() => mainCategory('all', null, 'select')}>Clear Main Category</CDropdownItem>
                             {mainCategoriesData.map((item, index) => (
@@ -887,7 +887,7 @@ const CreateCategoryTree = () => {
                         </CDropdownMenu>
                     </CDropdown>
                     <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                        <CDropdownToggle >{selectedSubCategory}</CDropdownToggle>
+                        <CDropdownToggle style={{ color: 'white' }}>{selectedSubCategory}</CDropdownToggle>
                         <CDropdownMenu>
                             <CDropdownItem onClick={() => subCategories('all', null, 'select')}>Clear Category</CDropdownItem>
                             {subCategoriesData.map((item, index) => (
@@ -905,7 +905,7 @@ const CreateCategoryTree = () => {
                 {/* <CCol style={{ marginTop: '1%' }} md={12}> */}
                     <CBadge style={{ marginLeft: '5%', width: '7%' }} color="secondary">Send To</CBadge>
                     <CDropdown style={{ marginLeft: '2%', width: '20%', backgroundColor: '#ff4d4d' }}>
-                        <CDropdownToggle >{selectedMainCategoryMove}</CDropdownToggle>
+                        <CDropdownToggle style={{ color: 'white' }}>{selectedMainCategoryMove}</CDropdownToggle>
                         <CDropdownMenu>
                             <CDropdownItem onClick={() => mainCategory('all', null, 'move')}>Clear Main Category</CDropdownItem>
                             {mainCategoriesDataMove.map((item, index) => (
