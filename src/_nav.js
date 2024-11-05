@@ -106,6 +106,11 @@ const _nav = [
         name: 'Advanced Search',
         to: '/customers/advanced/search',
       },
+      {
+        component: CNavItem,
+        name: 'Grocery Lists',
+        to: '/order/grocery/list',
+      },
     ],
   },
   {
@@ -289,7 +294,7 @@ const _nav = [
   ,
   {
     component: CNavGroup,
-    name: 'Orders',
+    name: 'Multiple Delivery',
     to: '/order',
     icon: <CIcon icon={cilInbox} customClassName="nav-icon" />,
     items: [
@@ -307,12 +312,7 @@ const _nav = [
         component: CNavItem,
         name: 'Grocery Groups',
         to: '/order/grocerygroup',
-      },
-      {
-        component: CNavItem,
-        name: 'GroceryList',
-        to: '/order/grocery/list',
-      },
+      }
       // {
       //   component: CNavItem,
       //   name: 'GroupManagement',

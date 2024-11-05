@@ -82,6 +82,7 @@ const Map = () => {
         },
       })
       .then((res) => {
+        console.log(res.status)
         if (res.status === 200) {
           console.log(res.data.data)
 
@@ -276,7 +277,7 @@ const Map = () => {
       <CNavbar style={{ marginTop: '1%' }} className="bg-body-tertiary">
       </CNavbar>
       
-      <MapContainer dragging={true} center={[40.85631, 14.24641]} zoom={13} scrollWheelZoom={true} style={{ height: '500px', width: '100%',zIndex:-1 }}>
+      <MapContainer dragging={true} center={[40.85631, 14.24641]} zoom={13} scrollWheelZoom={true} style={{ height: '500px', width: '100%',zIndex:0 }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -506,7 +506,7 @@ const Analytics = () => {
              </>}
                title={<>
                  <h5 className=" fw-normal">
-                 Average Order Grocess Profit
+                 Average Order Gross Margin (%)
                  </h5>
                </>} />
            </CCol>
@@ -690,7 +690,7 @@ const Analytics = () => {
                 </>}
                   title={<>
                     <h5 className=" fw-normal">
-                    Average Order Grocess Profit
+                    Average Order Gross Margin (%)
                     </h5>
                   </>} />
               </CCol>
