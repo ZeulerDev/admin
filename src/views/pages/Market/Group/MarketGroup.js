@@ -816,6 +816,7 @@ const handleSubmitCenterPoint = () => {
             <CTableHeaderCell scope="col">Add Markets</CTableHeaderCell>
             <CTableHeaderCell scope="col">Add Center Point</CTableHeaderCell>
             <CTableHeaderCell scope="col">View Map</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Area</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
@@ -871,6 +872,13 @@ const handleSubmitCenterPoint = () => {
               </CTableDataCell>
               <CTableDataCell>
                 <Link to={`/marketgroups/view/map/${item._id}`}>
+                <CButton size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">
+                  <CIcon icon={cilMap} size='lg' style={{ color: 'white' }} />
+                </CButton>
+                </Link>
+              </CTableDataCell>
+              <CTableDataCell>
+                <Link to={`/marketgroups/create-area/${item._id}`}>
                 <CButton size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">
                   <CIcon icon={cilMap} size='lg' style={{ color: 'white' }} />
                 </CButton>

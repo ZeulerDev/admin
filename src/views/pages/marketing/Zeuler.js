@@ -147,6 +147,37 @@ const Zeuler = () => {
       })
   }
 
+  const updateStatus = (item) => {
+    const url = BASE_URL + `deepLinkUrls/update/status/${item.id}`
+    console.log(url)
+    fetch(url, {
+      method: 'POST',
+      headers :{
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify({
+        status : item?.status ? false : true
+      })
+    }).then((res) => {
+      if(res.status === 200) {
+        const newList = LinksListData.map((data) => {
+          if(data.id === item.id) {
+            data.status = item?.status ? false : true
+          }
+
+          return data
+        })
+        setLinksListData(newList)
+      } else {
+        console.log(res.status)
+        alert("Error while updating status")
+      }
+    }).catch((error) => {
+      alert(error.message)
+    })
+  }
+
   const nextPage = () => {
     setCurrentPage(currentPage + 1);
     const c = itemsPerPage + 50
@@ -353,6 +384,7 @@ const Zeuler = () => {
               <CTableHeaderCell scope="col">#</CTableHeaderCell>
               <CTableHeaderCell scope="col">Type</CTableHeaderCell>
               <CTableHeaderCell scope="col">URL</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Action</CTableHeaderCell>
               <CTableHeaderCell scope="col">View Details</CTableHeaderCell>
             </CTableRow>
           </CTableHead>
@@ -391,6 +423,11 @@ const Zeuler = () => {
                     </div>
 
                   }</CTableDataCell>
+                   <CTableDataCell>
+                      <CButton onClick={() => {
+                        updateStatus(item)
+                      }} size='sm' style={{ backgroundColor: '#ff4d4d', color: "white" }} variant="outline">{item?.status ? 'Deactivate' : 'Activate'}</CButton>
+                  </CTableDataCell>
                   <CTableDataCell>
                     {
                       item.items === null ?

@@ -13,6 +13,8 @@ const Zeuler = React.lazy(()=>import('./views/pages/marketing/Zeuler'))
 
 const Products = React.lazy(()=>import('./views/pages/products/Products'))
 const Promotion = React.lazy(()=>import('./views/pages/promotions/Promotion'))
+const PromoCode = React.lazy(()=>import('./views/pages/promotions/PromoCode'))
+const AddPromoCode = React.lazy(()=>import('./views/pages/promotions/AddPromoCode'))
 const ManageProducts = React.lazy(()=>import('./views/pages/promotions/manageProducts'))
 const AddPromotionMarket = React.lazy(()=>import('./views/pages/promotions/AddMarket'))
 const AddPromotion = React.lazy(()=>import('./views/pages/promotions/AddPromotion'))
@@ -28,6 +30,7 @@ const VirtualProducts = React.lazy(()=>import('./views/pages/products/VirtualPro
 const VirtualMarkets = React.lazy(()=>import('./views/pages/products/VirtualMarkets'))
 const Categories = React.lazy(()=>import('./views/pages/products/Categories'))
 const CreateCategories = React.lazy(()=>import('./views/pages/products/CreateCategory'))
+const Limitations = React.lazy(()=>import('./views/pages/products/Limitations'))
 
 const PickerArea = React.lazy(()=>import('./views/pages/list/CreatePickArea'))
 const PickerAreas = React.lazy(()=>import('./views/pages/list/PickupAreas'))
@@ -59,6 +62,7 @@ const AddPicker = React.lazy(()=>import('./views/pages/picker/AddPicker'))
 
 const MarketLocation = React.lazy(()=>import('./views/pages/Market/Group/ViewMapMarket'))
 const MarketDistance = React.lazy(()=>import('./views/pages/Market/Group/MarketDistances'))
+const CreateArea = React.lazy(()=>import('./views/pages/Market/Group/CreateArea'))
 const MarketMap = React.lazy(()=>import('./views/pages/Market/Group/MarketMap'))
 const CreateMarketGroup = React.lazy(()=>import('./views/pages/Market/Group/CreateMarketGroup'))
 const MarketGroup = React.lazy(()=>import('./views/pages/Market/Group/MarketGroup'))
@@ -138,6 +142,8 @@ const routes = [
   { path: '/promotions/add/promotion', name: 'Register Promotions ', element: AddPromotion},
   { path: '/promotions/flayers', name: 'Flayers ', element: Flayers },
   { path: '/promotions/all', name: 'Promotions ', element: Promotion },
+  { path: '/promotions/promocodes', name: 'Promotions ', element: PromoCode },
+  { path: '/promotions/add/promocode', name: 'Add Promo Code ', element: AddPromoCode },
   { path: '/promotions', name: 'Promotion', element: Promotion,exact: true },
   { path: '/virtual/reference', name: 'Create Reference ', element: CreateReference },
   { path: '/virtual/products', name: 'Virtual Products ', element: VirtualProducts },
@@ -150,6 +156,7 @@ const routes = [
   { path: '/products/categorystructure', name: 'Change Sub Categories ', element: CategoryStructure },
   { path: '/products/createcategory', name: 'Create Category ', element: CreateCategories },
   { path: '/products/categories', name: 'Categories ', element: Categories },
+  { path: '/products/limitation', name: 'Limitation ', element: Limitations },
   { path: '/products/view', name: 'Products ', element: Products },
   { path: '/products', name: 'Products', element: Products,exact: true },
   { path: '/list/view', name: 'Picker Areas ', element: PickerAreas },
@@ -183,8 +190,10 @@ const routes = [
   { path: '/marketgroups/view/map/:id', name: 'Market Location', element: MarketLocation },
   { path: '/marketgroups/marketdistance/:id', name: 'MarketDistance', element: MarketDistance },
   { path: '/marketgroups/marketmap', name: 'MarketMap', element: MarketMap },
+  { path: '/marketgroups/create-area/:id', name: 'CreateArea', element: CreateArea },
   { path: '/marketgroups/createmarketgroup', name: 'CreateMarketGroup', element: CreateMarketGroup },
   { path: '/marketgroups', name: 'MarketGroup', element: MarketGroup },
+  
   { path: '/markets/addmarket', name: 'AddMarket', element: AddMarket },
   { path: '/markets', name: 'Markets', element: Markets },
   { path: '/customers/advanced/search', name: 'AdvancedSearch', element: AdvancedSearch },

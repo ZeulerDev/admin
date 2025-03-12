@@ -123,11 +123,17 @@ const _nav = [
         component: CNavItem,
         name: 'Promotions',
         to: '/promotions/all',
-      },{
+      },
+      {
         component: CNavItem,
         name: 'Flayers',
         to: '/promotions/flayers',
       },
+      {
+        component: CNavItem,
+        name: 'Promo Codes',
+        to: '/promotions/promocodes',
+      }
       
     ],
   },
@@ -192,6 +198,11 @@ const _nav = [
         component: CNavItem,
         name: 'Categories',
         to: '/products/categories',
+      },
+      {
+        component: CNavItem,
+        name: 'Setting up limits',
+        to: '/products/limitation',
       },
       {
         component: CNavItem,

@@ -69,6 +69,7 @@ const Flayers = () => {
     const [statusModel, setStatusModel] = useState(false)
     const [activate, setActivate] = useState(false)
     const [flayerId, setFlayerId] = useState('')
+    const [selectedStoreAddress, setSelectedStoreAddress] = useState('')
 
     const [selectedCityModal, setSelectedCityModal] = useState('All Cities')
     const [selectedChainModal, setSelectedChianModal] = useState('All Chains')
@@ -661,8 +662,9 @@ const Flayers = () => {
         ));
     };
 
-    const handleMarketsView = (id, market) => {
+    const handleMarketsView = (id, market, address) => {
         setVisibleMainSubModel(false)
+        setSelectedStoreAddress(address)
         setVisibleMarket(true)
         setIfHaveMarket(market)
         loadChain()
@@ -683,9 +685,9 @@ const Flayers = () => {
     const handleMarketAssign = (mid) => {
 
 
-        const data = flayerObject
+        const data = {...flayerObject, address : selectedStoreAddress}
 
-        if (mid && flayerObject !== null) {
+        if (mid && flayerObject !== null && selectedStoreAddress) {
             if (user && token) {
                 console.log('data', data)
                 axios
@@ -693,6 +695,7 @@ const Flayers = () => {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
+                        
                     })
                     .then((res) => {
                         if (res.status === 200) {
@@ -1084,7 +1087,7 @@ const Flayers = () => {
                                         <CTableDataCell>{index + 1}</CTableDataCell>
                                         <CTableDataCell>{item.address}</CTableDataCell>
                                         <CTableDataCell>
-                                            <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleMarketsView(item._id, item.market) }}>
+                                            <CButton size='sm' style={{ backgroundColor: '#ff4d4d' }} variant="outline" onClick={() => { handleMarketsView(item._id, item.market, item.address) }}>
                                                 <CIcon icon={cilList} size='lg' style={{ color: 'white' }} />
                                             </CButton>
                                         </CTableDataCell>
